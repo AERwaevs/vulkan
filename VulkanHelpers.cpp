@@ -1,7 +1,5 @@
 #include "VulkanHelpers.h"
 
-#include <Base/Log.h>
-
 namespace AEON::Graphics::vk
 {
     VKAPI_ATTR VkBool32 VKAPI_CALL debug_callback

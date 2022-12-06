@@ -1,5 +1,3 @@
-#include <Base/Base.h>
-
 #include <VulkanRenderer.h>
 
 #include <vk/Extensions.h>

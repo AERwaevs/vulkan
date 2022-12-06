@@ -2,8 +2,6 @@
 
 #include <optional>
 
-#include <Base/Base.h>
-
 #include <Vendor/glad/include/glad/vulkan.h>
 
 #define VK_EXT_FUNC( function, ... ) \
