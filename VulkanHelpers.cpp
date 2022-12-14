@@ -2,35 +2,6 @@
 
 namespace AEON::Graphics::vk
 {
-    VKAPI_ATTR VkBool32 VKAPI_CALL debug_callback
-    ( 
-        VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
-        VkDebugUtilsMessageTypeFlagsEXT             type,
-        const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void*                                       pUserData
-    )
-    {   
-        switch ( severity )
-        {
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            {
-                AE_WARN( "Vulkan %s", pCallbackData->pMessage );
-                break;
-            }
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            {
-                AE_ERROR( "Vulkan %s", pCallbackData->pMessage );
-                break;
-            }        
-            default:
-                break;
-        }         
-        
-        AE_INFO_IF( type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
-                    "VK_PERFORMANCE %s", pCallbackData->pMessage );
-        return VK_FALSE; // only used if testing validation layers
-    }
-
     bool device_supported( VkPhysicalDevice device )
     {
         VkPhysicalDeviceProperties properties;

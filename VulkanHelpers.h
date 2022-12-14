@@ -39,12 +39,6 @@ namespace AEON::Graphics::vk
         else return func( instance, arguments... );
     }
 
-    VKAPI_ATTR VkBool32 VKAPI_CALL debug_callback( 
-        VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
-        VkDebugUtilsMessageTypeFlagsEXT             type,
-        const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void*                                       pUserData );
-
     bool device_supported( VkPhysicalDevice device );
     int device_capability( VkPhysicalDevice device );
 

@@ -18,7 +18,7 @@ namespace AEON::Graphics::vk
     {
         VkResult result{ VK_SUCCESS };
 
-        // create instance info
+        // create application info
         VkApplicationInfo appInfo
         { 
             VK_STRUCTURE_TYPE_APPLICATION_INFO,
@@ -30,6 +30,37 @@ namespace AEON::Graphics::vk
             VK_API_VERSION_1_2
         };
 
+        // create debug callback
+        auto debug_callback = []
+        (
+            VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
+            VkDebugUtilsMessageTypeFlagsEXT             type,
+            const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+            void*                                       pUserData
+        ) -> VKAPI_ATTR VkBool32 VKAPI_CALL
+        {
+            switch ( severity )
+            {
+                case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+                {
+                    AE_WARN( "Vulkan %s", pCallbackData->pMessage );
+                    break;
+                }
+                case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+                {
+                    AE_ERROR( "Vulkan %s", pCallbackData->pMessage );
+                    break;
+                }        
+                default:
+                    break;
+            }         
+            
+            AE_INFO_IF( type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
+                        "VK_PERFORMANCE %s", pCallbackData->pMessage );
+            return VK_FALSE; // only used if testing validation layers
+        };
+
+        // create debug info
         VkDebugUtilsMessengerCreateInfoEXT debugInfo
         {
             VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
@@ -40,11 +71,12 @@ namespace AEON::Graphics::vk
             VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT
             | VK_DEBUG_UTILS_MESSAGE_TYPE_VALIDATION_BIT_EXT
             | VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
-            vk::debug_callback,
+            debug_callback,
             nullptr     //pUserData
         };
 
-        VkInstanceCreateInfo createInfo
+        // create instance info
+        VkInstanceCreateInfo instanceInfo
         {
             VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
             (VkDebugUtilsMessengerCreateInfoEXT*) &debugInfo,
@@ -57,7 +89,7 @@ namespace AEON::Graphics::vk
         };
 
         //* create instance
-        result = vkCreateInstance( &createInfo, nullptr, &m_instance );
+        result = vkCreateInstance( &instanceInfo, nullptr, &m_instance );
         AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: vk%d", result );
 
         //* create debug messenger
