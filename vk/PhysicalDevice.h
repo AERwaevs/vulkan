@@ -26,7 +26,7 @@ public:
     const VkPhysicalDeviceProperties&   GetProperties() const { return m_properties; }
 
 protected:
-    virtual ~PhysicalDevice();
+    virtual ~PhysicalDevice(){};
 
 
 private:
