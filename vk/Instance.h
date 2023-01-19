@@ -1,24 +1,28 @@
 #pragma once
 
-#include <Base/Base.h>
-
 #include <Vendor/glad/include/glad/vulkan.h>
+
+//* Define to later control vulkan memory management
+#define VK_ALLOCATOR VK_NULL_HANDLE
 
 namespace AEON::Graphics::vk
 {
+    class PhysicalDevice;
+
     class AEON_DLL Instance : public Inherit< Object, Instance >
     {
     public:
-        using PhysicalDevices = Vector<VkPhysicalDevice>;
+                    Instance( Vector<const char*> instance_extensions, Vector<const char*> layers );
+        operator    VkInstance() const { return m_instance; }
 
-        Instance( Vector<const char*> instance_extensions, 
-                  Vector<const char*> layers );
+        using PhysicalDevices = List<Shared<PhysicalDevice>>;
+        PhysicalDevices& GetPhysicalDevices() { return m_physical_devices; }
 
         template< typename F >
         VkResult GetProcAddr( F& proc_addr, const char* name ) const
         {
             proc_addr = reinterpret_cast<F>( vkGetInstanceProcAddr( m_instance, name ) );
-            if( proc_addr == nullptr )
+            if( proc_addr == VK_NULL_HANDLE )
             {
                 AE_WARN( "Failed to get procedural address for %s: vk%d", 
                          name,
@@ -34,14 +38,11 @@ namespace AEON::Graphics::vk
     private:
 
         VkInstance                      m_instance;
-        VkDebugUtilsMessengerEXT        m_vk_debug_messenger;
-        VkPhysicalDevice                m_physical_device;
-        VkDevice                        m_device;
-        VkQueue                         m_queue_graphics;
-        VkSurfaceKHR                    m_surface;
-        VkQueue                         m_queue_present;
+        VkDebugUtilsMessengerEXT        m_debug_messenger;
 
-        PFN_vkCreateDebugUtilsMessengerEXT  _vkCreateDebugUtilsMessengerEXT  = nullptr;
-        PFN_vkDestroyDebugUtilsMessengerEXT _vkDestroyDebugUtilsMessengerEXT = nullptr;
+        PhysicalDevices                 m_physical_devices;
+
+        PFN_vkCreateDebugUtilsMessengerEXT  CreateDebugUtilsMessenger   = VK_NULL_HANDLE;
+        PFN_vkDestroyDebugUtilsMessengerEXT DestroyDebugUtilsMessenger  = VK_NULL_HANDLE;
     };
 }
