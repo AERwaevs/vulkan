@@ -15,15 +15,8 @@ Surface::Surface( Instance* instance, WINDOW_HANDLE window )
         GetModuleHandle( nullptr ),
         window
     };
-    auto result = vkCreateWin32SurfaceKHR
-    (
-        *instance,
-        &surfaceCreateInfo,
-        VK_ALLOCATOR,
-        &m_surface
-    );
 #elif AEON_PLATFORM_ANDROID
-    VkAndroidSurfaceCreateInfoKHR  surfaceCreateInfo
+    VkAndroidSurfaceCreateInfoKHR surfaceCreateInfo
     {
         VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR,
         VK_NULL_HANDLE, // pNext
@@ -39,14 +32,14 @@ Surface::Surface( Instance* instance, WINDOW_HANDLE window )
         connection,
         window
     };
-    auto result = vkCreateXcbSurfaceKHR
+#endif
+    auto result = vkCreateSurfaceKHR
     (
         *instance,
-        &surfaceCreateInfo
+        &surfaceCreateInfo,
         VK_ALLOCATOR,
         &m_surface
     );
-#endif
 
     AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: vk%d", result );
 }

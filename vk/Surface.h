@@ -7,10 +7,13 @@
 #if defined( AEON_PLATFORM_WINDOWS )
 #   include "windows.h"
 #   define  WINDOW_HANDLE HWND
+#   define  vkCreateSurfaceKHR vkCreateWin32SurfaceKHR
 #elif defined( AEON_PLATFORM_ANDROID )
 #   define  WINDOW_HANDLE ANativeWindow*
+#   define  vkCreateSurfaceKHR vkCreateAndroidSurfaceKHR
 #elif defined( AEON_PLATFORM_LINUX )
 #   define  WINDOW_HANDLE xcb_connection_t* connection, xcb_window_t
+#   define  vkCreateSurfaceKHR vkCreateXcbSurfaceKHR
 #endif
 
 namespace AEON::Graphics::vk
