@@ -6,12 +6,12 @@
 namespace AEON::Graphics
 {
     AEON_API VulkanRenderer::VulkanRenderer()
-    {
-        m_instance ? m_instance : vk::Instance::create
+    :   m_instance( vk::Instance::create
         (
             vk::GetRequiredExtensions(),
             vk::GetRequiredLayers ()
-        );
+        ) )
+    {
         //m_surfaces.push_back
         //(
         //    new vk::Surface( m_instance, )
