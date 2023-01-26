@@ -35,11 +35,10 @@ protected:
 private:
     VkDevice                m_device;
 
-    Observer<Instance>      m_instance;
+    Shared<Instance>        m_instance;
     Shared<PhysicalDevice>  m_physical_device;
 
     VkQueue                 m_queue_graphics;
-    VkSurfaceKHR            m_surface;
     VkQueue                 m_queue_present;
 };
 
