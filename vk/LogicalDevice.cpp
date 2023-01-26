@@ -5,10 +5,9 @@
 namespace AEON::Graphics::vk
 {
 
-//? maybe remove requirement for a surface?
-//? this will allow for compute-only devices
+//? maybe remove requirement for a surface? this will allow for compute-only devices
 Device::Device( PhysicalDevice* physical_device, Surface* surface )
-: m_physical_device( physical_device )
+: m_instance{ physical_device->instance() }, m_physical_device( physical_device )
 {
     VkResult result{ VK_SUCCESS };
 
@@ -50,14 +49,14 @@ Device::Device( PhysicalDevice* physical_device, Surface* surface )
     {
         VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
         VK_NULL_HANDLE,             // pNext
-        VkDeviceCreateFlags{ 0 },   // flags
+        VkDeviceCreateFlags{ 0 },
         static_cast<uint32_t>( queueInfos.size() ),
         queueInfos.empty() ? VK_NULL_HANDLE : queueInfos.data(),
         static_cast<uint32_t>( layers.size() ),
         layers.empty() ? VK_NULL_HANDLE : layers.data(),
         static_cast<uint32_t>( extensions.size() ),
         extensions.empty() ? VK_NULL_HANDLE : extensions.data(),
-        &physical_device->GetFeatures()
+        &physical_device->features()
     };
 
     //* create logical device

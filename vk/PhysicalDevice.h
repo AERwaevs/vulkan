@@ -21,9 +21,9 @@ public:
     uint32_t    GetQueueFamily( VkQueueFlags flags ) const;
     uint32_t    GetQueueFamily( VkQueueFlags flags, Surface* surface ) const;
 
-          Observer<Instance>            GetInstance()   const { return m_instance; }
-    const VkPhysicalDeviceFeatures&     GetFeatures()   const { return m_features; }
-    const VkPhysicalDeviceProperties&   GetProperties() const { return m_properties; }
+          Observer<Instance>            instance()   const { return m_instance; }
+    const VkPhysicalDeviceFeatures&     features()   const { return m_features; }
+    const VkPhysicalDeviceProperties&   properties() const { return m_properties; }
 
 protected:
     virtual ~PhysicalDevice(){};
