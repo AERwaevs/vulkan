@@ -3,7 +3,8 @@ set( VULKAN_SRC
     vk/PhysicalDevice.cpp
     vk/LogicalDevice.cpp
     vk/Surface.cpp
-    VulkanRenderer.cpp 
+    VulkanViewport.cpp
+    VulkanRenderer.cpp
 )
 
 add_library(                aeon-platform-vulkan STATIC        ${VULKAN_SRC} )
