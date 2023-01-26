@@ -25,19 +25,6 @@ inline Vector<VkLayerProperties> EnumerateInstanceLayerProperties()
     return vk_layers;
 }
 
-inline Vector<const char*> GetRequiredLayers()
-{
-    Vector<const char*> layers( {
-#ifndef AEON_RELEASE
-        "VK_LAYER_KHRONOS_validation"
-#endif
-    } );
-
-    // TODO validate requested layers
-
-    return layers;
-}
-
 inline Vector<const char*> ValidateLayerNames( const Vector<const char*>& names )
 {
     if( names.empty() ) return names;
@@ -56,6 +43,17 @@ inline Vector<const char*> ValidateLayerNames( const Vector<const char*>& names 
     }
     
     return validated_names;
+}
+
+inline Vector<const char*> GetRequiredLayers()
+{
+    Vector<const char*> layers( {
+#ifdef AEON_RELEASE
+        "VK_LAYER_KHRONOS_validation"
+#endif
+    } );
+
+    return ValidateLayerNames( layers );
 }
 
 }
