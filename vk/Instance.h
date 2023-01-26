@@ -16,7 +16,7 @@ namespace AEON::Graphics::vk
         operator    VkInstance() const { return m_instance; }
 
         using PhysicalDevices = List<Shared<PhysicalDevice>>;
-        PhysicalDevices& GetPhysicalDevices() { return m_physical_devices; }
+        PhysicalDevices& physical_devices() { return m_physical_devices; }
 
         template< typename F >
         VkResult GetProcAddr( F& proc_addr, const char* name ) const
