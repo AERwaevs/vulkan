@@ -48,7 +48,7 @@ inline Vector<const char*> ValidateLayerNames( const Vector<const char*>& names 
 inline Vector<const char*> GetRequiredLayers()
 {
     Vector<const char*> layers( {
-#ifdef AEON_RELEASE
+#ifndef AEON_RELEASE
         "VK_LAYER_KHRONOS_validation"
 #endif
     } );

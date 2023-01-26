@@ -38,11 +38,12 @@ namespace AEON::Graphics::vk
     private:
 
         VkInstance                      m_instance;
-        VkDebugUtilsMessengerEXT        m_debug_messenger;
-
         PhysicalDevices                 m_physical_devices;
 
+#ifdef AEON_DEBUG
+        VkDebugUtilsMessengerEXT            m_debug_messenger;
         PFN_vkCreateDebugUtilsMessengerEXT  CreateDebugUtilsMessenger   = VK_NULL_HANDLE;
         PFN_vkDestroyDebugUtilsMessengerEXT DestroyDebugUtilsMessenger  = VK_NULL_HANDLE;
+#endif
     };
 }

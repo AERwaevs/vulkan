@@ -79,6 +79,7 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
     result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &m_instance );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: vk%d", result );
 
+#ifdef AEON_DEBUG
     GetProcAddr( CreateDebugUtilsMessenger,  "vkCreateDebugUtilsMessengerEXT"  );
     GetProcAddr( DestroyDebugUtilsMessenger, "vkDestroyDebugUtilsMessengerEXT" );
 
@@ -93,6 +94,7 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
         );
         AE_WARN_IF( result != VK_SUCCESS, "Failed to create debug messenger: vk%d", result );
     }
+#endif
 
     uint32_t device_count = 0;
     vkEnumeratePhysicalDevices( m_instance, &device_count, VK_NULL_HANDLE );
@@ -115,11 +117,12 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
 
 AEON_API Instance::~Instance()
 {
+#if AEON_DEBUG
     if( DestroyDebugUtilsMessenger )
     {
         DestroyDebugUtilsMessenger( m_instance, m_debug_messenger, VK_ALLOCATOR );
     }
-
+#endif
     vkDestroyInstance( m_instance, VK_ALLOCATOR );
 }
 
