@@ -45,6 +45,5 @@ namespace AEON::Graphics::vk
         PFN_vkCreateDebugUtilsMessengerEXT  CreateDebugUtilsMessenger   = VK_NULL_HANDLE;
         PFN_vkDestroyDebugUtilsMessengerEXT DestroyDebugUtilsMessenger  = VK_NULL_HANDLE;
 #endif
-#endif
     };
 }

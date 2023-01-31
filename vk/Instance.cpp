@@ -5,6 +5,37 @@
 namespace AEON::Graphics::vk
 {
 
+#ifdef AEON_DEBUG
+VKAPI_ATTR VkBool32 debug_callback
+(
+    VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
+    VkDebugUtilsMessageTypeFlagsEXT             type,
+    const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
+    void*                                       pUserData
+)
+{
+    switch ( severity )
+    {
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
+        {
+            AE_WARN( "Vulkan %s", pCallbackData->pMessage );
+            break;
+        }
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
+        {
+            AE_ERROR( "Vulkan %s", pCallbackData->pMessage );
+            break;
+        }        
+        default:
+            break;
+    }         
+    
+    AE_INFO_IF( type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
+                "VK_PERFORMANCE %s", pCallbackData->pMessage );
+    return VK_FALSE; // only used if testing validation layers
+};
+#endif
+
 AEON_API Instance::Instance( Vector<const char*> instance_extensions, 
                              Vector<const char*> layers )
 {
@@ -21,40 +52,12 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
         VK_API_VERSION_1_2
     };
 
-    auto debug_callback = []
-    (
-        VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
-        VkDebugUtilsMessageTypeFlagsEXT             type,
-        const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-        void*                                       pUserData
-    ) -> VKAPI_ATTR VkBool32
-    {
-        switch ( severity )
-        {
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-            {
-                AE_WARN( "Vulkan %s", pCallbackData->pMessage );
-                break;
-            }
-            case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-            {
-                AE_ERROR( "Vulkan %s", pCallbackData->pMessage );
-                break;
-            }        
-            default:
-                break;
-        }         
-        
-        AE_INFO_IF( type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
-                    "VK_PERFORMANCE %s", pCallbackData->pMessage );
-        return VK_FALSE; // only used if testing validation layers
-    };
-
+#ifdef AEON_DEBUG
     VkDebugUtilsMessengerCreateInfoEXT debugInfo
     {
         VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
         VK_NULL_HANDLE, // pNext
-        VkWin32SurfaceCreateFlagsKHR{ 0 },
+        VkDebugUtilsMessengerCreateFlagsEXT{ 0 },
         VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT 
         | VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT,
         VK_DEBUG_UTILS_MESSAGE_TYPE_GENERAL_BIT_EXT
@@ -63,12 +66,17 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
         debug_callback,
         VK_NULL_HANDLE  //pUserData
     };
+#endif
 
     VkInstanceCreateInfo instanceInfo
     {
         VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-        (VkDebugUtilsMessengerCreateInfoEXT*) &debugInfo,
-        VkWin32SurfaceCreateFlagsKHR{ 0 },
+#ifdef AEON_DEBUG
+        static_cast<VkDebugUtilsMessengerCreateInfoEXT*>( &debugInfo ),
+#else
+        VK_NULL_HANDLE,
+#endif
+        VkInstanceCreateFlags{ 0 },
         &appInfo,
         static_cast<uint32_t>( layers.size() ),
         layers.empty() ? VK_NULL_HANDLE : layers.data(),
@@ -76,7 +84,7 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
         instance_extensions.empty() ? VK_NULL_HANDLE : instance_extensions.data()
     };
 
-    result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &m_instance );
+    result = vkCreateInstance( &instanceInfo, nullptr, &m_instance );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: vk%d", result );
 
 #ifdef AEON_DEBUG
@@ -123,7 +131,7 @@ AEON_API Instance::~Instance()
         DestroyDebugUtilsMessenger( m_instance, m_debug_messenger, VK_ALLOCATOR );
     }
 #endif
-    vkDestroyInstance( m_instance, VK_ALLOCATOR );
+    vkDestroyInstance( m_instance, nullptr );
 }
 
 }
