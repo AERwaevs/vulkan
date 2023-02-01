@@ -14,7 +14,7 @@ namespace AEON::Graphics
         static Shared<VulkanViewport> create();
         VulkanViewport();
         ~VulkanViewport();
-    private:
+    protected:
         Shared<vk::Instance>    m_instance;
         Shared<vk::Surface>     m_surface;
         Shared<vk::Device>      m_device;
