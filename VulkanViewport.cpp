@@ -1,11 +1,17 @@
 #include <VulkanViewport.h>
+#include <VulkanRenderer.h>
 
 namespace AEON::Graphics
-{   
-
-VulkanViewport::VulkanViewport( Renderer* renderer, vk::Surface* surface )
-: Inherit{ renderer }, m_surface{ surface }
 {
+
+Shared<VulkanViewport> VulkanViewport::create()
+{
+    return Shared<VulkanViewport>( new VulkanViewport() );
+}
+
+VulkanViewport::VulkanViewport()
+{
+    
 }
 
 VulkanViewport::~VulkanViewport()

@@ -11,7 +11,8 @@ namespace AEON::Graphics
     class AEON_DLL VulkanRenderer : public Inherit< Renderer, VulkanRenderer >
     {
     public:
-                        VulkanRenderer();
+                                VulkanRenderer();
+        Shared<vk::Instance>    instance() const { return m_instance; }
     protected:
         virtual         ~VulkanRenderer();
     private:

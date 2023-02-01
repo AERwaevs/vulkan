@@ -84,7 +84,7 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
         instance_extensions.empty() ? VK_NULL_HANDLE : instance_extensions.data()
     };
 
-    result = vkCreateInstance( &instanceInfo, nullptr, &m_instance );
+    result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &m_instance );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: vk%d", result );
 
 #ifdef AEON_DEBUG
@@ -131,7 +131,8 @@ AEON_API Instance::~Instance()
         DestroyDebugUtilsMessenger( m_instance, m_debug_messenger, VK_ALLOCATOR );
     }
 #endif
-    vkDestroyInstance( m_instance, nullptr );
+    m_physical_devices.clear();
+    if( m_instance ) vkDestroyInstance( m_instance, VK_ALLOCATOR );
 }
 
 }
