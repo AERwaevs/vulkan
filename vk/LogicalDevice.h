@@ -8,7 +8,7 @@
 namespace AEON::Graphics::vk
 {
 
-class AEON_DLL Device : public Inherit< Object, Device >
+class AEON_DLL Device : public Object
 {
 public:
                 Device( PhysicalDevice* physical_device, Surface* surface );

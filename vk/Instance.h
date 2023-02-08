@@ -9,7 +9,7 @@ namespace AEON::Graphics::vk
 {
     class PhysicalDevice;
 
-    class AEON_DLL Instance : public Inherit< Object, Instance >
+    class AEON_DLL Instance : public Object
     {
     public:
                     Instance( Vector<const char*> instance_extensions, Vector<const char*> layers );

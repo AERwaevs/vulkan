@@ -8,7 +8,7 @@
 
 namespace AEON::Graphics
 {
-    class AEON_DLL VulkanRenderer : public Inherit< Renderer, VulkanRenderer >
+    class AEON_DLL VulkanRenderer : public Renderer
     {
     public:
                                 VulkanRenderer();

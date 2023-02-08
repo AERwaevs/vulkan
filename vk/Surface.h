@@ -19,7 +19,7 @@
 namespace AEON::Graphics::vk
 {
 
-class AEON_DLL Surface : public Inherit< Object, Surface >
+class AEON_DLL Surface : public Object
 {
 public:
     Surface( Instance* instance, WINDOW_HANDLE window );

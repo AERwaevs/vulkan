@@ -8,7 +8,7 @@ namespace AEON::Graphics
 {
     
 AEON_API VulkanRenderer::VulkanRenderer()
-:   m_instance( vk::Instance::create
+:   m_instance( new vk::Instance
     (
         vk::GetRequiredExtensions(),
         vk::GetRequiredLayers ()

@@ -8,7 +8,7 @@
 
 namespace AEON::Graphics
 {
-    class VulkanViewport : public Inherit< Viewport, VulkanViewport >
+    class VulkanViewport : public Viewport
     {
     public:
         static Shared<VulkanViewport> create();
