@@ -1,6 +1,6 @@
-#include <Platform/Vulkan/vk/Instance.h>
-#include <Platform/Vulkan/vk/Surface.h>
-#include <Platform/Vulkan/vk/PhysicalDevice.h>
+#include <vk/Instance.h>
+#include <vk/Surface.h>
+#include <vk/PhysicalDevice.h>
 
 namespace AEON::Graphics::vk
 {

@@ -1,4 +1,4 @@
-#include <Vendor/glad/include/glad/vulkan.h>
+#include <glad/vulkan.h>
 
 #include <vk/Instance.h>
 #include <vk/PhysicalDevice.h>

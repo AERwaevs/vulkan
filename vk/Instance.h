@@ -1,6 +1,6 @@
 #pragma once
 
-#include <Vendor/glad/include/glad/vulkan.h>
+#include <glad/vulkan.h>
 #include <vk/Layers.h>
 #include <vk/Extensions.h>
 
