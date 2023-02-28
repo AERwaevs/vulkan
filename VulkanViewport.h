@@ -11,8 +11,7 @@ namespace AEON::Graphics
     class VulkanViewport : public Viewport
     {
     public:
-        static Shared<VulkanViewport> create();
-        VulkanViewport();
+        VulkanViewport( Window* window );
         ~VulkanViewport();
     private:
         Shared<vk::Instance>    m_instance;

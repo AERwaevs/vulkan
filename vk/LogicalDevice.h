@@ -11,7 +11,7 @@ namespace AEON::Graphics::vk
 class AEON_DLL Device : public Object
 {
 public:
-                Device( PhysicalDevice* physical_device, Surface* surface );
+                Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface );
     operator    VkDevice() const { return m_device; }
 
     

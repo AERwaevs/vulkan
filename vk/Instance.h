@@ -1,6 +1,8 @@
 #pragma once
 
 #include <Vendor/glad/include/glad/vulkan.h>
+#include <vk/Layers.h>
+#include <vk/Extensions.h>
 
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE
@@ -9,10 +11,11 @@ namespace AEON::Graphics::vk
 {
     class PhysicalDevice;
 
-    class AEON_DLL Instance : public Object
+    class AEON_DLL Instance : public Singleton< Instance >
     {
     public:
-                    Instance( Vector<const char*> instance_extensions, Vector<const char*> layers );
+                    Instance( Vector<const char*> instance_extensions = GetRequiredExtensions(),
+                              Vector<const char*> layers = GetRequiredLayers() );
         operator    VkInstance() const { return m_instance; }
 
         using PhysicalDevices = List<Shared<PhysicalDevice>>;

@@ -1,9 +1,18 @@
 #include <vk/Surface.h>
 
+#if defined( AEON_PLATFORM_WINDOWS )
+#   include <Platform/Windows/Win32Window.h>
+#   define  vkCreateSurfaceKHR vkCreateWin32SurfaceKHR
+#elif defined( AEON_PLATFORM_ANDROID )
+#   define  vkCreateSurfaceKHR vkCreateAndroidSurfaceKHR
+#elif defined( AEON_PLATFORM_LINUX )
+#   define  vkCreateSurfaceKHR vkCreateXcbSurfaceKHR
+#endif
+
 namespace AEON::Graphics::vk
 {
 
-Surface::Surface( Instance* instance, WINDOW_HANDLE window )
+Surface::Surface( Shared<Instance> instance, Window* window )
 : m_surface( VK_NULL_HANDLE ), m_instance( instance )
 {
 #ifdef AEON_PLATFORM_WINDOWS
@@ -13,7 +22,7 @@ Surface::Surface( Instance* instance, WINDOW_HANDLE window )
         VK_NULL_HANDLE, // pNext
         VkWin32SurfaceCreateFlagsKHR{ 0 },
         GetModuleHandle( nullptr ),
-        window
+        static_cast<Win32::Win32Window*>( window )->native()
     };
 #elif AEON_PLATFORM_ANDROID
     VkAndroidSurfaceCreateInfoKHR surfaceCreateInfo
@@ -21,7 +30,7 @@ Surface::Surface( Instance* instance, WINDOW_HANDLE window )
         VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR,
         VK_NULL_HANDLE, // pNext
         VkAndroidSurfaceCreateFlagsKHR{ 0 },
-        window
+        window->native()
     };
 #elif AEON_PLATFORM_LINUX
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo
@@ -30,7 +39,7 @@ Surface::Surface( Instance* instance, WINDOW_HANDLE window )
         VK_NULL_HANDLE, // pNext
         VkXcbSurfaceCreateFlagsKHR{ 0 },
         connection,
-        window
+        window->native()
     };
 #endif
     auto result = vkCreateSurfaceKHR

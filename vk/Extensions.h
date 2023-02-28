@@ -2,6 +2,7 @@
 
 #include <Base/Base.h>
 
+#include <Vendor/glad/include/vk_platform.h>
 #include <Vendor/glad/include/glad/vulkan.h>
 
 namespace AEON::Graphics::vk

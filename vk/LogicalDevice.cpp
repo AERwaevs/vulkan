@@ -6,7 +6,7 @@ namespace AEON::Graphics::vk
 {
 
 //? maybe remove requirement for a surface? this will allow for compute-only devices
-Device::Device( PhysicalDevice* physical_device, Surface* surface )
+Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface )
 : m_instance{ physical_device->instance() }, m_physical_device( physical_device )
 {
     VkResult result{ VK_SUCCESS };
@@ -21,7 +21,7 @@ Device::Device( PhysicalDevice* physical_device, Surface* surface )
     };
     const auto& present_family_index
     {
-        physical_device->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface )
+        physical_device->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface.get() )
     };
 
     //? maybe uncouple hard-coded queue infos?
