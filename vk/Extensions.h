@@ -7,7 +7,10 @@
 
 namespace AEON::Graphics::vk
 {
-    inline auto EnumerateInstanceExtensionProperties( const char* layer_name = nullptr )
+using Name  = const char*;
+using Names = std::vector<const char*>;
+
+    inline auto EnumerateInstanceExtensionProperties( Name layer_name = nullptr )
     {
         VkResult result( VK_SUCCESS );
         uint32_t vk_extension_count( 0 );
@@ -32,11 +35,11 @@ namespace AEON::Graphics::vk
         return true;
     }
 
-    inline Vector<const char*> GetRequiredExtensions()
+    inline auto GetRequiredInstanceExtensions()
     {
         VkResult result( VK_SUCCESS );
 
-        Vector<const char*> required_extensions( {
+        Names required_extensions( {
             VK_KHR_SURFACE_EXTENSION_NAME,
 // surfaces
 #ifdef  AEON_PLATFORM_WINDOWS

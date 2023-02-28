@@ -15,11 +15,11 @@ namespace AEON::Graphics::vk
     class Instance : public Singleton< Instance >
     {
     public:
-                    Instance( Vector<const char*> instance_extensions = GetRequiredExtensions(),
-                              Vector<const char*> layers = GetRequiredLayers() );
+                    Instance( Names instance_extensions = GetRequiredInstanceExtensions(),
+                              Names layers = GetRequiredLayers() );
         operator    VkInstance() const { return m_instance; }
 
-        using PhysicalDevices = List<Shared<PhysicalDevice>>;
+        using PhysicalDevices = std::vector<ref_ptr<PhysicalDevice>>;
         PhysicalDevices& physical_devices() { return m_physical_devices; }
 
         template< typename F >

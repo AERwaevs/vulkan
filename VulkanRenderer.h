@@ -13,7 +13,7 @@ namespace AEON::Graphics
     class AEON_DLL VulkanRenderer : public Renderer
     {
     public:
-        VulkanRenderer( Vector<const char*> extensions = vk::GetRequiredExtensions(),
+        VulkanRenderer( Vector<const char*> extensions = vk::GetRequiredInstanceExtensions(),
                         Vector<const char*> layers = vk::GetRequiredLayers() );
         Shared<vk::Instance> vkinstance() const { return m_instance; }
     protected:

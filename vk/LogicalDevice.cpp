@@ -14,11 +14,7 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     //? might require actual priorities later as optimization step?
     float priority{ 1.0f };
     const auto& layers{ GetRequiredLayers() };
-    const auto& extensions{ GetRequiredExtensions() };
-    const auto& graphics_family_index
-    {
-        physical_device->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT )
-    };
+    const Names& extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
     const auto& present_family_index
     {
         physical_device->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface.get() )
@@ -27,14 +23,6 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     //? maybe uncouple hard-coded queue infos?
     Vector<VkDeviceQueueCreateInfo> queueInfos
     {
-        {
-            VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-            VK_NULL_HANDLE, // pNext
-            VkDeviceQueueCreateFlags{ 0 },
-            graphics_family_index,
-            1,              // queue count
-            &priority
-        },
         {
             VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
             VK_NULL_HANDLE, // pNext
@@ -63,7 +51,6 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     result = vkCreateDevice( *m_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &m_device );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create logical device: vk%d", result );
 
-    vkGetDeviceQueue( m_device, graphics_family_index, 0, &m_queue_graphics );
     vkGetDeviceQueue( m_device, present_family_index,  0, &m_queue_present  );
 }
 

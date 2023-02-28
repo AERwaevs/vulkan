@@ -8,8 +8,9 @@
 
 namespace AEON::Graphics::vk
 {
+using Names = std::vector<const char*>;
 
-inline Vector<VkLayerProperties> EnumerateInstanceLayerProperties()
+inline auto EnumerateInstanceLayerProperties()
 {
     VkResult result{ VK_SUCCESS };
     uint32_t vk_layer_count{ 0 };
@@ -25,7 +26,7 @@ inline Vector<VkLayerProperties> EnumerateInstanceLayerProperties()
     return vk_layers;
 }
 
-inline Vector<const char*> ValidateLayerNames( const Vector<const char*>& names )
+inline auto ValidateLayerNames( Names& names )
 {
     if( names.empty() ) return names;
 
@@ -34,7 +35,7 @@ inline Vector<const char*> ValidateLayerNames( const Vector<const char*>& names 
     std::set<std::string> layer_names;
     for( const auto& layer : available_layers ) { layer_names.insert( layer.layerName ); }
 
-    Vector<const char*> validated_names;
+    Names validated_names;
     validated_names.reserve( names.size() );
     for( const auto& requested : names )
     {
@@ -45,9 +46,9 @@ inline Vector<const char*> ValidateLayerNames( const Vector<const char*>& names 
     return validated_names;
 }
 
-inline Vector<const char*> GetRequiredLayers()
+inline auto GetRequiredLayers()
 {
-    Vector<const char*> layers( {
+    Names layers( {
 #ifdef AEON_DEBUG
         "VK_LAYER_KHRONOS_validation"
 #endif
