@@ -1,10 +1,10 @@
 #pragma once
 
-#include <Base/Base.h>
+#include "Base.h"
 
-#include <Base/Log.h>
+#include <Core/Log.h>
 
-#include <Vendor/glad/include/glad/vulkan.h>
+#include <glad/vulkan.h>
 
 namespace AEON::Graphics::vk
 {

@@ -1,14 +1,13 @@
 #pragma once
 
-#include <Base/Base.h>
+#include <Core/Log.h>
 
-#include <Vendor/glad/include/vk_platform.h>
-#include <Vendor/glad/include/glad/vulkan.h>
+#include <vk_platform.h>
+#include <glad/vulkan.h>
 
 namespace AEON::Graphics::vk
 {
-    inline Vector<VkExtensionProperties> EnumerateInstanceExtensionProperties( 
-        const char* layer_name = nullptr )
+    inline auto EnumerateInstanceExtensionProperties( const char* layer_name = nullptr )
     {
         VkResult result( VK_SUCCESS );
         uint32_t vk_extension_count( 0 );
@@ -28,7 +27,7 @@ namespace AEON::Graphics::vk
         return vk_extensions;
     }
 
-    inline bool ExtensionSupported( const char* extension_name )
+    inline auto ExtensionSupported( const char* extension_name )
     {
         return true;
     }

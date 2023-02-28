@@ -1,14 +1,14 @@
 #pragma once
 
-#include <Vendor/glad/include/glad/vulkan.h>
+#include <glad/vulkan.h>
 
-#include <vk/Instance.h>
-#include <vk/PhysicalDevice.h>
+#include "Instance.h"
+#include "PhysicalDevice.h"
 
 namespace AEON::Graphics::vk
 {
 
-class AEON_DLL Device : public Object
+class Device : public Object< Device >
 {
 public:
                 Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface );

@@ -1,14 +1,14 @@
 #pragma once
 
 #include <Core/Window.h>
-#include <Vendor/glad/include/glad/vulkan.h>
+#include <glad/vulkan.h>
 
-#include <vk/Instance.h>
+#include "Instance.h"
 
 namespace AEON::Graphics::vk
 {
 
-class AEON_DLL Surface : public Object
+class Surface : public Object< Surface >
 {
 public:
     Surface( Shared<Instance> instance, Window* window );
