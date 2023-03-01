@@ -1,22 +1,31 @@
 #pragma once
 
-#include <glad/vulkan.h>
+#include <Base/Base.h>
+#include <Core/Log.h>
 
-#include "Layers.h"
-#include "Extensions.h"
+#include <glad/vulkan.h>
 
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE
 
 namespace AEON::Graphics::vk
 {
+    using Name                          = const char*;
+    using Names                         = std::vector<Name>;
+    using InstanceLayerProperties       = std::vector<VkLayerProperties>;
+    using InstanceExtensionProperties   = std::vector<VkExtensionProperties>;
+
+    InstanceLayerProperties     EnumerateInstanceLayerProperties();
+    InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_name );
+    Names                       ValidateInstanceLayerNames( Names& names );
+
     class PhysicalDevice;
 
     class Instance : public Singleton< Instance >
     {
     public:
-                    Instance( Names instance_extensions = GetRequiredInstanceExtensions(),
-                              Names layers = GetRequiredLayers() );
+        Instance( Names extensions = RequiredExtensions(), Names layers = RequiredLayers() );
+
         operator    VkInstance() const { return m_instance; }
 
         using PhysicalDevices = std::vector<ref_ptr<PhysicalDevice>>;
@@ -41,13 +50,41 @@ namespace AEON::Graphics::vk
 
     private:
 
-        VkInstance                      m_instance;
-        PhysicalDevices                 m_physical_devices;
+        VkInstance      m_instance;
+        PhysicalDevices m_physical_devices;
+        
+    private:
 
 #ifdef AEON_DEBUG
         VkDebugUtilsMessengerEXT            m_debug_messenger;
         PFN_vkCreateDebugUtilsMessengerEXT  CreateDebugUtilsMessenger   = VK_NULL_HANDLE;
         PFN_vkDestroyDebugUtilsMessengerEXT DestroyDebugUtilsMessenger  = VK_NULL_HANDLE;
 #endif
+    public:
+        static const Names RequiredLayers() { return
+        {
+#ifdef  AEON_DEBUG
+            "VK_LAYER_KHRONOS_validation"
+#endif 
+        }; }
+    protected:
+        static const Names RequiredExtensions() { return
+        {
+            VK_KHR_SURFACE_EXTENSION_NAME,
+#ifdef  AEON_PLATFORM_WINDOWS
+            VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
+#elif   AEON_PLATFORM_IOS
+            VK_EXT_METAL_SURFACE_EXTENSION_NAME,
+#elif   AEON_PLATFORM_MACOS
+            "VK_MVK_macos_surface",
+#elif   AEON_PLATFORM_ANDROID
+            "VK_KHR_android_surface",
+#elif   AEON_PLATFORM_LINUX
+            VK_KHR_XCB_SURFACE_EXTENSION_NAME,
+#endif
+#ifdef  AEON_DEBUG
+            VK_EXT_DEBUG_UTILS_EXTENSION_NAME
+#endif
+        }; }
     };
 }

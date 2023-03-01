@@ -22,7 +22,7 @@ PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
     instance->GetProcAddr( GetPhysicalDeviceProperties2, "vkGetPhysicalDeviceFeatures2" );
 }
 
-auto PhysicalDevice::EnumerateExtensionProperties( Name layer_name = nullptr )
+auto PhysicalDevice::EnumerateExtensionProperties( Name layer_name ) const
 {
     VkResult result{ VK_SUCCESS };
     uint32_t extension_count{ 0 };
@@ -46,10 +46,27 @@ auto PhysicalDevice::EnumerateExtensionProperties( Name layer_name = nullptr )
 
 bool PhysicalDevice::Supported() const
 {
+    auto extensions_supported = [&]()
+    {
+        std::set<std::string> required
+        {
+            RequiredExtensions().begin(),
+            RequiredExtensions().end()
+        };
+
+        for( const auto& extension : EnumerateExtensionProperties() )
+        {
+            required.erase( extension.extensionName );
+        }
+
+        return required.empty();
+    };
+
     bool   supported( false );
            supported |= m_properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
            supported |= m_properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
-           supported |= GetQueueFamily( VK_QUEUE_GRAPHICS_BIT );
+           supported &= GetQueueFamily( VK_QUEUE_GRAPHICS_BIT );
+           supported &= extensions_supported();
     return supported;
 }
 

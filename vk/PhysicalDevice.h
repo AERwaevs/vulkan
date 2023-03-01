@@ -18,7 +18,7 @@ public:
     bool        Supported() const;
     uint32_t    Capability() const;
 
-    auto        EnumerateExtensionProperties( Name layer_name = nullptr );
+    auto        EnumerateExtensionProperties( Name layer_name = nullptr ) const;
     uint32_t    GetQueueFamily( VkQueueFlags flags ) const;
     uint32_t    GetQueueFamily( VkQueueFlags flags, Surface* surface ) const;
 
@@ -42,6 +42,13 @@ private:
     PFN_vkGetPhysicalDeviceProperties2 GetPhysicalDeviceProperties2 = nullptr;
 
     Observer<Instance>          m_instance;
+
+public:
+    static const Names RequiredExtensions() { return
+    {
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME
+    }; }
+
 };
 
 }

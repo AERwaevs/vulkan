@@ -1,6 +1,5 @@
-#include <vk/LogicalDevice.h>
-#include <vk/Layers.h>
-#include <vk/Extensions.h>
+#include "LogicalDevice.h"
+#include "Instance.h"
 
 namespace AEON::Graphics::vk
 {
@@ -13,8 +12,8 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
 
     //? might require actual priorities later as optimization step?
     float priority{ 1.0f };
-    const auto& layers{ GetRequiredLayers() };
-    const Names& extensions{ VK_KHR_SWAPCHAIN_EXTENSION_NAME };
+    const auto& layers{ Instance::RequiredLayers() };
+    const auto& extensions{ RequiredExtensions() };
     const auto& present_family_index
     {
         physical_device->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface.get() )

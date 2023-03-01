@@ -1,6 +1,8 @@
-#include <vk/Instance.h>
-#include <vk/Surface.h>
-#include <vk/PhysicalDevice.h>
+#include <Base/Base.h>
+
+#include "Instance.h"
+#include "Surface.h"
+#include "PhysicalDevice.h"
 
 namespace AEON::Graphics::vk
 {
@@ -36,8 +38,7 @@ VKAPI_ATTR VkBool32 debug_callback
 };
 #endif
 
-AEON_API Instance::Instance( Vector<const char*> instance_extensions, 
-                             Vector<const char*> layers )
+AEON_API Instance::Instance( Names extensions, Names layers )
 {
     VkResult result{ VK_SUCCESS };
 
@@ -80,8 +81,8 @@ AEON_API Instance::Instance( Vector<const char*> instance_extensions,
         &appInfo,
         static_cast<uint32_t>( layers.size() ),
         layers.empty() ? VK_NULL_HANDLE : layers.data(),
-        static_cast<uint32_t>( instance_extensions.size() ),
-        instance_extensions.empty() ? VK_NULL_HANDLE : instance_extensions.data()
+        static_cast<uint32_t>( extensions.size() ),
+        extensions.empty() ? VK_NULL_HANDLE : extensions.data()
     };
 
     result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &m_instance );
@@ -133,6 +134,53 @@ AEON_API Instance::~Instance()
 #endif
     m_physical_devices.clear();
     if( m_instance ) vkDestroyInstance( m_instance, VK_ALLOCATOR );
+}
+
+InstanceLayerProperties EnumerateInstanceLayerProperties()
+{
+    VkResult result{ VK_SUCCESS };
+    uint32_t vk_layer_count{ 0 };
+    result = vkEnumerateInstanceLayerProperties( &vk_layer_count, nullptr );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer count: vk%d", result );
+
+    Vector<VkLayerProperties> vk_layers(vk_layer_count);
+    result = vkEnumerateInstanceLayerProperties( &vk_layer_count, vk_layers.data() );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer properties: vk%d", result );
+
+    return vk_layers;
+}
+
+InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_name = nullptr )
+{
+    VkResult result{ VK_SUCCESS };
+    uint32_t count{ 0 };
+    result = vkEnumerateInstanceExtensionProperties( layer_name, &count, nullptr );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension count: vk%d", result );
+
+    Vector<VkExtensionProperties> vk_extensions(count);
+    result = vkEnumerateInstanceExtensionProperties( layer_name, &count, vk_extensions.data() );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension properties: vk%d", result );
+
+    return vk_extensions;
+}
+
+Names ValidateInstanceLayerNames( Names& names )
+{
+    if( names.empty() ) return names;
+
+    auto available_layers = EnumerateInstanceLayerProperties();
+
+    std::set<std::string> layer_names;
+    for( const auto& layer : available_layers ) { layer_names.insert( layer.layerName ); }
+
+    Names validated_names{ names.size() };
+    for( const auto& requested : names )
+    {
+        if( layer_names.count( requested ) != 0 ) validated_names.push_back( requested );
+        else AE_WARN( "Invalid layer requested : %s", requested );
+    }
+    
+    return validated_names;
 }
 
 }

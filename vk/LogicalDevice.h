@@ -40,6 +40,19 @@ private:
 
     VkQueue                 m_queue_graphics;
     VkQueue                 m_queue_present;
+
+public:
+    static const Names RequiredLayers() { return
+    {
+#ifdef  AEON_DEBUG
+        "VK_LAYER_KHRONOS_validation"
+#endif 
+    }; }
+    
+    static const Names RequiredExtensions() { return
+    {
+        VK_KHR_SWAPCHAIN_EXTENSION_NAME
+    }; }
 };
 
 }
