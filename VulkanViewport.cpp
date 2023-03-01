@@ -7,9 +7,10 @@ namespace AEON::Graphics
 {
 
 VulkanViewport::VulkanViewport( Window* window )
-: Viewport{ window }, m_instance{ vk::Instance::get_or_create() },
-  m_surface{ new vk::Surface( m_instance, window ) },
-  m_device{ new vk::Device( m_instance->physical_devices().front(), m_surface ) }
+: Viewport{ window }, 
+  m_instance{ vk::Instance::get_or_create() },
+  m_surface{ vk::Surface::create( m_instance, window ) },
+  m_device{ vk::Device::create( m_instance->physical_devices().front(), m_surface ) }
 {
     
 }
