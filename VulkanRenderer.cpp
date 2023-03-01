@@ -11,7 +11,7 @@ AEON_API VulkanRenderer::VulkanRenderer( Vector<const char*> extensions, Vector<
 
 AEON_API VulkanRenderer::~VulkanRenderer()
 {
-    gladLoaderUnloadVulkan();
+    
 }
 
 }
