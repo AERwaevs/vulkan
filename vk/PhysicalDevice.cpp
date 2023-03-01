@@ -22,6 +22,28 @@ PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
     instance->GetProcAddr( GetPhysicalDeviceProperties2, "vkGetPhysicalDeviceFeatures2" );
 }
 
+auto PhysicalDevice::EnumerateExtensionProperties( Name layer_name = nullptr )
+{
+    VkResult result{ VK_SUCCESS };
+    uint32_t extension_count{ 0 };
+    result = vkEnumerateDeviceExtensionProperties( m_device,
+                                                   layer_name, 
+                                                   &extension_count, 
+                                                   nullptr );
+    AE_ERROR_IF( result != VK_SUCCESS, 
+                    "Failed to enumerate device extension count: vk%d", result );
+
+    Vector<VkExtensionProperties> vk_extensions(extension_count);
+    result = vkEnumerateDeviceExtensionProperties( m_device,
+                                                   layer_name, 
+                                                   &extension_count, 
+                                                   vk_extensions.data() );
+    AE_ERROR_IF( result != VK_SUCCESS, 
+                    "Failed to enumerate device extension properties: vk%d", result );
+
+    return vk_extensions;
+}
+
 bool PhysicalDevice::Supported() const
 {
     bool   supported( false );

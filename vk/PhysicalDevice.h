@@ -18,6 +18,7 @@ public:
     bool        Supported() const;
     uint32_t    Capability() const;
 
+    auto        EnumerateExtensionProperties( Name layer_name = nullptr );
     uint32_t    GetQueueFamily( VkQueueFlags flags ) const;
     uint32_t    GetQueueFamily( VkQueueFlags flags, Surface* surface ) const;
 
