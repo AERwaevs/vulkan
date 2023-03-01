@@ -16,4 +16,4 @@ set_target_properties(      aeon-platform-vulkan PROPERTIES    POSITION_INDEPEND
 target_compile_definitions( aeon-platform-vulkan PUBLIC AEON_DEBUG )
 target_precompile_headers(  aeon-platform-vulkan   REUSE_FROM  aeon-base                     )
 target_link_libraries( aeon-platform-vulkan PUBLIC aeon-base glad_gl46_vk12 )
-target_include_directories( aeon-platform-vulkan PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} )
+target_include_directories( aeon-platform-vulkan PRIVATE ${AEON_DIR} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR} )
