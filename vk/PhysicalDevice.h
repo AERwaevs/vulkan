@@ -16,7 +16,6 @@ public:
 
 
     bool        Supported() const;
-    uint32_t    Capability() const;
 
     auto        EnumerateExtensionProperties( Name layer_name = nullptr ) const;
     uint32_t    GetQueueFamily( VkQueueFlags flags ) const;
