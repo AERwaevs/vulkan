@@ -10,7 +10,8 @@ VulkanViewport::VulkanViewport( Window* window )
 : Viewport{ window }, 
   m_instance{ vk::Instance::get_or_create() },
   m_surface{ vk::Surface::create( m_instance, window ) },
-  m_device{ vk::Device::create( m_instance->physical_devices().front(), m_surface ) }
+  m_physical_device{ m_instance->physical_devices().front() },  //TODO remove hardcoded physical device selection
+  m_device{ vk::Device::create( m_physical_device, m_surface ) }
 {
     
 }
