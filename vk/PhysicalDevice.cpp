@@ -1,7 +1,8 @@
 #include <glad/vulkan.h>
 
-#include <vk/Instance.h>
-#include <vk/PhysicalDevice.h>
+#include "Instance.h"
+#include "PhysicalDevice.h"
+#include "Swapchain.h"
 
 namespace AEON::Graphics::vk
 {
@@ -50,11 +51,11 @@ bool PhysicalDevice::Supported() const
     {
         std::set<std::string> required
         {
-            RequiredExtensions().begin(),
-            RequiredExtensions().end()
+            PhysicalDevice::RequiredExtensions().begin(),
+            PhysicalDevice::RequiredExtensions().end()
         };
 
-        for( const auto& extension : EnumerateExtensionProperties() )
+        for( const auto& extension : PhysicalDevice::EnumerateExtensionProperties() )
         {
             required.erase( extension.extensionName );
         }
@@ -68,19 +69,6 @@ bool PhysicalDevice::Supported() const
            supported &= GetQueueFamily( VK_QUEUE_GRAPHICS_BIT );
            supported &= extensions_supported();
     return supported;
-}
-
-uint32_t PhysicalDevice::Capability() const
-{
-    if( !Supported() ) return 0;
-    int     score{ 0 };
-            score += m_properties.limits.maxImageDimension2D;
-            score += m_features.geometryShader;
-            score += m_features.shaderFloat64;
-            score += m_features.largePoints;
-            score += m_features.multiDrawIndirect;
-            score += m_features.variableMultisampleRate;
-    return  score; 
 }
 
 uint32_t PhysicalDevice::GetQueueFamily( VkQueueFlags flags ) const
