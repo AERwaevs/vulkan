@@ -13,7 +13,7 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     //? might require actual priorities later as optimization step?
     float priority{ 1.0f };
     const auto& layers{ Instance::RequiredLayers() };
-    const auto& extensions{ RequiredExtensions() };
+    const auto& extensions{ Device::RequiredExtensions() };
     const auto& present_family_index
     {
         physical_device->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface.get() )
