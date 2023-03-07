@@ -3,6 +3,7 @@ set( VULKAN_SRC
     vk/PhysicalDevice.cpp
     vk/LogicalDevice.cpp
     vk/Surface.cpp
+    vk/Swapchain.cpp
     VulkanViewport.cpp
     VulkanRenderer.cpp
 )
