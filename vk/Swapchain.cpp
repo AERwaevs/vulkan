@@ -3,9 +3,61 @@
 namespace AEON::Graphics::vk
 {
 
-SwapChainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfaceKHR surface )
+Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* surface, uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old )
+: m_device{ device }, m_surface{ surface }
 {
-    SwapChainSupportDetails details;
+    const auto& details{ QuerySwapchainSupport( *physicalDevice, *surface ) };
+    const auto& extent{ SelectSwapExtent( details, width, height ) };
+    const auto& surfaceFormat{ SelectSwapSurfaceFormat( details, preferences.surfaceFormat ) };
+    const auto& presentMode{ SelectSwapPresentMode( details, preferences.presentMode ) };
+    const auto& minImageCount{ std::max( preferences.imageCount, details.capabilities.minImageCount + 1 ) };
+    const auto& imageCount
+    {
+        details.capabilities.maxImageCount > 0
+            ? std::min( minImageCount, details.capabilities.maxImageCount )
+            : std::max( preferences.imageCount, minImageCount )
+    };
+    auto [ graphicsFamily, presentFamily ]{ physicalDevice->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface ) };
+    uint32_t queueFamilyIndices[]{ graphicsFamily, presentFamily };
+
+    preferences.imageCount    = imageCount;
+    preferences.presentMode   = presentMode;
+    preferences.surfaceFormat = surfaceFormat;
+
+    VkSwapchainCreateInfoKHR createInfo
+    {
+        VK_STRUCTURE_TYPE_SWAPCHAIN_CREATE_INFO_KHR,
+        VK_NULL_HANDLE, //pNext
+        VkSwapchainCreateFlagsKHR{ 0 },
+        *surface,
+        imageCount,
+        surfaceFormat.format,
+        surfaceFormat.colorSpace,
+        extent,
+        1, //imageArrayLayers //* this is only > 1 if swapchain is stereoscopic
+        preferences.imageUsage,
+        graphicsFamily != presentFamily ? VK_SHARING_MODE_CONCURRENT : VK_SHARING_MODE_EXCLUSIVE,
+        graphicsFamily != presentFamily ? 2u : 0u, //pQueueFamilyIndices
+        graphicsFamily != presentFamily ? queueFamilyIndices : VK_NULL_HANDLE,
+        details.capabilities.currentTransform,
+        VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
+        presentMode,
+        VK_TRUE,    //clipped
+        old ? *old : VK_NULL_HANDLE
+    };
+
+    auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &m_swapchain );
+    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create swapchain: vk%d", result );
+}
+
+Swapchain::~Swapchain()
+{
+    vkDestroySwapchainKHR( *m_device, m_swapchain, VK_ALLOCATOR );
+}
+
+SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfaceKHR surface )
+{
+    SwapchainSupportDetails details;
 
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR( device, surface, &details.capabilities );
 
@@ -30,10 +82,10 @@ SwapChainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfac
     return details;
 }
 
-VkSurfaceFormatKHR SelectSwapSurfaceFormat( const SwapChainSupportDetails& details, VkSurfaceFormatKHR preferred )
+VkSurfaceFormatKHR SelectSwapSurfaceFormat( const SwapchainSupportDetails& details, VkSurfaceFormatKHR preferred )
 {
-    const auto  default_format      = VK_FORMAT_B8G8R8A8_UNORM;
-    const auto  default_colorspace  = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+    const auto  default_format      = SwapchainPreferences::default_format;
+    const auto  default_colorspace  = SwapchainPreferences::default_colorspace;
 
     if( details.formats.empty() || ( details.formats.size() == 1 && details.formats[0].format == VK_FORMAT_UNDEFINED ) )
     {
@@ -55,9 +107,9 @@ VkSurfaceFormatKHR SelectSwapSurfaceFormat( const SwapChainSupportDetails& detai
     return details.formats[0];
 }
 
-VkPresentModeKHR SelectSwapPresentMode( const SwapChainSupportDetails& details, VkPresentModeKHR preferred )
+VkPresentModeKHR SelectSwapPresentMode( const SwapchainSupportDetails& details, VkPresentModeKHR preferred = VK_PRESENT_MODE_MAILBOX_KHR )
 {
-    const auto default_present_mode = VK_PRESENT_MODE_MAILBOX_KHR; 
+    const auto default_present_mode = SwapchainPreferences::default_present_mode; 
 
     for( auto available : details.present_modes ) { if( available == preferred ) return available; }
     AE_WARN( "Preferred present mode unavailable, trying default" );
@@ -66,7 +118,7 @@ VkPresentModeKHR SelectSwapPresentMode( const SwapChainSupportDetails& details, 
     return VK_PRESENT_MODE_FIFO_KHR;
 }
 
-VkExtent2D SelectSwapExtent( const SwapChainSupportDetails& details, uint32_t width, uint32_t height )
+VkExtent2D SelectSwapExtent( const SwapchainSupportDetails& details, uint32_t width, uint32_t height )
 {
     const VkSurfaceCapabilitiesKHR& capabilities = details.capabilities;
 
