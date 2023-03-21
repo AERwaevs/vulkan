@@ -40,8 +40,6 @@ VKAPI_ATTR VkBool32 debug_callback
 
 AEON_API Instance::Instance( Names extensions, Names layers )
 {
-    VkResult result{ VK_SUCCESS };
-
     VkApplicationInfo appInfo
     { 
         VK_STRUCTURE_TYPE_APPLICATION_INFO,
@@ -85,7 +83,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
         extensions.empty() ? VK_NULL_HANDLE : extensions.data()
     };
 
-    result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &m_instance );
+    auto result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &m_instance );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: vk%d", result );
 
 #ifdef AEON_DEBUG

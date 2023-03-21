@@ -8,8 +8,6 @@ namespace AEON::Graphics::vk
 Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface )
 : m_instance{ physical_device->instance() }, m_physical_device( physical_device )
 {
-    VkResult result{ VK_SUCCESS };
-
     //? might require actual priorities later as optimization step?
     float priority{ 1.0f };
     const auto& layers{ Instance::RequiredLayers() };
@@ -47,7 +45,7 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     };
 
     //* create logical device
-    result = vkCreateDevice( *m_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &m_device );
+    auto result = vkCreateDevice( *m_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &m_device );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create logical device: vk%d", result );
 
     vkGetDeviceQueue( m_device, present_family_index,  0, &m_queue_present  );
@@ -58,4 +56,4 @@ Device::~Device()
     vkDestroyDevice( m_device, VK_ALLOCATOR );
 }
 
-}
+} // namespace AEON::Graphics::vk
