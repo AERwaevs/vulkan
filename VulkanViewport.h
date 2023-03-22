@@ -4,6 +4,7 @@
 
 #include <Graphics/Viewport.h>
 
+#include "VulkanRenderer.h"
 #include "vk/Instance.h"
 #include "vk/Surface.h"
 #include "vk/LogicalDevice.h"
@@ -21,10 +22,10 @@ namespace AEON::Graphics
         Shared<vk::Surface>         m_surface;
         Shared<vk::PhysicalDevice>  m_physical_device;
         Shared<vk::Device>          m_device;
-        //Shared<vk::Swapchain>
-
-        VkSurfaceFormatKHR  m_image_format;
-        VkExtent2D          m_extent;
+        Shared<vk::Swapchain>       m_swapchain;
+        
+        vk::SwapchainPreferences    m_swapchain_prefs;
+        VkExtent2D                  m_extent;
 
     };
 } // namespace AEON::Graphics
