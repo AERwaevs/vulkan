@@ -1,9 +1,10 @@
 #pragma once
 
-#include <Core/Window.h>
 #include <glad/vulkan.h>
 
 #include "Instance.h"
+
+namespace AEON::Graphics{ class Window; }
 
 namespace AEON::Graphics::vk
 {

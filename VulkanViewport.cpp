@@ -1,8 +1,6 @@
 #include <VulkanViewport.h>
 #include <VulkanRenderer.h>
 
-#include <Core/Window.h>
-
 namespace AEON::Graphics
 {
 
