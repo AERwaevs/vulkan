@@ -1,7 +1,6 @@
 #pragma once
 
 #include <Base/Base.h>
-#include <Core/Log.h>
 
 #include <glad/vulkan.h>
 

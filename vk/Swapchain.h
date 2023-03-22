@@ -3,8 +3,6 @@
 #include <Base/Base.h>
 #include <glad/vulkan.h>
 
-#include <Core/Log.h>
-
 #include "LogicalDevice.h"
 #include "Surface.h"
 
