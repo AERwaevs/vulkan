@@ -12,9 +12,9 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     float priority{ 1.0f };
     const auto& layers{ Instance::RequiredLayers() };
     const auto& extensions{ Device::RequiredExtensions() };
-    const auto& present_family_index
+    auto [ present_family_index, graphics_family_index ]
     {
-        physical_device->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface.get() )
+        physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() )
     };
 
     //? maybe uncouple hard-coded queue infos?
@@ -25,6 +25,14 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
             VK_NULL_HANDLE, // pNext
             VkDeviceQueueCreateFlags{ 0 },
             present_family_index,
+            1,              // queue count
+            &priority
+        },
+        {
+            VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
+            VK_NULL_HANDLE, // pNext
+            VkDeviceQueueCreateFlags{ 0 },
+            graphics_family_index,
             1,              // queue count
             &priority
         }
@@ -48,7 +56,8 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     auto result = vkCreateDevice( *m_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &m_device );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create logical device: vk%d", result );
 
-    vkGetDeviceQueue( m_device, present_family_index,  0, &m_queue_present  );
+    vkGetDeviceQueue( m_device, present_family_index, 0, &m_queue_present  );
+    vkGetDeviceQueue( m_device, graphics_family_index, 0, &m_queue_graphics  );
 }
 
 Device::~Device()

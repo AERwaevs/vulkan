@@ -17,9 +17,9 @@ public:
 
     bool        Supported() const;
 
-    auto        EnumerateExtensionProperties( Name layer_name = nullptr ) const;
-    uint32_t    GetQueueFamily( VkQueueFlags flags ) const;
-    uint32_t    GetQueueFamily( VkQueueFlags flags, Surface* surface ) const;
+    auto                            EnumerateExtensionProperties( Name layer_name = nullptr ) const;
+    uint32_t                        GetQueueFamily( VkQueueFlags flags ) const;
+    std::pair<uint32_t, uint32_t>   GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const;
 
           Observer<Instance>            instance()   const { return m_instance; }
     const VkPhysicalDeviceFeatures&     features()   const { return m_features; }

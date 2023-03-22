@@ -17,7 +17,7 @@ Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* s
             ? std::min( minImageCount, details.capabilities.maxImageCount )
             : std::max( preferences.imageCount, minImageCount )
     };
-    auto [ graphicsFamily, presentFamily ]{ physicalDevice->GetQueueFamily( VK_QUEUE_GRAPHICS_BIT, surface ) };
+    auto [ graphicsFamily, presentFamily ]{ physicalDevice->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface ) };
     uint32_t queueFamilyIndices[]{ graphicsFamily, presentFamily };
 
     preferences.imageCount    = imageCount;

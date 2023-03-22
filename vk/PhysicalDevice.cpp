@@ -82,21 +82,24 @@ uint32_t PhysicalDevice::GetQueueFamily( VkQueueFlags flags ) const
     return family; 
 }
 
-uint32_t PhysicalDevice::GetQueueFamily( VkQueueFlags flags, Surface* surface ) const
+std::pair<uint32_t, uint32_t> PhysicalDevice::GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const
 {
-    uint32_t family{ 0xFFFFFFFF };
+    uint32_t queueFamily{   0xFFFFFFFF };
+    uint32_t presentFamily{ 0xFFFFFFFF };
+
     for( uint32_t i = 0; i < m_queue_families.size(); i++ )
     {
         VkBool32 present_supported{ false };
         vkGetPhysicalDeviceSurfaceSupportKHR( m_device, i, *surface, &present_supported );
 
-        if( present_supported )
-        {
-            if( m_queue_families[i].queueFlags == flags ) return i;
-            if( m_queue_families[i].queueFlags && flags ) family = i;
-        }
+        bool matched{ ( m_queue_families[i].queueFlags & flags ) == flags };
+
+        if( matched && present_supported ) return { i, i };
+        if( matched )           queueFamily = i;
+        if( present_supported ) presentFamily = i;
     }
-    return family; 
+
+    return { queueFamily, presentFamily }; 
 }
 
 }
