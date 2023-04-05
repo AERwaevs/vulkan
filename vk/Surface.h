@@ -9,17 +9,17 @@ namespace AEON::Graphics{ class Window; }
 namespace AEON::Graphics::vk
 {
 
-class Surface : public Object< Surface >
+class Surface : public ICreatable< Surface >
 {
 public:
     Surface( Shared<Instance> instance, Window* window );
-    operator VkSurfaceKHR() const { return m_surface; }
+    operator VkSurfaceKHR() const { return _surface; }
 
 protected:
     ~Surface();
 private:
-    VkSurfaceKHR        m_surface;
-    Shared<Instance>    m_instance;
+    VkSurfaceKHR        _surface;
+    Shared<Instance>    _instance;
 };
 
 }

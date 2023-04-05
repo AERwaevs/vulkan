@@ -6,12 +6,12 @@ namespace AEON::Graphics
 
 VulkanViewport::VulkanViewport( Window* window )
 : Viewport{ window },
-  m_instance{ vk::Instance::instance() },
-  m_surface{ vk::Surface::create( m_instance, window ) },
-  m_physical_device{ m_instance->physical_devices().front() },  //TODO remove hardcoded physical device selection
-  m_device{ vk::Device::create( m_physical_device, m_surface ) },
-  m_swapchain_prefs{}
-  //m_swapchain{ vk::Swapchain::create( m_physical_device.get(), m_device.get(), m_surface.get(), window->width(), window->height(), m_swapchain_prefs ) }
+  _instance{ vk::Instance::instance() },
+  _surface{ vk::Surface::create( _instance, window ) },
+  _physical_device{ _instance->physical_devices().front() },  //TODO remove hardcoded physical device selection
+  _device{ vk::Device::create( _physical_device, _surface ) },
+  _swapchain_prefs{}
+  //_swapchain{ vk::Swapchain::create( _physical_device.get(), _device.get(), _surface.get(), window->width(), window->height(), _swapchain_prefs ) }
 {
     
 }

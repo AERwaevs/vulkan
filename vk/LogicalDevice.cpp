@@ -6,7 +6,7 @@ namespace AEON::Graphics::vk
 
 //? maybe remove requirement for a surface? this will allow for compute-only devices
 Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface )
-: m_instance{ physical_device->instance() }, m_physical_device( physical_device )
+: _instance{ physical_device->instance() }, _physical_device( physical_device )
 {
     //? might require actual priorities later as optimization step?
     float priority{ 1.0f };
@@ -53,16 +53,16 @@ Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface 
     };
 
     //* create logical device
-    auto result = vkCreateDevice( *m_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &m_device );
+    auto result = vkCreateDevice( *_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &_device );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create logical device: vk%d", result );
 
-    vkGetDeviceQueue( m_device, present_family_index, 0, &m_queue_present  );
-    vkGetDeviceQueue( m_device, graphics_family_index, 0, &m_queue_graphics  );
+    vkGetDeviceQueue( _device, present_family_index, 0, &_queue_present  );
+    vkGetDeviceQueue( _device, graphics_family_index, 0, &_queue_graphics  );
 }
 
 Device::~Device()
 {
-    vkDestroyDevice( m_device, VK_ALLOCATOR );
+    vkDestroyDevice( _device, VK_ALLOCATOR );
 }
 
 } // namespace AEON::Graphics::vk

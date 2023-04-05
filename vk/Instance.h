@@ -20,20 +20,20 @@ namespace AEON::Graphics::vk
 
     class PhysicalDevice;
 
-    class Instance : public Singleton< Instance >
+    class Instance : public ISingleton< Instance >
     {
     public:
         Instance( Names extensions = RequiredExtensions(), Names layers = RequiredLayers() );
 
-        operator    VkInstance() const { return m_instance; }
+        operator    VkInstance() const { return _instance; }
 
         using PhysicalDevices = std::vector<ref_ptr<PhysicalDevice>>;
-        PhysicalDevices& physical_devices() { return m_physical_devices; }
+        PhysicalDevices& physical_devices() { return _physical_devices; }
 
         template< typename F >
         VkResult GetProcAddr( F& proc_addr, const char* name ) const
         {
-            proc_addr = reinterpret_cast<F>( vkGetInstanceProcAddr( m_instance, name ) );
+            proc_addr = reinterpret_cast<F>( vkGetInstanceProcAddr( _instance, name ) );
             if( proc_addr == VK_NULL_HANDLE )
             {
                 AE_WARN( "Failed to get procedural address for %s: vk%d", 
@@ -49,13 +49,13 @@ namespace AEON::Graphics::vk
 
     private:
 
-        VkInstance      m_instance;
-        PhysicalDevices m_physical_devices;
+        VkInstance      _instance;
+        PhysicalDevices _physical_devices;
         
     private:
 
 #ifdef AEON_DEBUG
-        VkDebugUtilsMessengerEXT            m_debug_messenger;
+        VkDebugUtilsMessengerEXT            _debug_messenger;
         PFN_vkCreateDebugUtilsMessengerEXT  CreateDebugUtilsMessenger   = VK_NULL_HANDLE;
         PFN_vkDestroyDebugUtilsMessengerEXT DestroyDebugUtilsMessenger  = VK_NULL_HANDLE;
 #endif

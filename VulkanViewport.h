@@ -12,20 +12,22 @@
 
 namespace AEON::Graphics
 {
-    class VulkanViewport : public Viewport
+    class VulkanViewport : public Viewport, public ICreatable< VulkanViewport >
     {
     public:
         VulkanViewport( Window* window );
         ~VulkanViewport();
     private:
-        Shared<vk::Instance>        m_instance;
-        Shared<vk::Surface>         m_surface;
-        Shared<vk::PhysicalDevice>  m_physical_device;
-        Shared<vk::Device>          m_device;
-        Shared<vk::Swapchain>       m_swapchain;
         
-        vk::SwapchainPreferences    m_swapchain_prefs;
-        VkExtent2D                  m_extent;
+        
+        ref_ptr<vk::Instance>        _instance;
+        ref_ptr<vk::Surface>         _surface;
+        ref_ptr<vk::PhysicalDevice>  _physical_device;
+        ref_ptr<vk::Device>          _device;
+        ref_ptr<vk::Swapchain>       _swapchain;
+        
+        vk::SwapchainPreferences    _swapchain_prefs;
+        VkExtent2D                  _extent;
 
     };
 } // namespace AEON::Graphics

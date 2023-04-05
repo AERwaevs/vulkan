@@ -8,11 +8,11 @@
 namespace AEON::Graphics::vk
 {
 
-class PhysicalDevice : public Object< PhysicalDevice >
+class PhysicalDevice : public Object
 {
 public:
                 PhysicalDevice( Instance* instance, VkPhysicalDevice device );
-    operator    VkPhysicalDevice() const { return m_device; }
+    operator    VkPhysicalDevice() const { return _device; }
 
 
     bool        Supported() const;
@@ -21,26 +21,26 @@ public:
     uint32_t                        GetQueueFamily( VkQueueFlags flags ) const;
     std::pair<uint32_t, uint32_t>   GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const;
 
-          Observer<Instance>            instance()   const { return m_instance; }
-    const VkPhysicalDeviceFeatures&     features()   const { return m_features; }
-    const VkPhysicalDeviceProperties&   properties() const { return m_properties; }
+          Observer<Instance>            instance()   const { return _instance; }
+    const VkPhysicalDeviceFeatures&     features()   const { return _features; }
+    const VkPhysicalDeviceProperties&   properties() const { return _properties; }
 
 protected:
     virtual ~PhysicalDevice(){};
 
 
 private:
-    VkPhysicalDevice            m_device;
-    VkPhysicalDeviceFeatures    m_features;
-    VkPhysicalDeviceProperties  m_properties;
+    VkPhysicalDevice            _device;
+    VkPhysicalDeviceFeatures    _features;
+    VkPhysicalDeviceProperties  _properties;
 
     using QueueFamilyProperties = Vector<VkQueueFamilyProperties>;
-    QueueFamilyProperties       m_queue_families;
+    QueueFamilyProperties       _queue_families;
 
     PFN_vkGetPhysicalDeviceFeatures2   GetPhysicalDeviceFeatures2   = nullptr;
     PFN_vkGetPhysicalDeviceProperties2 GetPhysicalDeviceProperties2 = nullptr;
 
-    Observer<Instance>          m_instance;
+    Observer<Instance>          _instance;
 
 public:
     static const Names RequiredExtensions() { return

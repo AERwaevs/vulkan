@@ -8,17 +8,17 @@
 namespace AEON::Graphics::vk
 {
 
-class Device : public Object< Device >
+class Device : public ICreatable< Device >
 {
 public:
                 Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface );
-    operator    VkDevice() const { return m_device; }
+    operator    VkDevice() const { return _device; }
 
     
     template< typename F >
     VkResult GetProcAddr( F& proc_addr, const char* name ) const
     {
-        proc_addr = reinterpret_cast<F>( vkGetDeviceProcAddr( m_instance, name ) );
+        proc_addr = reinterpret_cast<F>( vkGetDeviceProcAddr( _instance, name ) );
         if( proc_addr == nullptr )
         {
             AE_WARN( "Failed to get procedural address for %s: vk%d", 
@@ -33,13 +33,13 @@ protected:
     virtual ~Device();
 
 private:
-    VkDevice                m_device;
+    VkDevice                _device;
 
-    Shared<Instance>        m_instance;
-    Shared<PhysicalDevice>  m_physical_device;
+    Shared<Instance>        _instance;
+    Shared<PhysicalDevice>  _physical_device;
 
-    VkQueue                 m_queue_graphics;
-    VkQueue                 m_queue_present;
+    VkQueue                 _queue_graphics;
+    VkQueue                 _queue_present;
 
 public:
     static const Names RequiredLayers() { return

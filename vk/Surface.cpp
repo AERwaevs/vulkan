@@ -13,7 +13,7 @@ namespace AEON::Graphics::vk
 {
 
 Surface::Surface( Shared<Instance> instance, Window* window )
-: m_surface( VK_NULL_HANDLE ), m_instance( instance )
+: _surface( VK_NULL_HANDLE ), _instance( instance )
 {
 #ifdef AEON_PLATFORM_WINDOWS
     VkWin32SurfaceCreateInfoKHR surfaceCreateInfo
@@ -47,7 +47,7 @@ Surface::Surface( Shared<Instance> instance, Window* window )
         *instance,
         &surfaceCreateInfo,
         VK_ALLOCATOR,
-        &m_surface
+        &_surface
     );
 
     AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: vk%d", result );
@@ -55,6 +55,6 @@ Surface::Surface( Shared<Instance> instance, Window* window )
 
 Surface::~Surface()
 {
-    vkDestroySurfaceKHR( *m_instance, m_surface, nullptr );
+    vkDestroySurfaceKHR( *_instance, _surface, nullptr );
 }
 }

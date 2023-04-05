@@ -4,7 +4,7 @@ namespace AEON::Graphics::vk
 {
 
 Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* surface, uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old )
-: m_device{ device }, m_surface{ surface }
+: _device{ device }, _surface{ surface }
 {
     const auto& details{ QuerySwapchainSupport( *physicalDevice, *surface ) };
     const auto& extent{ SelectSwapExtent( details, width, height ) };
@@ -46,13 +46,13 @@ Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* s
         old ? *old : VK_NULL_HANDLE
     };
 
-    auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &m_swapchain );
+    auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &_swapchain );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create swapchain: vk%d", result );
 }
 
 Swapchain::~Swapchain()
 {
-    vkDestroySwapchainKHR( *m_device, m_swapchain, VK_ALLOCATOR );
+    vkDestroySwapchainKHR( *_device, _swapchain, VK_ALLOCATOR );
 }
 
 SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfaceKHR surface )

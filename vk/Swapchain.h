@@ -35,19 +35,19 @@ VkSurfaceFormatKHR      SelectSwapSurfaceFormat( const SwapchainSupportDetails& 
 VkPresentModeKHR        SelectSwapPresentMode(   const SwapchainSupportDetails& details, VkPresentModeKHR preferred );
 VkExtent2D              SelectSwapExtent(        const SwapchainSupportDetails& details, uint32_t width, uint32_t height );
 
-class Swapchain : public Object< Swapchain >
+class Swapchain : public ICreatable< Swapchain >
 {
 private:
-    ref_ptr<Device>     m_device;
-    ref_ptr<Surface>    m_surface;
+    ref_ptr<Device>     _device;
+    ref_ptr<Surface>    _surface;
 
-    VkSwapchainKHR      m_swapchain;
-    VkFormat            m_format;
-    VkExtent2D          m_extent;
+    VkSwapchainKHR      _swapchain;
+    VkFormat            _format;
+    VkExtent2D          _extent;
 
 public:
     Swapchain( PhysicalDevice* physical_device, Device* device, Surface* surface, uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old = {} );
-    operator VkSwapchainKHR() const { return m_swapchain; }
+    operator VkSwapchainKHR() const { return _swapchain; }
     ~Swapchain();
 };
 

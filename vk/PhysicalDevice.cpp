@@ -8,16 +8,16 @@ namespace AEON::Graphics::vk
 {
 
 PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
-: m_instance( instance ), m_device( device )
+: _instance( instance ), _device( device )
 {
-    vkGetPhysicalDeviceProperties( device, &m_properties );
-    vkGetPhysicalDeviceFeatures( device, &m_features );
+    vkGetPhysicalDeviceProperties( device, &_properties );
+    vkGetPhysicalDeviceFeatures( device, &_features );
     
     uint32_t queue_family_count{ 0 };
     vkGetPhysicalDeviceQueueFamilyProperties( device, &queue_family_count, VK_NULL_HANDLE );
 
-    m_queue_families.resize( queue_family_count );
-    vkGetPhysicalDeviceQueueFamilyProperties( device, &queue_family_count, m_queue_families.data() );
+    _queue_families.resize( queue_family_count );
+    vkGetPhysicalDeviceQueueFamilyProperties( device, &queue_family_count, _queue_families.data() );
 
     instance->GetProcAddr( GetPhysicalDeviceFeatures2, "vkGetPhysicalDeviceFeatures2" );
     instance->GetProcAddr( GetPhysicalDeviceProperties2, "vkGetPhysicalDeviceFeatures2" );
@@ -27,7 +27,7 @@ auto PhysicalDevice::EnumerateExtensionProperties( Name layer_name ) const
 {
     VkResult result{ VK_SUCCESS };
     uint32_t extension_count{ 0 };
-    result = vkEnumerateDeviceExtensionProperties( m_device,
+    result = vkEnumerateDeviceExtensionProperties( _device,
                                                    layer_name, 
                                                    &extension_count, 
                                                    nullptr );
@@ -35,7 +35,7 @@ auto PhysicalDevice::EnumerateExtensionProperties( Name layer_name ) const
                     "Failed to enumerate device extension count: vk%d", result );
 
     Vector<VkExtensionProperties> vk_extensions(extension_count);
-    result = vkEnumerateDeviceExtensionProperties( m_device,
+    result = vkEnumerateDeviceExtensionProperties( _device,
                                                    layer_name, 
                                                    &extension_count, 
                                                    vk_extensions.data() );
@@ -64,8 +64,8 @@ bool PhysicalDevice::Supported() const
     };
 
     bool   supported( false );
-           supported |= m_properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
-           supported |= m_properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
+           supported |= _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
+           supported |= _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
            supported &= GetQueueFamily( VK_QUEUE_GRAPHICS_BIT );
            supported &= extensions_supported();
     return supported;
@@ -74,10 +74,10 @@ bool PhysicalDevice::Supported() const
 uint32_t PhysicalDevice::GetQueueFamily( VkQueueFlags flags ) const
 {
     uint32_t family{ 0xFFFFFFFF };
-    for( uint32_t i = 0; i < m_queue_families.size(); i++ )
+    for( uint32_t i = 0; i < _queue_families.size(); i++ )
     {
-        if( m_queue_families[i].queueFlags == flags ) return i;     // perfect match
-        if( m_queue_families[i].queueFlags && flags ) family = i;   // best match
+        if( _queue_families[i].queueFlags == flags ) return i;     // perfect match
+        if( _queue_families[i].queueFlags && flags ) family = i;   // best match
     }
     return family; 
 }
@@ -87,12 +87,12 @@ std::pair<uint32_t, uint32_t> PhysicalDevice::GetQueueFamilies( VkQueueFlags fla
     uint32_t queueFamily{   0xFFFFFFFF };
     uint32_t presentFamily{ 0xFFFFFFFF };
 
-    for( uint32_t i = 0; i < m_queue_families.size(); i++ )
+    for( uint32_t i = 0; i < _queue_families.size(); i++ )
     {
         VkBool32 present_supported{ false };
-        vkGetPhysicalDeviceSurfaceSupportKHR( m_device, i, *surface, &present_supported );
+        vkGetPhysicalDeviceSurfaceSupportKHR( _device, i, *surface, &present_supported );
 
-        bool matched{ ( m_queue_families[i].queueFlags & flags ) == flags };
+        bool matched{ ( _queue_families[i].queueFlags & flags ) == flags };
 
         if( matched && present_supported ) return { i, i };
         if( matched )           queueFamily = i;

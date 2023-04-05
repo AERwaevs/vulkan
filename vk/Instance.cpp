@@ -83,7 +83,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
         extensions.empty() ? VK_NULL_HANDLE : extensions.data()
     };
 
-    auto result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &m_instance );
+    auto result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &_instance );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: vk%d", result );
 
 #ifdef AEON_DEBUG
@@ -94,28 +94,28 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     {
         result = CreateDebugUtilsMessenger
         ( 
-            m_instance, 
+            _instance, 
             &debugInfo, 
             VK_ALLOCATOR, 
-            &m_debug_messenger
+            &_debug_messenger
         );
         AE_WARN_IF( result != VK_SUCCESS, "Failed to create debug messenger: vk%d", result );
     }
 #endif
 
     uint32_t device_count = 0;
-    vkEnumeratePhysicalDevices( m_instance, &device_count, VK_NULL_HANDLE );
+    vkEnumeratePhysicalDevices( _instance, &device_count, VK_NULL_HANDLE );
     AE_FATAL_IF( device_count == 0, "Failed to find a GPU with Vulkan support" );
 
     Vector<VkPhysicalDevice> devices( device_count );
-    vkEnumeratePhysicalDevices( m_instance, &device_count, devices.data() );
+    vkEnumeratePhysicalDevices( _instance, &device_count, devices.data() );
     for( auto device : devices )
     {
-        m_physical_devices.emplace_back( new PhysicalDevice( this, device ) );
+        _physical_devices.emplace_back( new PhysicalDevice( this, device ) );
     }
 
     //TODO provide a sort function so we use best device as primary
-    //std::sort( m_physical_devices.begin(), m_physical_devices.end(), 
+    //std::sort( _physical_devices.begin(), _physical_devices.end(), 
     //[]( const Shared<PhysicalDevice>& a, const Shared<PhysicalDevice>& b )
     //{
     //    return a->Capability() > b->Capability();
@@ -127,11 +127,11 @@ AEON_API Instance::~Instance()
 #if AEON_DEBUG
     if( DestroyDebugUtilsMessenger )
     {
-        DestroyDebugUtilsMessenger( m_instance, m_debug_messenger, VK_ALLOCATOR );
+        DestroyDebugUtilsMessenger( _instance, _debug_messenger, VK_ALLOCATOR );
     }
 #endif
-    m_physical_devices.clear();
-    if( m_instance ) vkDestroyInstance( m_instance, VK_ALLOCATOR );
+    _physical_devices.clear();
+    if( _instance ) vkDestroyInstance( _instance, VK_ALLOCATOR );
 }
 
 InstanceLayerProperties EnumerateInstanceLayerProperties()
