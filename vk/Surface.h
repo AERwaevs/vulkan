@@ -9,7 +9,7 @@ namespace AEON::Graphics{ class Window; }
 namespace AEON::Graphics::vk
 {
 
-class Surface : public ICreatable< Surface >
+class Surface : public virtual Object, public Implements< Surface, ICreatable >
 {
 public:
     Surface( Shared<Instance> instance, Window* window );
