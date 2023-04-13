@@ -6,7 +6,7 @@ namespace AEON::Graphics
 
 VulkanViewport::VulkanViewport( Window* window )
 : Viewport{ window },
-  _instance{ vk::Instance::instance() },
+  _instance{ vk::Instance::create() },
   _surface{ vk::Surface::create( _instance, window ) },
   _physical_device{ _instance->physical_devices().front() },  //TODO remove hardcoded physical device selection
   _device{ vk::Device::create( _physical_device, _surface ) },

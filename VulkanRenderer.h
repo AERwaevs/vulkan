@@ -21,7 +21,7 @@ namespace AEON::Graphics
         return version >= AEON_VK_VERSION;
     }
 
-    class VulkanRenderer : public Renderer
+    class VulkanRenderer : public Renderer, public Implements< VulkanRenderer, ICreatable >
     {
     public:
         VulkanRenderer();
@@ -31,4 +31,5 @@ namespace AEON::Graphics
     private:
         Shared<vk::Instance>        _vkinstance;
     };
+
 }

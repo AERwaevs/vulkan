@@ -20,7 +20,7 @@ namespace AEON::Graphics::vk
 
     class PhysicalDevice;
 
-    class Instance : public Object, public Implements< Instance, ISingleton >
+    class Instance : public Object, public Implements< Instance, ICreatable, ISingleton >
     {
     public:
         Instance( Names extensions = RequiredExtensions(), Names layers = RequiredLayers() );
