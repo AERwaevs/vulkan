@@ -12,7 +12,7 @@
 
 namespace AEON::Graphics
 {
-    class VulkanViewport : public Viewport, public ICreatable< VulkanViewport >
+    class VulkanViewport : public Viewport, public ICreate< VulkanViewport >
     {
     public:
         VulkanViewport( Window* window );

@@ -3,7 +3,7 @@
 namespace AEON::Graphics
 {
 
-ref_ptr<Renderer> Renderer::create()
+template<> ref_ptr<Renderer> Renderer::create< API::Vulkan >()
 {
     return VulkanRenderer::create_if( VulkanSupported() );
 };

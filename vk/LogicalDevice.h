@@ -8,7 +8,7 @@
 namespace AEON::Graphics::vk
 {
 
-class Device : public virtual Object, public Implements< Device, ICreatable >
+class Device : public virtual Object, public Implements< Device, ICreate >
 {
 public:
                 Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface );

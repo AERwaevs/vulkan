@@ -35,7 +35,7 @@ VkSurfaceFormatKHR      SelectSwapSurfaceFormat( const SwapchainSupportDetails& 
 VkPresentModeKHR        SelectSwapPresentMode(   const SwapchainSupportDetails& details, VkPresentModeKHR preferred );
 VkExtent2D              SelectSwapExtent(        const SwapchainSupportDetails& details, uint32_t width, uint32_t height );
 
-class Swapchain : public virtual Object, Implements< Swapchain, ICreatable >
+class Swapchain : public virtual Object, Implements< Swapchain, ICreate >
 {
 private:
     ref_ptr<Device>     _device;
