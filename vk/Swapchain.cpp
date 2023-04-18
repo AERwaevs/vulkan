@@ -48,6 +48,7 @@ Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* s
 
     auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &_swapchain );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create swapchain: vk%d", result );
+    AE_INFO( "Swapchain created" );
 }
 
 Swapchain::~Swapchain()

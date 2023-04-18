@@ -3,6 +3,7 @@
 #include <Base/Base.h>
 
 #include <Graphics/Viewport.h>
+#include <Graphics/Window.h>
 
 #include "VulkanRenderer.h"
 #include "vk/Instance.h"
@@ -12,13 +13,12 @@
 
 namespace AEON::Graphics
 {
-    class VulkanViewport : public Viewport, public ICreate< VulkanViewport >
+    class VulkanViewport : public Viewport, public Implements< VulkanViewport, ICreateIf >
     {
     public:
         VulkanViewport( Window* window );
         ~VulkanViewport();
     private:
-        
         
         ref_ptr<vk::Instance>        _instance;
         ref_ptr<vk::Surface>         _surface;
