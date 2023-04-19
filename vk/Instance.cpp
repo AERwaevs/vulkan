@@ -114,7 +114,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
 
     //TODO provide a sort function so we use best device as primary
     //std::sort( _physical_devices.begin(), _physical_devices.end(), 
-    //[]( const Shared<PhysicalDevice>& a, const Shared<PhysicalDevice>& b )
+    //[]( const ref_ptr<PhysicalDevice>& a, const ref_ptr<PhysicalDevice>& b )
     //{
     //    return a->Capability() > b->Capability();
     //} );

@@ -25,11 +25,11 @@ namespace AEON::Graphics
     {
     public:
         VulkanRenderer();
-        Shared<vk::Instance> vkinstance() const { return _vkinstance; }
+        ref_ptr<vk::Instance> vkinstance() const { return _vkinstance; }
     protected:
         virtual         ~VulkanRenderer();
     private:
-        Shared<vk::Instance>        _vkinstance;
+        ref_ptr<vk::Instance>        _vkinstance;
     };
 
 }

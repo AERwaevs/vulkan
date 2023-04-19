@@ -21,7 +21,7 @@ public:
     uint32_t                        GetQueueFamily( VkQueueFlags flags ) const;
     std::pair<uint32_t, uint32_t>   GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const;
 
-          Observer<Instance>            instance()   const { return _instance; }
+          spy_ptr<Instance>            instance()   const { return _instance; }
     const VkPhysicalDeviceFeatures&     features()   const { return _features; }
     const VkPhysicalDeviceProperties&   properties() const { return _properties; }
 
@@ -40,7 +40,7 @@ private:
     PFN_vkGetPhysicalDeviceFeatures2   GetPhysicalDeviceFeatures2   = nullptr;
     PFN_vkGetPhysicalDeviceProperties2 GetPhysicalDeviceProperties2 = nullptr;
 
-    Observer<Instance>          _instance;
+    spy_ptr<Instance>          _instance;
 
 public:
     static const Names RequiredExtensions() { return

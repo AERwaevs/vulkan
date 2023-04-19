@@ -12,7 +12,7 @@
 namespace AEON::Graphics::vk
 {
 
-Surface::Surface( Shared<Instance> instance, Window* window )
+Surface::Surface( ref_ptr<Instance> instance, Window* window )
 : _surface( VK_NULL_HANDLE ), _instance( instance )
 {
 #ifdef AEON_PLATFORM_WINDOWS

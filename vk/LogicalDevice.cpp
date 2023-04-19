@@ -5,7 +5,7 @@ namespace AEON::Graphics::vk
 {
 
 //? maybe remove requirement for a surface? this will allow for compute-only devices
-Device::Device( Shared<PhysicalDevice> physical_device, Shared<Surface> surface )
+Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surface )
 : _instance{ physical_device->instance() }, _physical_device( physical_device )
 {
     //? might require actual priorities later as optimization step?

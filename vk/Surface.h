@@ -12,14 +12,14 @@ namespace AEON::Graphics::vk
 class Surface : public virtual Object, public Implements< Surface, ICreate >
 {
 public:
-    Surface( Shared<Instance> instance, Window* window );
+    Surface( ref_ptr<Instance> instance, Window* window );
     operator VkSurfaceKHR() const { return _surface; }
 
 protected:
     ~Surface();
 private:
     VkSurfaceKHR        _surface;
-    Shared<Instance>    _instance;
+    ref_ptr<Instance>    _instance;
 };
 
 }
