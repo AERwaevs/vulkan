@@ -9,7 +9,7 @@ template<> ref_ptr<Renderer> Renderer::create< API::Vulkan >()
 }
 
 AEON_API VulkanRenderer::VulkanRenderer()
-: Renderer{ Vulkan }, _vkinstance( vk::Instance::create() )
+: Renderer{ Vulkan }, _vkinstance( vk::Instance::instance() )
 {
     AE_INFO( "VulkanRenderer created" );
 }

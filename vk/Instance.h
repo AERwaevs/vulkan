@@ -23,7 +23,7 @@ namespace AEON::Graphics::vk
     class Instance : public Object, public Implements< Instance, ICreate, ISingleton >
     {
     public:
-        Instance( Names extensions = RequiredExtensions(), Names layers = RequiredLayers() );
+        Instance( Names extensions = RequiredExtensions, Names layers = RequiredLayers );
 
         operator    VkInstance() const { return _instance; }
 
@@ -60,14 +60,14 @@ namespace AEON::Graphics::vk
         PFN_vkDestroyDebugUtilsMessengerEXT DestroyDebugUtilsMessenger  = VK_NULL_HANDLE;
 #endif
     public:
-        static const Names RequiredLayers() { return
+        static inline const Names RequiredLayers
         {
 #ifdef  AEON_DEBUG
             "VK_LAYER_KHRONOS_validation"
 #endif 
-        }; }
+        };
     protected:
-        static const Names RequiredExtensions() { return
+        static inline const Names RequiredExtensions
         {
             VK_KHR_SURFACE_EXTENSION_NAME,
 #ifdef  AEON_PLATFORM_WINDOWS
@@ -84,6 +84,6 @@ namespace AEON::Graphics::vk
 #ifdef  AEON_DEBUG
             VK_EXT_DEBUG_UTILS_EXTENSION_NAME
 #endif
-        }; }
+        };
     };
 }

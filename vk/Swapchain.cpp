@@ -3,10 +3,14 @@
 namespace AEON::Graphics::vk
 {
 
-Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* surface, uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old )
+Swapchain::Swapchain
+(
+    ref_ptr<PhysicalDevice> physical_device, ref_ptr<Device> device, ref_ptr<Surface> surface,
+    uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old
+)
 : _device{ device }, _surface{ surface }
 {
-    const auto& details{ QuerySwapchainSupport( *physicalDevice, *surface ) };
+    const auto& details{ QuerySwapchainSupport( *physical_device, *surface ) };
     const auto& extent{ SelectSwapExtent( details, width, height ) };
     const auto& surfaceFormat{ SelectSwapSurfaceFormat( details, preferences.surfaceFormat ) };
     const auto& presentMode{ SelectSwapPresentMode( details, preferences.presentMode ) };
@@ -17,9 +21,12 @@ Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* s
             ? std::min( minImageCount, details.capabilities.maxImageCount )
             : std::max( preferences.imageCount, minImageCount )
     };
-    auto [ graphicsFamily, presentFamily ]{ physicalDevice->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface ) };
-    uint32_t queueFamilyIndices[]{ graphicsFamily, presentFamily };
-
+    auto [ graphicsFamily, presentFamily ]{ physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() ) };
+    uint32_t queueFamilyIndices[]
+    {
+        static_cast<uint32_t>( graphicsFamily ),
+        static_cast<uint32_t>( presentFamily )
+    };
     preferences.imageCount    = imageCount;
     preferences.presentMode   = presentMode;
     preferences.surfaceFormat = surfaceFormat;
@@ -34,11 +41,11 @@ Swapchain::Swapchain( PhysicalDevice* physicalDevice, Device* device, Surface* s
         surfaceFormat.format,
         surfaceFormat.colorSpace,
         extent,
-        1, //imageArrayLayers //* this is only > 1 if swapchain is stereoscopic
+        1u, //* imageArrayLayers is only > 1 if swapchain is stereoscopic
         preferences.imageUsage,
         graphicsFamily != presentFamily ? VK_SHARING_MODE_CONCURRENT : VK_SHARING_MODE_EXCLUSIVE,
-        graphicsFamily != presentFamily ? 2u : 0u, //pQueueFamilyIndices
-        graphicsFamily != presentFamily ? queueFamilyIndices : VK_NULL_HANDLE,
+        graphicsFamily != presentFamily ? 2u : 1u, //pQueueFamilyIndices
+        queueFamilyIndices,
         details.capabilities.currentTransform,
         VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
         presentMode,
@@ -58,8 +65,7 @@ Swapchain::~Swapchain()
 
 SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfaceKHR surface )
 {
-    SwapchainSupportDetails details;
-
+    SwapchainSupportDetails details{};
     vkGetPhysicalDeviceSurfaceCapabilitiesKHR( device, surface, &details.capabilities );
 
     uint32_t format_count;
@@ -115,15 +121,15 @@ VkPresentModeKHR SelectSwapPresentMode( const SwapchainSupportDetails& details, 
     for( auto available : details.present_modes ) { if( available == preferred ) return available; }
     AE_WARN( "Preferred present mode unavailable, trying default" );
     for( auto available : details.present_modes ) { if( available == default_present_mode ) return available; }
-    AE_WARN( "Preferred present mode unavailable, using fallback" );
+    AE_WARN( "Default present mode unavailable, using fallback" );
     return VK_PRESENT_MODE_FIFO_KHR;
 }
 
 VkExtent2D SelectSwapExtent( const SwapchainSupportDetails& details, uint32_t width, uint32_t height )
 {
-    const VkSurfaceCapabilitiesKHR& capabilities = details.capabilities;
+    const auto& capabilities = details.capabilities;
 
-    if( capabilities.currentExtent.width != std::numeric_limits<uint32_t>::max() ) return capabilities.currentExtent;
+    if( capabilities.currentExtent.width != (std::numeric_limits<uint32_t>::max)() ) return capabilities.currentExtent;
     else return VkExtent2D
     {
         std::max( capabilities.minImageExtent.width, std::min( capabilities.maxImageExtent.width, width ) ),

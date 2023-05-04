@@ -23,7 +23,7 @@ PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
     instance->GetProcAddr( GetPhysicalDeviceProperties2, "vkGetPhysicalDeviceFeatures2" );
 }
 
-auto PhysicalDevice::EnumerateExtensionProperties( Name layer_name ) const
+Vector<VkExtensionProperties> PhysicalDevice::EnumerateExtensionProperties( Name layer_name ) const
 {
     VkResult result{ VK_SUCCESS };
     uint32_t extension_count{ 0 };
@@ -51,8 +51,8 @@ bool PhysicalDevice::Supported() const
     {
         std::set<std::string> required
         {
-            PhysicalDevice::RequiredExtensions().begin(),
-            PhysicalDevice::RequiredExtensions().end()
+            PhysicalDevice::RequiredExtensions.begin(),
+            PhysicalDevice::RequiredExtensions.end()
         };
 
         for( const auto& extension : PhysicalDevice::EnumerateExtensionProperties() )
@@ -71,10 +71,10 @@ bool PhysicalDevice::Supported() const
     return supported;
 }
 
-uint32_t PhysicalDevice::GetQueueFamily( VkQueueFlags flags ) const
+int PhysicalDevice::GetQueueFamily( VkQueueFlags flags ) const
 {
-    uint32_t family{ 0xFFFFFFFF };
-    for( uint32_t i = 0; i < _queue_families.size(); i++ )
+    int family{ -1 };
+    for( uint32_t i = 0; i < _queue_families.size(); ++i )
     {
         if( _queue_families[i].queueFlags == flags ) return i;     // perfect match
         if( _queue_families[i].queueFlags && flags ) family = i;   // best match
@@ -82,12 +82,12 @@ uint32_t PhysicalDevice::GetQueueFamily( VkQueueFlags flags ) const
     return family; 
 }
 
-std::pair<uint32_t, uint32_t> PhysicalDevice::GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const
+std::pair<int, int> PhysicalDevice::GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const
 {
-    uint32_t queueFamily{   0xFFFFFFFF };
-    uint32_t presentFamily{ 0xFFFFFFFF };
+    int queueFamily{   -1 };
+    int presentFamily{ -1 };
 
-    for( uint32_t i = 0; i < _queue_families.size(); i++ )
+    for( uint32_t i = 0; i < _queue_families.size(); ++i )
     {
         VkBool32 present_supported{ false };
         vkGetPhysicalDeviceSurfaceSupportKHR( _device, i, *surface, &present_supported );

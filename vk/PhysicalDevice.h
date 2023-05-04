@@ -17,9 +17,9 @@ public:
 
     bool        Supported() const;
 
-    auto                            EnumerateExtensionProperties( Name layer_name = nullptr ) const;
-    uint32_t                        GetQueueFamily( VkQueueFlags flags ) const;
-    std::pair<uint32_t, uint32_t>   GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const;
+    Vector<VkExtensionProperties> EnumerateExtensionProperties( Name layer_name = nullptr ) const;
+    int                 GetQueueFamily( VkQueueFlags flags ) const;
+    std::pair<int, int> GetQueueFamilies( VkQueueFlags flags, Surface* surface ) const;
 
           spy_ptr<Instance>            instance()   const { return _instance; }
     const VkPhysicalDeviceFeatures&     features()   const { return _features; }
@@ -43,10 +43,10 @@ private:
     spy_ptr<Instance>          _instance;
 
 public:
-    static const Names RequiredExtensions() { return
+    static inline const Names RequiredExtensions
     {
         VK_KHR_SWAPCHAIN_EXTENSION_NAME
-    }; }
+    };
 
 };
 

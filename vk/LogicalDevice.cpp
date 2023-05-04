@@ -5,37 +5,41 @@ namespace AEON::Graphics::vk
 {
 
 //? maybe remove requirement for a surface? this will allow for compute-only devices
-Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surface )
+Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surface,
+                const QueueSettings& queue_settings )
 : _instance{ physical_device->instance() }, _physical_device( physical_device )
 {
-    //? might require actual priorities later as optimization step?
-    float priority{ 1.0f };
-    const auto& layers{ Instance::RequiredLayers() };
-    const auto& extensions{ Device::RequiredExtensions() };
-    auto [ present_family_index, graphics_family_index ]
-    {
-        physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() )
-    };
+    const auto& layers( Device::RequiredLayers );
+    const auto& extensions( Device::RequiredExtensions );
+    const auto  queue_priority( 1.0f );
 
-    //? maybe uncouple hard-coded queue infos?
-    Vector<VkDeviceQueueCreateInfo> queueInfos
+    Vector<VkDeviceQueueCreateInfo> queue_infos;
+    for( auto& setting : queue_settings )
     {
+        if( setting.queue_family_index < 0 ) continue;
+
+        const auto& setting_index( static_cast<uint32_t>( setting.queue_family_index ) );
+        const auto& queue_count( static_cast<uint32_t>( setting.queue_priorities.size() ) );
+
+        const auto unique([&]()
         {
+            for( auto& existing : queue_infos )
+            {
+                if( existing.queueFamilyIndex == setting_index ) return false;
+            }
+            return true;
+        }());
+        if( !unique ) continue;
+
+        queue_infos.push_back
+        ({
             VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
             VK_NULL_HANDLE, // pNext
             VkDeviceQueueCreateFlags{ 0 },
-            present_family_index,
-            1,              // queue count
-            &priority
-        },
-        {
-            VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO,
-            VK_NULL_HANDLE, // pNext
-            VkDeviceQueueCreateFlags{ 0 },
-            graphics_family_index,
-            1,              // queue count
-            &priority
-        }
+            setting_index,
+            setting.queue_priorities.empty() ? 1 : queue_count,
+            setting.queue_priorities.empty() ? &queue_priority : setting.queue_priorities.data()
+        });
     };
 
     VkDeviceCreateInfo deviceCreateInfo
@@ -43,8 +47,8 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
         VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO,
         VK_NULL_HANDLE,             // pNext
         VkDeviceCreateFlags{ 0 },
-        static_cast<uint32_t>( queueInfos.size() ),
-        queueInfos.empty() ? VK_NULL_HANDLE : queueInfos.data(),
+        static_cast<uint32_t>( queue_infos.size() ),
+        queue_infos.empty() ? VK_NULL_HANDLE : queue_infos.data(),
         static_cast<uint32_t>( layers.size() ),
         layers.empty() ? VK_NULL_HANDLE : layers.data(),
         static_cast<uint32_t>( extensions.size() ),
@@ -56,8 +60,8 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
     auto result = vkCreateDevice( *_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &_device );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create logical device: vk%d", result );
 
-    vkGetDeviceQueue( _device, present_family_index, 0, &_queue_present  );
-    vkGetDeviceQueue( _device, graphics_family_index, 0, &_queue_graphics  );
+    vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_present  );
+    vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_graphics  );
 }
 
 Device::~Device()

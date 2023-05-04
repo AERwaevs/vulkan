@@ -11,7 +11,7 @@ namespace AEON::Graphics::vk
 
 struct SwapchainSupportDetails
 {
-    VkSurfaceCapabilitiesKHR        capabilities;
+    VkSurfaceCapabilitiesKHR        capabilities{};
     std::vector<VkSurfaceFormatKHR> formats;
     std::vector<VkPresentModeKHR>   present_modes;
 };
@@ -37,6 +37,14 @@ VkExtent2D              SelectSwapExtent(        const SwapchainSupportDetails& 
 
 class Swapchain : public virtual Object, public Implements< Swapchain, ICreate >
 {
+public:
+    Swapchain
+    (
+        ref_ptr<PhysicalDevice> physical_device, ref_ptr<Device> device, ref_ptr<Surface> surface,
+        uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old = {}
+    );
+    operator VkSwapchainKHR() const { return _swapchain; }
+    ~Swapchain();
 private:
     ref_ptr<Device>     _device;
     ref_ptr<Surface>    _surface;
@@ -44,11 +52,7 @@ private:
     VkSwapchainKHR      _swapchain;
     VkFormat            _format;
     VkExtent2D          _extent;
-
-public:
-    Swapchain( PhysicalDevice* physical_device, Device* device, Surface* surface, uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old = {} );
-    operator VkSwapchainKHR() const { return _swapchain; }
-    ~Swapchain();
+    std::vector<VkImage> swapChainImages;
 };
 
 }// namespace AEON::Graphics::vk
