@@ -6,7 +6,16 @@ project( aeon-platform-vulkan
     LANGUAGES    C CXX
 )
 
-set( VULKAN_SRC 
+# vulkan ------------------------------------------------------------------------------------------
+
+set( VK_EXT
+    "VK_KHR_surface"
+    "VK_EXT_debug_utils"
+    "VK_KHR_win32_surface"
+    "VK_KHR_swapchain"
+)
+
+set( VK_SRC 
     vk/Instance.cpp 
     vk/PhysicalDevice.cpp
     vk/LogicalDevice.cpp
@@ -14,22 +23,30 @@ set( VULKAN_SRC
     vk/Swapchain.cpp
 )
 
-set( GLAD     ../../Vendor/glad )
+# glad --------------------------------------------------------------------------------------------
 
-set( GLAD_INC ${GLAD}/include )
-set( GLAD_SRC ${GLAD}/src/vulkan.c )
+set( GLAD_DIR     "${CMAKE_CURRENT_SOURCE_DIR}/glad" )
+add_subdirectory( "${GLAD_DIR}/gen/cmake" GLAD_DIR )
+
+glad_add_library( vulkan STATIC EXCLUDE_FROM_ALL
+    LOADER
+    LOCATION    ${GLAD_DIR}
+    API         vulkan=1.2
+    EXTENSIONS  ${VK_EXT}
+)
+
+# /vk ---------------------------------------------------------------------------------------------
 
 add_library( aeon-platform-vulkan STATIC  
     VulkanViewport.cpp
     VulkanRenderer.cpp
-    ${GLAD_SRC}
-    ${VULKAN_SRC}
+    ${VK_SRC}
 )
+
 add_dependencies( aeon-platform-vulkan
     aeon-base
 )
-    #glad_gl46_vk12
-#)
+
 set_target_properties(      aeon-platform-vulkan PROPERTIES    POSITION_INDEPENDENT_CODE   TRUE )
 target_compile_definitions( aeon-platform-vulkan PUBLIC AEON_DEBUG VK_USE_PLATFORM_WIN32_KHR )
 #target_precompile_headers(  aeon-platform-vulkan   REUSE_FROM  aeon-base                     )
