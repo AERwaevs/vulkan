@@ -1,3 +1,3 @@
-[submodule "glad/gen"]
-	path = glad/gen
+[submodule "lib/glad"]
+	path = lib/glad
 	url = https://github.com/Dav1dde/glad

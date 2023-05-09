@@ -25,7 +25,7 @@ const auto GetQueueSettings( ref_ptr<vk::PhysicalDevice> physical_device, ref_pt
 VulkanViewport::VulkanViewport( Window* window )
 :   Viewport( window ),
     _instance( vk::Instance::instance() ),
-    _surface( vk::Surface::create( _instance, window ) ),
+    _surface( vk::Surface::create( _instance, *window ) ),
     _physical_device( _instance->physical_devices().front() ),  //TODO remove hardcoded physical device selection
     _device( vk::Device::create
     (

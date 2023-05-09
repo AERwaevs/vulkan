@@ -1,7 +1,6 @@
 #include <vk/Surface.h>
 
 #if defined( AEON_PLATFORM_WINDOWS )
-#   include <Platform/Windows/Win32Window.h>
 #   define  vkCreateSurfaceKHR vkCreateWin32SurfaceKHR
 #elif defined( AEON_PLATFORM_ANDROID )
 #   define  vkCreateSurfaceKHR vkCreateAndroidSurfaceKHR
@@ -12,19 +11,22 @@
 namespace AEON::Graphics::vk
 {
 
-Surface::Surface( ref_ptr<Instance> instance, Window* window )
+#ifdef AEON_PLATFORM_WINDOWS
+Surface::Surface( ref_ptr<Instance> instance, HWND window )
 : _surface( VK_NULL_HANDLE ), _instance( instance )
 {
-#ifdef AEON_PLATFORM_WINDOWS
     VkWin32SurfaceCreateInfoKHR surfaceCreateInfo
     {
         VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR,
         VK_NULL_HANDLE, // pNext
         VkWin32SurfaceCreateFlagsKHR{ 0 },
         GetModuleHandle( nullptr ),
-        static_cast<Win32::Win32Window*>( window )->native()
+        window
     };
 #elif AEON_PLATFORM_ANDROID
+Surface::Surface( ref_ptr<Instance> instance, window* window )
+: _surface( VK_NULL_HANDLE ), _instance( instance )
+{
     VkAndroidSurfaceCreateInfoKHR surfaceCreateInfo
     {
         VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR,
@@ -33,6 +35,9 @@ Surface::Surface( ref_ptr<Instance> instance, Window* window )
         window->native()
     };
 #elif AEON_PLATFORM_LINUX
+Surface::Surface( ref_ptr<Instance> instance, window* window )
+: _surface( VK_NULL_HANDLE ), _instance( instance )
+{
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo
     {
         VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR,
@@ -42,14 +47,7 @@ Surface::Surface( ref_ptr<Instance> instance, Window* window )
         window->native()
     };
 #endif
-    auto result = vkCreateSurfaceKHR
-    (
-        *instance,
-        &surfaceCreateInfo,
-        VK_ALLOCATOR,
-        &_surface
-    );
-
+    auto result = vkCreateSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
     AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: vk%d", result );
 }
 
@@ -57,4 +55,5 @@ Surface::~Surface()
 {
     vkDestroySurfaceKHR( *_instance, _surface, nullptr );
 }
+
 }

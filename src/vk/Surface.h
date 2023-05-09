@@ -12,7 +12,13 @@ namespace AEON::Graphics::vk
 class Surface : public virtual Object, public Implements< Surface, ICreate >
 {
 public:
-    Surface( ref_ptr<Instance> instance, Window* window );
+#if defined( AEON_PLATFORM_WINDOWS )
+    Surface( ref_ptr<Instance> instance, HWND window );
+#elif defined( AEON_PLATFORM_ANDROID )
+    Surface( ref_ptr<Instance> instance, ref_ptr<Window> window );
+#elif defined( AEON_PLATFORM_LINUX )
+    Surface( ref_ptr<Instance> instance, ref_ptr<Window> window );
+#endif
     operator VkSurfaceKHR() const { return _surface; }
 
 protected:

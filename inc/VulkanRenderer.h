@@ -1,10 +1,8 @@
 #pragma once
 
-#include <Base/Base.h>
+#include <Renderer.h>
 
-#include <Graphics/Renderer.h>
-
-#include "../../Vendor/glad/include/glad/vulkan.h"
+#include <glad/vulkan.h>
 
 #include "vk/Instance.h"
 
@@ -21,7 +19,7 @@ namespace AEON::Graphics
         return version >= AEON_VK_VERSION;
     }
 
-    class VulkanRenderer : public Renderer, public Implements< VulkanRenderer, ICreateIf >
+    class VulkanRenderer : public Renderer, public Interfaces< VulkanRenderer, ICreateIf >
     {
     public:
         VulkanRenderer();
