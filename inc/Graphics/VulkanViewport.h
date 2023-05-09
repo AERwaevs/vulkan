@@ -1,7 +1,7 @@
 #pragma once
 
-#include <Viewport.h>
-#include <Window.h>
+#include <Graphics/Viewport.h>
+#include <Graphics/Window.h>
 
 #include "VulkanRenderer.h"
 #include "vk/Instance.h"

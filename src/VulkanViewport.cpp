@@ -1,5 +1,5 @@
-#include <VulkanViewport.h>
-#include <VulkanRenderer.h>
+#include <Graphics/VulkanViewport.h>
+#include <Graphics/VulkanRenderer.h>
 
 namespace AEON::Graphics
 {
