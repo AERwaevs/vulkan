@@ -78,7 +78,8 @@ endif()
 
 add_subdirectory( "${GLAD_DIR}/cmake" GLAD_DIR )
 
-glad_add_library( vulkan STATIC EXCLUDE_FROM_ALL
+glad_add_library( vulkan SHARED
+    EXCLUDE_FROM_ALL
     LOADER
     LOCATION    ${VULKAN_LIB}/vulkan
     API         vulkan=1.2

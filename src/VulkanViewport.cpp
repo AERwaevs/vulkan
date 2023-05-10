@@ -4,7 +4,8 @@
 namespace AEON::Graphics
 {
 
-template<> ref_ptr<Viewport> Viewport::create< API::Vulkan >( Window* window )
+template<>
+auto Viewport::create< API::Vulkan >( Window* window )
 {
     return VulkanViewport::create_if( VulkanSupported(), window );
 }
