@@ -1,14 +1,9 @@
 # cmake -------------------------------------------------------------------------------------------
 cmake_minimum_required( VERSION 3.2.0 )
-
-set( CMAKE_CXX_STANDARD          20  )
-set( CMAKE_CXX_STANDARD_REQUIRED ON  )
-set( CMAKE_CXX_EXTENSIONS        OFF )
 # AEON::Vulkan ------------------------------------------------------------------------------------
 set( VULKAN_LIB ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC ${CMAKE_CURRENT_SOURCE_DIR}/inc )
 set( VULKAN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src )
-
 
 set( VK_EXT
     "VK_KHR_surface"
@@ -31,26 +26,20 @@ add_library( aeon-platform-vulkan STATIC
     ${VK_SRC}
 )
 
-add_dependencies( aeon-platform-vulkan
-    aeon-base
-    aeon-graphics
-    vulkan
-)
-
-target_compile_definitions( aeon-platform-vulkan PRIVATE VK_USE_PLATFORM_WIN32_KHR NOMINMAX )
-target_precompile_headers(  aeon-platform-vulkan PRIVATE ${HEADERS} ${STD_HEADERS} )
+#target_precompile_headers(  aeon-platform-vulkan PRIVATE ${HEADERS} ${STD_HEADERS} )
 target_include_directories( aeon-platform-vulkan 
     PUBLIC
-        ${VULKAN_INC}
+        $<BUILD_INTERFACE:${VULKAN_INC}>
+	    $<INSTALL_INTERFACE:inc>
     PRIVATE
-        ${VULKAN_SRC}
+        $<BUILD_INTERFACE:${VULKAN_SRC}>
 )
-target_link_libraries( aeon-platform-vulkan
-    PRIVATE
-        aeon-base
-        aeon-graphics
-        vulkan
-)
+target_link_libraries( aeon-platform-vulkan PRIVATE aeon-base aeon-graphics )
+
+if( WIN32 )
+    target_compile_definitions( aeon-platform-vulkan PRIVATE VK_USE_PLATFORM_WIN32_KHR NOMINMAX ) 
+endif()
+
 # submodules --------------------------------------------------------------------------------------
 find_package( Git QUIET )
 if( GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git" )
@@ -85,3 +74,9 @@ glad_add_library( vulkan SHARED
     API         vulkan=1.2
     EXTENSIONS  ${VK_EXT}
 )
+
+if( WIN32 )
+    target_compile_definitions( vulkan PRIVATE VK_USE_PLATFORM_WIN32_KHR ) 
+endif()
+
+target_link_libraries( aeon-platform-vulkan PRIVATE vulkan )
