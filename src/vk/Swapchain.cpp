@@ -10,17 +10,14 @@ Swapchain::Swapchain
 )
 : _device{ device }, _surface{ surface }
 {
-    const auto& details{ QuerySwapchainSupport( *physical_device, *surface ) };
-    const auto& extent{ SelectSwapExtent( details, width, height ) };
-    const auto& surfaceFormat{ SelectSwapSurfaceFormat( details, preferences.surfaceFormat ) };
-    const auto& presentMode{ SelectSwapPresentMode( details, preferences.presentMode ) };
-    const auto& minImageCount{ std::max( preferences.imageCount, details.capabilities.minImageCount + 1 ) };
-    const auto& imageCount
-    {
-        details.capabilities.maxImageCount > 0
+    const auto& details = QuerySwapchainSupport( *physical_device, *surface );
+    const auto& extent = SelectSwapExtent( details, width, height );
+    const auto& surfaceFormat = SelectSwapSurfaceFormat( details, preferences.surfaceFormat );
+    const auto& presentMode = SelectSwapPresentMode( details, preferences.presentMode );
+    const auto& minImageCount = std::max( preferences.imageCount, details.capabilities.minImageCount + 1 );
+    const auto& imageCount = (details.capabilities.maxImageCount > 0
             ? std::min( minImageCount, details.capabilities.maxImageCount )
-            : std::max( preferences.imageCount, minImageCount )
-    };
+            : std::max( preferences.imageCount, minImageCount ));
     auto [ graphicsFamily, presentFamily ]{ physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() ) };
     uint32_t queueFamilyIndices[]
     {
@@ -42,7 +39,7 @@ Swapchain::Swapchain
         surfaceFormat.colorSpace,
         extent,
         1u, //* imageArrayLayers is only > 1 if swapchain is stereoscopic
-        preferences.imageUsage,
+        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,    //! preferences.imageUsage is always garbage?
         graphicsFamily != presentFamily ? VK_SHARING_MODE_CONCURRENT : VK_SHARING_MODE_EXCLUSIVE,
         graphicsFamily != presentFamily ? 2u : 1u, //pQueueFamilyIndices
         queueFamilyIndices,
@@ -54,8 +51,7 @@ Swapchain::Swapchain
     };
 
     auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &_swapchain );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create swapchain: vk%d", result );
-    AE_INFO( "Swapchain created" );
+    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create swapchain: %s", ResultMessage( result ) );
 }
 
 Swapchain::~Swapchain()
@@ -71,7 +67,7 @@ SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfac
     uint32_t format_count;
     vkGetPhysicalDeviceSurfaceFormatsKHR( device, surface, &format_count, VK_NULL_HANDLE );
 
-    if( format_count > 0 )
+    if( format_count != 0 )
     {
         details.formats.resize( format_count );
         vkGetPhysicalDeviceSurfaceFormatsKHR( device, surface, &format_count, details.formats.data() );
@@ -80,7 +76,7 @@ SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfac
     uint32_t present_mode_count;
     vkGetPhysicalDeviceSurfacePresentModesKHR( device, surface, &present_mode_count, VK_NULL_HANDLE );
 
-    if( present_mode_count > 0 )
+    if( present_mode_count != 0 )
     {
         details.present_modes.resize( present_mode_count );
         vkGetPhysicalDeviceSurfacePresentModesKHR( device, surface, &present_mode_count, details.present_modes.data() );
@@ -91,8 +87,8 @@ SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfac
 
 VkSurfaceFormatKHR SelectSwapSurfaceFormat( const SwapchainSupportDetails& details, VkSurfaceFormatKHR preferred )
 {
-    const auto  default_format      = SwapchainPreferences::default_format;
-    const auto  default_colorspace  = SwapchainPreferences::default_colorspace;
+    const auto  default_format      = VK_FORMAT_B8G8R8A8_UNORM;
+    const auto  default_colorspace  = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
 
     if( details.formats.empty() || ( details.formats.size() == 1 && details.formats[0].format == VK_FORMAT_UNDEFINED ) )
     {
@@ -116,7 +112,7 @@ VkSurfaceFormatKHR SelectSwapSurfaceFormat( const SwapchainSupportDetails& detai
 
 VkPresentModeKHR SelectSwapPresentMode( const SwapchainSupportDetails& details, VkPresentModeKHR preferred = VK_PRESENT_MODE_MAILBOX_KHR )
 {
-    const auto default_present_mode = SwapchainPreferences::default_present_mode; 
+    const auto default_present_mode = VK_PRESENT_MODE_FIFO_KHR;
 
     for( auto available : details.present_modes ) { if( available == preferred ) return available; }
     AE_WARN( "Preferred present mode unavailable, trying default" );

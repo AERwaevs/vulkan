@@ -58,8 +58,9 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
 
     //* create logical device
     auto result = vkCreateDevice( *_physical_device, &deviceCreateInfo, VK_ALLOCATOR, &_device );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create logical device: vk%d", result );
+    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create logical device: %s", ResultMessage( result ) );
 
+    gladLoaderLoadVulkan( *_instance, *_physical_device, _device );
     vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_present  );
     vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_graphics  );
 }

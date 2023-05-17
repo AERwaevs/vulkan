@@ -17,16 +17,14 @@ struct SwapchainSupportDetails
 
 struct SwapchainPreferences
 {
-    static constexpr uint32_t          default_image_count  = 3;                                    // triple buffering
-    static constexpr VkFormat          default_format       = VK_FORMAT_B8G8R8A8_UNORM;             // 8bits per channel, unsigned float 
-    static constexpr VkColorSpaceKHR   default_colorspace   = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;    // SRGB
-    static constexpr VkPresentModeKHR  default_present_mode = VK_PRESENT_MODE_FIFO_KHR;             // vysnc on
-    static constexpr VkImageUsageFlags default_image_usage  = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;  // render direct to image
-
-    uint32_t            imageCount{    default_image_count };
-    VkSurfaceFormatKHR  surfaceFormat{ default_format, default_colorspace };
-    VkPresentModeKHR    presentMode{   default_present_mode };
-    VkImageUsageFlags   imageUsage{    default_image_usage };
+    // defaults to triple buffering
+    uint32_t            imageCount      = 3;
+    // defaults to 8bits per channel unsigned float, SRGB
+    VkSurfaceFormatKHR  surfaceFormat   = { VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
+    // defaults to vysnc on
+    VkPresentModeKHR    presentMode     = VK_PRESENT_MODE_FIFO_KHR;
+    // defaults to render direct to image
+    VkImageUsageFlags   imageUsage      = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 };
 
 SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfaceKHR surface );

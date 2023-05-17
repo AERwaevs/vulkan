@@ -32,16 +32,14 @@ VulkanViewport::VulkanViewport( Window* window )
     (
       _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
     ) ),
-    _swapchain_prefs()
-    //_swapchain( vk::Swapchain::create
-    //(
-    //  _physical_device, _device, _surface,
-    //  window->width(), window->height(), _swapchain_prefs
-    //) )
+    _swapchain_prefs( vk::SwapchainPreferences() ),
+    _swapchain( vk::Swapchain::create
+    (
+      _physical_device, _device, _surface,
+      window->width(), window->height(), _swapchain_prefs
+    ) )
 {
-    //vk::SwapchainPreferences prefs = vk::SwapchainPreferences();
-    //auto swapchain = vk::Swapchain::create( _physical_device, _device, _surface, 1280, 720, prefs );
-    AE_INFO( "VulkanViewport created without swapchain" );
+    AE_INFO( "VulkanViewport created with swapchain" );
 }
 
 VulkanViewport::~VulkanViewport()

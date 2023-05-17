@@ -21,6 +21,8 @@ PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
 
     instance->GetProcAddr( GetPhysicalDeviceFeatures2, "vkGetPhysicalDeviceFeatures2" );
     instance->GetProcAddr( GetPhysicalDeviceProperties2, "vkGetPhysicalDeviceFeatures2" );
+
+    gladLoaderLoadVulkan( *instance, _device, nullptr );
 }
 
 Vector<VkExtensionProperties> PhysicalDevice::EnumerateExtensionProperties( Name layer_name ) const
@@ -32,7 +34,7 @@ Vector<VkExtensionProperties> PhysicalDevice::EnumerateExtensionProperties( Name
                                                    &extension_count, 
                                                    nullptr );
     AE_ERROR_IF( result != VK_SUCCESS, 
-                    "Failed to enumerate device extension count: vk%d", result );
+                    "Failed to enumerate device extension count: %s", ResultMessage( result ) );
 
     Vector<VkExtensionProperties> vk_extensions(extension_count);
     result = vkEnumerateDeviceExtensionProperties( _device,
@@ -40,7 +42,7 @@ Vector<VkExtensionProperties> PhysicalDevice::EnumerateExtensionProperties( Name
                                                    &extension_count, 
                                                    vk_extensions.data() );
     AE_ERROR_IF( result != VK_SUCCESS, 
-                    "Failed to enumerate device extension properties: vk%d", result );
+                    "Failed to enumerate device extension properties: %s", ResultMessage( result ) );
 
     return vk_extensions;
 }

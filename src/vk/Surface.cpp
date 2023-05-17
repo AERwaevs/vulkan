@@ -44,7 +44,7 @@ Surface::Surface( ref_ptr<Instance> instance, Window* window )
     };
 #endif
     auto result = vkCreateSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
-    AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: vk%d", result );
+    AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: %s", ResultMessage( result ) );
 }
 
 Surface::~Surface()

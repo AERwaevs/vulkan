@@ -18,17 +18,18 @@ VKAPI_ATTR VkBool32 debug_callback
     {
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
         {
-            AE_WARN( "Vulkan %s", pCallbackData->pMessage );
+            AE_WARN( "%s", pCallbackData->pMessage );
             break;
         }
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
         {
-            AE_ERROR( "Vulkan %s", pCallbackData->pMessage );
+            AE_ERROR( "%s", pCallbackData->pMessage );
             break;
         }        
         default:
             break;
-    }         
+    }
+
     
     AE_INFO_IF( type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
                 "VK_PERFORMANCE %s", pCallbackData->pMessage );
@@ -82,7 +83,8 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     };
 
     auto result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &_instance );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: vk%d", result );
+    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: %s", ResultMessage( result ) );
+    gladLoaderLoadVulkan( _instance, nullptr, nullptr );
 
 #ifdef AEON_DEBUG
     GetProcAddr( CreateDebugUtilsMessenger,  "vkCreateDebugUtilsMessengerEXT"  );
@@ -97,7 +99,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
             VK_ALLOCATOR, 
             &_debug_messenger
         );
-        AE_WARN_IF( result != VK_SUCCESS, "Failed to create debug messenger: vk%d", result );
+        AE_WARN_IF( result != VK_SUCCESS, "Failed to create debug messenger: %s", ResultMessage( result ) );
     }
 #endif
 
@@ -137,11 +139,11 @@ InstanceLayerProperties EnumerateInstanceLayerProperties()
     VkResult result{ VK_SUCCESS };
     uint32_t vk_layer_count{ 0 };
     result = vkEnumerateInstanceLayerProperties( &vk_layer_count, nullptr );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer count: vk%d", result );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer count: %s", ResultMessage( result ) );
 
     Vector<VkLayerProperties> vk_layers(vk_layer_count);
     result = vkEnumerateInstanceLayerProperties( &vk_layer_count, vk_layers.data() );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer properties: vk%d", result );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer properties: %s", ResultMessage( result ) );
 
     return vk_layers;
 }
@@ -151,11 +153,11 @@ InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_nam
     VkResult result{ VK_SUCCESS };
     uint32_t count{ 0 };
     result = vkEnumerateInstanceExtensionProperties( layer_name, &count, nullptr );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension count: vk%d", result );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension count: %s", ResultMessage( result ) );
 
     Vector<VkExtensionProperties> vk_extensions(count);
     result = vkEnumerateInstanceExtensionProperties( layer_name, &count, vk_extensions.data() );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension properties: vk%d", result );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension properties: %s", ResultMessage( result ) );
 
     return vk_extensions;
 }
