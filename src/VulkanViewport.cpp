@@ -39,7 +39,7 @@ VulkanViewport::VulkanViewport( Window* window )
       window->width(), window->height(), _swapchain_prefs
     ) )
 {
-    AE_INFO( "VulkanViewport created with swapchain" );
+    AE_INFO( "VulkanViewport created" );
 }
 
 VulkanViewport::~VulkanViewport()

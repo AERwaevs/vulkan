@@ -4,6 +4,8 @@
 
 #include "LogicalDevice.h"
 #include "Surface.h"
+#include "Image.h"
+#include "ImageView.h"
 
 namespace AEON::Graphics::vk
 {
@@ -43,13 +45,15 @@ public:
     operator VkSwapchainKHR() const { return _swapchain; }
     ~Swapchain();
 private:
-    ref_ptr<Device>     _device;
-    ref_ptr<Surface>    _surface;
+    ref_ptr<Device>         _device;
+    ref_ptr<Surface>        _surface;
+    Images                  _images;
+    ImageViews              _views;
 
-    VkSwapchainKHR      _swapchain;
-    VkFormat            _format;
-    VkExtent2D          _extent;
-    std::vector<VkImage> swapChainImages;
+    VkSwapchainKHR          _swapchain;
+    VkFormat                _format;
+    VkExtent2D              _extent;
+
 };
 
 }// namespace AEON::Graphics::vk

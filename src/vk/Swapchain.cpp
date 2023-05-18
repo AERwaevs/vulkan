@@ -15,7 +15,7 @@ Swapchain::Swapchain
     const auto& surfaceFormat = SelectSwapSurfaceFormat( details, preferences.surfaceFormat );
     const auto& presentMode = SelectSwapPresentMode( details, preferences.presentMode );
     const auto& minImageCount = std::max( preferences.imageCount, details.capabilities.minImageCount + 1 );
-    const auto& imageCount = (details.capabilities.maxImageCount > 0
+          auto  imageCount = (details.capabilities.maxImageCount > 0
             ? std::min( minImageCount, details.capabilities.maxImageCount )
             : std::max( preferences.imageCount, minImageCount ));
     auto [ graphicsFamily, presentFamily ]{ physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() ) };
@@ -52,6 +52,20 @@ Swapchain::Swapchain
 
     auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &_swapchain );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create swapchain: %s", ResultMessage( result ) );
+
+    _extent = extent;
+    _format = surfaceFormat.format;
+
+    vkGetSwapchainImagesKHR( *device, _swapchain, &imageCount, VK_NULL_HANDLE );
+    std::vector<VkImage> images( imageCount );
+    vkGetSwapchainImagesKHR( *device, _swapchain, &imageCount, images.data() );
+
+    for( std::size_t i = 0; i < images.size(); i++ )
+    {
+        auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
+        image_view->Compile( device.get() );
+        _views.push_back( image_view );
+    }
 }
 
 Swapchain::~Swapchain()

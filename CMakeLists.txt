@@ -18,6 +18,8 @@ set( VK_SRC
     ${VULKAN_SRC}/vk/LogicalDevice.cpp
     ${VULKAN_SRC}/vk/Surface.cpp
     ${VULKAN_SRC}/vk/Swapchain.cpp
+    ${VULKAN_SRC}/vk/Image.cpp
+    ${VULKAN_SRC}/vk/ImageView.cpp
 )
 
 add_library( aeon-platform-vulkan STATIC  

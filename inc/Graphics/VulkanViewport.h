@@ -27,7 +27,5 @@ namespace AEON::Graphics
         ref_ptr<vk::Swapchain>       _swapchain;
         
         vk::SwapchainPreferences    _swapchain_prefs;
-        VkExtent2D                  _extent;
-
     };
 } // namespace AEON::Graphics
