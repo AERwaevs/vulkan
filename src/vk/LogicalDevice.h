@@ -26,7 +26,7 @@ public:
     template< typename F >
     VkResult GetProcAddr( F& proc_addr, const char* name ) const
     {
-        proc_addr = reinterpret_cast<F>( vkGetDeviceProcAddr( _instance, name ) );
+        proc_addr = reinterpret_cast<F>( vkGetDeviceProcAddr( _device, name ) );
         if( proc_addr == nullptr )
         {
             AE_WARN( "Failed to get procedural address for %s: vk%d", 
