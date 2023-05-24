@@ -12,11 +12,16 @@ namespace AEON::Graphics
 {
     inline bool VulkanSupported()
     {
+        static bool loaded( false );
+        if( loaded ) return true;
         int version = gladLoaderLoadVulkan( nullptr, nullptr, nullptr );
-        AE_INFO( "Vulkan version: %d.%d", 
-                    GLAD_VERSION_MAJOR(version),
-                    GLAD_VERSION_MINOR(version) );
-        return version >= AEON_VK_VERSION;
+        AE_INFO
+        (
+            "Vulkan version: %d.%d", 
+            GLAD_VERSION_MAJOR(version),
+            GLAD_VERSION_MINOR(version)
+        );
+        return loaded = ( version >= AEON_VK_VERSION );
     }
 
     class VulkanRenderer : public Renderer, public Interfaces< VulkanRenderer, ICreateIf >

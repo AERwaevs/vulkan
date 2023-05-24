@@ -5,11 +5,11 @@ namespace AEON::Graphics
 
 template<> ref_ptr<Renderer> Renderer::create< API::Vulkan >()
 {
-    return VulkanRenderer::create_if( true );
+    return VulkanRenderer::create_if( VulkanSupported() );
 }
 
 AEON_API VulkanRenderer::VulkanRenderer()
-: Renderer{ Vulkan }, _vkinstance( vk::Instance::instance() )
+: _vkinstance( vk::Instance::get_or_create() )
 {
     AE_INFO( "VulkanRenderer created" );
 }

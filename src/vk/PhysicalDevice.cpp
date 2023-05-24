@@ -10,6 +10,7 @@ namespace AEON::Graphics::vk
 PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
 : _instance( instance ), _device( device )
 {
+    gladLoaderLoadVulkan( *instance, _device, nullptr );
     vkGetPhysicalDeviceProperties( device, &_properties );
     vkGetPhysicalDeviceFeatures( device, &_features );
     
@@ -20,9 +21,8 @@ PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
     vkGetPhysicalDeviceQueueFamilyProperties( device, &queue_family_count, _queue_families.data() );
 
     instance->GetProcAddr( GetPhysicalDeviceFeatures2, "vkGetPhysicalDeviceFeatures2" );
-    instance->GetProcAddr( GetPhysicalDeviceProperties2, "vkGetPhysicalDeviceFeatures2" );
+    instance->GetProcAddr( GetPhysicalDeviceProperties2, "vkGetPhysicalDeviceProperties2" );
 
-    gladLoaderLoadVulkan( *instance, _device, nullptr );
 }
 
 Vector<VkExtensionProperties> PhysicalDevice::EnumerateExtensionProperties( Name layer_name ) const
