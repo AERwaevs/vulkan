@@ -87,6 +87,18 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     gladLoaderLoadVulkan( _instance, nullptr, nullptr );
 
 #ifdef AEON_DEBUG
+    AE_INFO
+    (
+        "VkInstance\n"
+        "{\n"
+        "    Enabled layer count     = %zu\n"
+        "    Enabled layer names     = %s\n"
+        "    Enabled extension count = %zu\n"
+        "    Enabled extension names = %s\n"
+        "}\n",
+        layers.size(), UnpackNames( layers ).c_str(),
+        extensions.size(), UnpackNames( extensions ).c_str()
+    );
     GetProcAddr( CreateDebugUtilsMessenger,  "vkCreateDebugUtilsMessengerEXT"  );
     GetProcAddr( DestroyDebugUtilsMessenger, "vkDestroyDebugUtilsMessengerEXT" );
 
@@ -179,6 +191,17 @@ Names ValidateInstanceLayerNames( Names& names )
     }
     
     return validated_names;
+}
+
+std::string UnpackNames( const Names& names )
+{
+    std::string unpacked;
+    for( std::size_t i = 0; i < names.size(); i++ )
+    {
+        unpacked.append( names[i] );
+        if( i != names.size() - 1 ) unpacked.append( ", " );
+    }
+    return unpacked;
 }
 
 }

@@ -60,12 +60,12 @@ Swapchain::Swapchain
     std::vector<VkImage> images( imageCount );
     vkGetSwapchainImagesKHR( *device, _swapchain, &imageCount, images.data() );
 
-    for( std::size_t i = 0; i < images.size(); i++ )
-    {
-        auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
-        image_view->Compile( device.get() );
-        _views.push_back( image_view );
-    }
+    //for( std::size_t i = 0; i < images.size(); i++ )
+    //{
+    //    auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
+    //    image_view->Compile( _device.get() );
+    //    _views.push_back( image_view );
+    //}
 }
 
 Swapchain::~Swapchain()

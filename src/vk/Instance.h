@@ -17,6 +17,7 @@ namespace AEON::Graphics::vk
     InstanceLayerProperties     EnumerateInstanceLayerProperties();
     InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_name );
     Names                       ValidateInstanceLayerNames( Names& names );
+    std::string                 UnpackNames( const Names& names );
 
     class PhysicalDevice;
 
