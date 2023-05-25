@@ -68,7 +68,6 @@ bool PhysicalDevice::Supported() const
     bool   supported( false );
            supported |= _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU;
            supported |= _properties.deviceType == VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU;
-           supported &= GetQueueFamily( VK_QUEUE_GRAPHICS_BIT );
            supported &= extensions_supported();
     return supported;
 }
