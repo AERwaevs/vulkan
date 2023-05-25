@@ -1,3 +1,7 @@
 .CMake/
 .vscode/
 lib/vulkan/
+lib/vulkan/include/glad/vulkan.h
+lib/vulkan/include/vk_platform.h
+lib/vulkan/src/vulkan.c
+lib/vulkan/args.txt
