@@ -34,20 +34,20 @@ if( NOT EXISTS "${LOADER_DIR}/include/glad/vulkan.h" )
 endif()
 
 add_subdirectory( "${GLAD_DIR}/cmake" GLAD_DIR )
-glad_add_library( vulkan SHARED
+glad_add_library( loader STATIC
     EXCLUDE_FROM_ALL
     LOADER
     LOCATION    ${LOADER_DIR}
     API         vulkan=1.3
     EXTENSIONS  ${VK_EXTENSIONS}
 )
-target_compile_definitions( vulkan PUBLIC $<$<BOOL:${WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX> )
+target_compile_definitions( loader PUBLIC $<$<BOOL:${WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX> )
 # AEON::Vulkan ------------------------------------------------------------------------------------
 set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
 set( VULKAN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src )
 
-add_library( graphics_vulkan STATIC  
+add_library( vulkan STATIC  
     ${VULKAN_SRC_DIR}/VulkanViewport.cpp
     ${VULKAN_SRC_DIR}/VulkanRenderer.cpp
 
@@ -60,7 +60,7 @@ add_library( graphics_vulkan STATIC
     ${VULKAN_SRC_DIR}/vk/ImageView.cpp
 )
 
-target_include_directories( graphics_vulkan 
+target_include_directories( vulkan 
     PUBLIC
         $<BUILD_INTERFACE:${VULKAN_INC_DIR}>
 	    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
@@ -68,7 +68,7 @@ target_include_directories( graphics_vulkan
         $<BUILD_INTERFACE:${VULKAN_SRC_DIR}>
         $<BUILD_INTERFACE:${LOADER_DIR}/include>
 )
-target_link_libraries( graphics_vulkan PUBLIC vulkan PRIVATE base graphics_interface )
+target_link_libraries( vulkan PRIVATE base graphics_interface loader )
 
 # spir-v ------------------------------------------------------------------------------------------
 set( SHADER_DIR ${VULKAN_INC_DIR}/Graphics/shaders )
