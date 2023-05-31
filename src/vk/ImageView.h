@@ -14,9 +14,9 @@ class ImageView : public virtual Object, public Interfaces< ImageView, ICreate >
 {
 public:
     VkImageViewCreateFlags  flags        = 0;
-    VkImageViewType         view_type    = VK_IMAGE_VIEW_TYPE_2D;
+    VkImageViewType         viewType    = VK_IMAGE_VIEW_TYPE_2D;
     VkFormat                format       = VK_FORMAT_UNDEFINED;
-    VkImageSubresourceRange subresource_range;
+    VkImageSubresourceRange subresourceRange;
     VkComponentMapping      components
     {
         VK_COMPONENT_SWIZZLE_IDENTITY,

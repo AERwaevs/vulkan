@@ -32,7 +32,7 @@ VulkanViewport::VulkanViewport( Window* window )
     (
       _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
     ) ),
-    _swapchain_prefs( vk::SwapchainPreferences() ),
+    _swapchain_prefs( vk::SwapchainPreferences::defaults() ),
     _swapchain( vk::Swapchain::create
     (
       _physical_device, _device, _surface,

@@ -10,14 +10,14 @@ Swapchain::Swapchain
 )
 : _device{ device }, _surface{ surface }
 {
-    const auto& details = QuerySwapchainSupport( *physical_device, *surface );
-    const auto& extent = SelectSwapExtent( details, width, height );
-    const auto& surfaceFormat = SelectSwapSurfaceFormat( details, preferences.surfaceFormat );
-    const auto& presentMode = SelectSwapPresentMode( details, preferences.presentMode );
-    const auto& minImageCount = std::max( preferences.imageCount, details.capabilities.minImageCount + 1 );
-          auto  imageCount = (details.capabilities.maxImageCount > 0
-            ? std::min( minImageCount, details.capabilities.maxImageCount )
-            : std::max( preferences.imageCount, minImageCount ));
+    const auto details       = QuerySwapchainSupport( *physical_device, *surface );
+    const auto extent        = SelectSwapExtent( details, width, height );
+    const auto surfaceFormat = SelectSwapSurfaceFormat( details, preferences.surfaceFormat );
+    const auto presentMode   = SelectSwapPresentMode( details, preferences.presentMode );
+          auto imageCount    = std::max( preferences.imageCount, details.capabilities.minImageCount + 1 );
+               imageCount    = details.capabilities.maxImageCount > 0
+                             ? std::min( imageCount, details.capabilities.maxImageCount )
+                             : imageCount;
     auto [ graphicsFamily, presentFamily ]{ physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() ) };
     uint32_t queueFamilyIndices[]
     {
@@ -40,8 +40,8 @@ Swapchain::Swapchain
         extent,
         1u, //* imageArrayLayers is only > 1 if swapchain is stereoscopic
         VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,    //! preferences.imageUsage is always garbage?
-        graphicsFamily != presentFamily ? VK_SHARING_MODE_CONCURRENT : VK_SHARING_MODE_EXCLUSIVE,
-        graphicsFamily != presentFamily ? 2u : 1u, //pQueueFamilyIndices
+        graphicsFamily == presentFamily ? VK_SHARING_MODE_EXCLUSIVE : VK_SHARING_MODE_CONCURRENT,
+        graphicsFamily == presentFamily ? 1u : 2u, //pQueueFamilyIndices
         queueFamilyIndices,
         details.capabilities.currentTransform,
         VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
@@ -60,12 +60,19 @@ Swapchain::Swapchain
     std::vector<VkImage> images( imageCount );
     vkGetSwapchainImagesKHR( *device, _swapchain, &imageCount, images.data() );
 
-    //for( std::size_t i = 0; i < images.size(); i++ )
-    //{
-    //    auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
-    //    image_view->Compile( _device.get() );
-    //    _views.push_back( image_view );
-    //}
+    for( std::size_t i = 0; i < images.size(); i++ )
+    {
+        auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
+        image_view->viewType = VK_IMAGE_VIEW_TYPE_2D;
+        image_view->format = surfaceFormat.format;
+        image_view->subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+        image_view->subresourceRange.baseMipLevel = 0;
+        image_view->subresourceRange.levelCount = 1;
+        image_view->subresourceRange.baseArrayLayer = 0;
+        image_view->subresourceRange.layerCount = 1;
+        image_view->Compile( device.get() );
+        _views.push_back( image_view );
+    }
 }
 
 Swapchain::~Swapchain()

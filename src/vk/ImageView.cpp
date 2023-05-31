@@ -9,13 +9,13 @@ ImageView::ImageView( ref_ptr<Image> in_image )
 {
     if( image )
     {
-        view_type                        = VK_IMAGE_VIEW_TYPE_2D; // TODO - handle other image types
+        viewType                        = VK_IMAGE_VIEW_TYPE_2D; // TODO - handle other image types
         format                           = image->format;
-        subresource_range.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT; //TODO - get correct aspect flags
-        subresource_range.baseMipLevel   = 0;
-        subresource_range.levelCount     = image->mip_levels;
-        subresource_range.baseArrayLayer = 0;
-        subresource_range.layerCount     = image->arr_layers;
+        subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT; //TODO - get correct aspect flags
+        subresourceRange.baseMipLevel   = 0;
+        subresourceRange.levelCount     = image->mip_levels;
+        subresourceRange.baseArrayLayer = 0;
+        subresourceRange.layerCount     = image->arr_layers;
     }
 }
 
@@ -30,8 +30,10 @@ void ImageView::Compile( Device* device )
         VK_IMAGE_VIEW_TYPE_2D,
         format,
         components,
-        subresource_range
+        subresourceRange
     };
+
+    _device = device;
 
     if( image )
     {
