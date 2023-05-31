@@ -1,39 +1,5 @@
 # cmake -------------------------------------------------------------------------------------------
 cmake_minimum_required( VERSION 3.2.0 )
-# AEON::Vulkan ------------------------------------------------------------------------------------
-set( VULKAN_LIB ${CMAKE_CURRENT_SOURCE_DIR}/lib )
-set( VULKAN_INC ${CMAKE_CURRENT_SOURCE_DIR}/inc )
-set( VULKAN_SRC ${CMAKE_CURRENT_SOURCE_DIR}/src )
-
-set( VULKAN_EXTENSIONS
-    "VK_KHR_surface"
-    "VK_EXT_debug_utils"
-    "VK_KHR_win32_surface"
-    "VK_KHR_swapchain"
-)
-
-add_library( aeon-platform-vulkan STATIC  
-    ${VULKAN_SRC}/VulkanViewport.cpp
-    ${VULKAN_SRC}/VulkanRenderer.cpp
-
-    ${VULKAN_SRC}/vk/Instance.cpp 
-    ${VULKAN_SRC}/vk/PhysicalDevice.cpp
-    ${VULKAN_SRC}/vk/LogicalDevice.cpp
-    ${VULKAN_SRC}/vk/Surface.cpp
-    ${VULKAN_SRC}/vk/Swapchain.cpp
-    ${VULKAN_SRC}/vk/Image.cpp
-    ${VULKAN_SRC}/vk/ImageView.cpp
-)
-
-target_include_directories( aeon-platform-vulkan 
-    PUBLIC
-        $<BUILD_INTERFACE:${VULKAN_INC}>
-	    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
-    PRIVATE
-        $<BUILD_INTERFACE:${VULKAN_SRC}>
-)
-target_link_libraries( aeon-platform-vulkan PRIVATE aeon-base aeon-graphics )
-
 # submodules --------------------------------------------------------------------------------------
 find_package( Git QUIET )
 if( GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git" )
@@ -48,30 +14,112 @@ if( GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git" )
         endif()
     endif()
 endif()
-# vulkan loader -----------------------------------------------------------------------------------
-set( GLAD_DIR "${VULKAN_LIB}/glad" )
-set( LOADER_DIR "${VULKAN_LIB}/vulkan")
+# vulkan_loader -----------------------------------------------------------------------------------
+set( GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/glad" )
+set( LOADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/loader")
 
-if( NOT EXISTS "${LOADER_DIR}/include/glad/vulkan.h" )
-    message( STATUS "Vulkan header not found!" )
-endif()
+set( VK_EXTENSIONS
+    "VK_KHR_surface"
+    "VK_EXT_debug_utils"
+    "VK_KHR_win32_surface"
+    "VK_KHR_swapchain"
+)
 
 if( NOT EXISTS "${GLAD_DIR}/cmake/CMakeLists.txt" )
     message( FATAL_ERROR "Glad submodule not present! GIT_SUBMODULE was turned off or failed. Please update submodules and try again." )
 endif()
 
-add_subdirectory( "${GLAD_DIR}/cmake" GLAD_DIR )
+if( NOT EXISTS "${LOADER_DIR}/include/glad/vulkan.h" )
+    message( STATUS "Vulkan header not found, generating a loader" )
+endif()
 
+add_subdirectory( "${GLAD_DIR}/cmake" GLAD_DIR )
 glad_add_library( vulkan SHARED
     EXCLUDE_FROM_ALL
     LOADER
     LOCATION    ${LOADER_DIR}
     API         vulkan=1.3
-    EXTENSIONS  ${VULKAN_EXTENSIONS}
+    EXTENSIONS  ${VK_EXTENSIONS}
+)
+target_compile_definitions( vulkan PUBLIC $<$<BOOL:${WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX> )
+# AEON::Vulkan ------------------------------------------------------------------------------------
+set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
+set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
+set( VULKAN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src )
+
+add_library( graphics_vulkan STATIC  
+    ${VULKAN_SRC_DIR}/VulkanViewport.cpp
+    ${VULKAN_SRC_DIR}/VulkanRenderer.cpp
+
+    ${VULKAN_SRC_DIR}/vk/Instance.cpp 
+    ${VULKAN_SRC_DIR}/vk/PhysicalDevice.cpp
+    ${VULKAN_SRC_DIR}/vk/LogicalDevice.cpp
+    ${VULKAN_SRC_DIR}/vk/Surface.cpp
+    ${VULKAN_SRC_DIR}/vk/Swapchain.cpp
+    ${VULKAN_SRC_DIR}/vk/Image.cpp
+    ${VULKAN_SRC_DIR}/vk/ImageView.cpp
 )
 
-if( WIN32 )
-    target_compile_definitions( vulkan PUBLIC VK_USE_PLATFORM_WIN32_KHR NOMINMAX ) 
-endif()
+target_include_directories( graphics_vulkan 
+    PUBLIC
+        $<BUILD_INTERFACE:${VULKAN_INC_DIR}>
+	    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    PRIVATE
+        $<BUILD_INTERFACE:${VULKAN_SRC_DIR}>
+        $<BUILD_INTERFACE:${LOADER_DIR}/include>
+)
+target_link_libraries( graphics_vulkan PUBLIC vulkan PRIVATE base graphics_interface )
 
-target_link_libraries( aeon-platform-vulkan PRIVATE vulkan )
+# spir-v ------------------------------------------------------------------------------------------
+set( SHADER_DIR ${VULKAN_INC_DIR}/Graphics/shaders )
+set( SHADER_COMPILER glslc )
+
+file( GLOB_RECURSE SHADER_CONF ${SHADER_DIR}/*.conf  ) # config file that replaces the default configuration
+file( GLOB_RECURSE SHADER_VERT ${SHADER_DIR}/*.vert  ) # vertex shader
+file( GLOB_RECURSE SHADER_TESC ${SHADER_DIR}/*.tesc  ) # tessellation control shader
+file( GLOB_RECURSE SHADER_TESE ${SHADER_DIR}/*.tese  ) # tessellation evaluation shader
+file( GLOB_RECURSE SHADER_GEOM ${SHADER_DIR}/*.geom  ) # geometry shader
+file( GLOB_RECURSE SHADER_FRAG ${SHADER_DIR}/*.frag  ) # fragment shader
+file( GLOB_RECURSE SHADER_COMP ${SHADER_DIR}/*.comp  ) # compute shader
+file( GLOB_RECURSE SHADER_MESH ${SHADER_DIR}/*.mesh  ) # mesh shader
+file( GLOB_RECURSE SHADER_TASK ${SHADER_DIR}/*.task  ) # task shader
+file( GLOB_RECURSE SHADER_RGEN ${SHADER_DIR}/*.rgen  ) # ray generation shader
+file( GLOB_RECURSE SHADER_RINT ${SHADER_DIR}/*.rint  ) # ray intersection shader
+file( GLOB_RECURSE SHADER_RAHT ${SHADER_DIR}/*.rahit ) # ray any hit shader
+file( GLOB_RECURSE SHADER_RCHT ${SHADER_DIR}/*.rchit ) # ray closest hit shader
+file( GLOB_RECURSE SHADER_RMSS ${SHADER_DIR}/*.rmiss ) # ray miss shader
+file( GLOB_RECURSE SHADER_RCLL ${SHADER_DIR}/*.rcall ) # ray callable shader
+file( GLOB_RECURSE SHADER_GLSL ${SHADER_DIR}/*.glsl  ) # for .vert.glsl, .tesc.glsl, ..., .comp.glsl compound suffixes
+file( GLOB_RECURSE SHADER_HLSL ${SHADER_DIR}/*.hlsl  ) # for .hlsl or related compound suffixes
+
+set( SHADER_SRC 
+    ${SHADER_CONF}
+    ${SHADER_VERT}
+    ${SHADER_TESC}
+    ${SHADER_TESE}
+    ${SHADER_GEOM}
+    ${SHADER_FRAG}
+    ${SHADER_COMP}
+    ${SHADER_MESH}
+    ${SHADER_TASK}
+    ${SHADER_RGEN}
+    ${SHADER_RINT}
+    ${SHADER_RAHT}
+    ${SHADER_RCHT}
+    ${SHADER_RMSS}
+    ${SHADER_RCLL}
+    ${SHADER_GLSL}
+    ${SHADER_HLSL}
+)
+
+message( STATUS "Compiling spir-v shaders... ")
+foreach( SHADER ${SHADER_SRC} )
+    string( CONCAT SHADER_SPV "${SHADER}" ".spv" )
+    message(STATUS "Compiling ${SHADER} => ${SHADER_SPV}")
+    execute_process(
+        COMMAND
+            ${SHADER_COMPILER} ${SHADER} -o ${SHADER_SPV}
+        WORKING_DIRECTORY
+            ${CMAKE_CURRENT_SOURCE_DIR}
+    )
+endforeach()
