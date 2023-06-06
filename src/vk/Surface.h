@@ -6,7 +6,7 @@
 
 #include "Instance.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 class Surface : public virtual Object, public Implements< Surface, ICreate >

@@ -1,7 +1,7 @@
 #include <Graphics/VulkanViewport.h>
 #include <Graphics/VulkanRenderer.h>
 
-namespace AEON::Graphics
+namespace aer::Graphics
 {
 
 template<>
@@ -47,4 +47,4 @@ VulkanViewport::~VulkanViewport()
     AE_INFO( "VulkanViewport destroyed" );
 }
 
-} // namespace AEON::Graphics
+} // namespace aer::Graphics

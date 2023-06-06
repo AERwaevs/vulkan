@@ -2,7 +2,7 @@
 #include "Surface.h"
 #include "PhysicalDevice.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 #ifdef AEON_DEBUG

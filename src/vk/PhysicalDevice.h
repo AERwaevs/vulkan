@@ -5,7 +5,7 @@
 #include "Instance.h"
 #include "Surface.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 class PhysicalDevice : public Object

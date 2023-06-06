@@ -1,6 +1,6 @@
 #include "Image.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 Image::Image( VkImage image, Device* device )
@@ -90,4 +90,4 @@ Image::~Image()
 }
 
 
-} // namespace AEON::Graphics::vk 
+} // namespace aer::Graphics::vk 

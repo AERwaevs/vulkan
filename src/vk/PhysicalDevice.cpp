@@ -4,7 +4,7 @@
 #include "PhysicalDevice.h"
 #include "Swapchain.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )

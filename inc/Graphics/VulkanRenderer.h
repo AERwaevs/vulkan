@@ -8,7 +8,7 @@
 
 #define AEON_VK_VERSION GLAD_MAKE_VERSION( 1, 2 )
 
-namespace AEON::Graphics
+namespace aer::Graphics
 {
     inline bool VulkanSupported()
     {

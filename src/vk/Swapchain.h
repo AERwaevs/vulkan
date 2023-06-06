@@ -7,7 +7,7 @@
 #include "Image.h"
 #include "ImageView.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 struct SwapchainSupportDetails
@@ -67,4 +67,4 @@ private:
 
 };
 
-}// namespace AEON::Graphics::vk
+}// namespace aer::Graphics::vk

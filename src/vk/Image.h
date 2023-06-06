@@ -6,7 +6,7 @@
 
 #include "LogicalDevice.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 class Image : public virtual Object, public Interfaces< Image, ICreate >

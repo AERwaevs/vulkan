@@ -7,7 +7,7 @@
 #include "Instance.h"
 #include "Image.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 class ImageView : public virtual Object, public Interfaces< ImageView, ICreate >

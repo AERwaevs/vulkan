@@ -5,7 +5,7 @@
 #include "Instance.h"
 #include "PhysicalDevice.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 struct QueueSetting

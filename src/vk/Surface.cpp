@@ -10,7 +10,7 @@
 #   define  vkCreateSurfaceKHR vkCreateXcbSurfaceKHR
 #endif
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 #ifdef AEON_PLATFORM_WINDOWS

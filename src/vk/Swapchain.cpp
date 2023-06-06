@@ -1,6 +1,6 @@
 #include "Swapchain.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 Swapchain::Swapchain
@@ -154,4 +154,4 @@ VkExtent2D SelectSwapExtent( const SwapchainSupportDetails& details, uint32_t wi
     };
 }
 
-}// namespace AEON::Graphics::vk
+}// namespace aer::Graphics::vk

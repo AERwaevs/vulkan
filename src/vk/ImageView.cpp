@@ -1,7 +1,7 @@
 #include "ImageView.h"
 #include "LogicalDevice.h"
 
-namespace AEON::Graphics::vk
+namespace aer::Graphics::vk
 {
 
 ImageView::ImageView( ref_ptr<Image> in_image )
@@ -54,4 +54,4 @@ ImageView::~ImageView()
     }
 }
 
-} // namespace AEON::Graphics::vk
+} // namespace aer::Graphics::vk
