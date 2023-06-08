@@ -47,10 +47,15 @@ set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
 set( VULKAN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src )
 
-add_library( vulkan STATIC  
+set( VULKAN_HEADER    
+    ${VULKAN_INC_DIR}/Graphics/VulkanViewport.h
+    ${VULKAN_INC_DIR}/Graphics/VulkanRenderer.h
+)
+
+set( VULKAN_SRC    
     ${VULKAN_SRC_DIR}/VulkanViewport.cpp
     ${VULKAN_SRC_DIR}/VulkanRenderer.cpp
-
+    
     ${VULKAN_SRC_DIR}/vk/Instance.cpp 
     ${VULKAN_SRC_DIR}/vk/PhysicalDevice.cpp
     ${VULKAN_SRC_DIR}/vk/LogicalDevice.cpp
@@ -58,6 +63,12 @@ add_library( vulkan STATIC
     ${VULKAN_SRC_DIR}/vk/Swapchain.cpp
     ${VULKAN_SRC_DIR}/vk/Image.cpp
     ${VULKAN_SRC_DIR}/vk/ImageView.cpp
+    ${VULKAN_SRC_DIR}/vk/ShaderModule.cpp
+)
+
+add_library( vulkan STATIC  
+    ${VULKAN_HEADER}
+    ${VULKAN_SRC}
 )
 
 target_include_directories( vulkan 

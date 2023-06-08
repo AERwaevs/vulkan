@@ -1,6 +1,8 @@
 #include <Graphics/VulkanViewport.h>
 #include <Graphics/VulkanRenderer.h>
 
+#include "vk/ShaderModule.h"
+
 namespace aer::Graphics
 {
 
@@ -40,6 +42,13 @@ VulkanViewport::VulkanViewport( Window* window )
         _physical_device, _device, _surface,
         window->width(), window->height(), _swapchain_prefs
     );
+
+    const std::string vert_path( "shaders/tri.vert.spv" );
+    const std::string frag_path( "shaders/tri.frag.spv" );
+
+    auto vert_module = vk::ShaderModule::create( _device, vk::ShaderModule::ReadFromFile( vert_path ) );
+    auto frag_module = vk::ShaderModule::create( _device, vk::ShaderModule::ReadFromFile( frag_path ) );
+
     AE_INFO( "VulkanViewport created" );
 }
 
