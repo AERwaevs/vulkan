@@ -11,6 +11,7 @@ namespace aer::Graphics::vk
 {
     using Name                          = const char*;
     using Names                         = std::vector<Name>;
+    using PhysicalDeviceTypes           = std::vector<VkPhysicalDeviceType>;
     using InstanceLayerProperties       = std::vector<VkLayerProperties>;
     using InstanceExtensionProperties   = std::vector<VkExtensionProperties>;
 
@@ -20,6 +21,7 @@ namespace aer::Graphics::vk
     std::string                 UnpackNames( const Names& names );
 
     class PhysicalDevice;
+    class Surface;
 
     class Instance : public virtual Object, public Implements< Instance, ICreate, ISingleton >
     {
@@ -29,7 +31,8 @@ namespace aer::Graphics::vk
         operator    VkInstance() const { return _instance; }
 
         using PhysicalDevices = std::vector<ref_ptr<PhysicalDevice>>;
-        PhysicalDevices& physical_devices() { return _physical_devices; }
+        PhysicalDevices&         physical_devices() { return _physical_devices; }
+        ref_ptr<PhysicalDevice>  physical_device( VkQueueFlags flags, Surface* surface, const PhysicalDeviceTypes& prefs );
 
         template< typename F >
         VkResult GetProcAddr( F& proc_addr, const char* name ) const
@@ -61,6 +64,12 @@ namespace aer::Graphics::vk
         PFN_vkDestroyDebugUtilsMessengerEXT DestroyDebugUtilsMessenger  = VK_NULL_HANDLE;
 #endif
     public:
+        static inline const PhysicalDeviceTypes DevicePreferences
+        {
+            VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU,
+            VK_PHYSICAL_DEVICE_TYPE_INTEGRATED_GPU,
+            VK_PHYSICAL_DEVICE_TYPE_VIRTUAL_GPU
+        };
         static inline const Names RequiredLayers
         {
 #ifdef  AEON_DEBUG

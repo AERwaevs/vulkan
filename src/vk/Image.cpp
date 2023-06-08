@@ -16,17 +16,17 @@ void Image::Compile( Device* device )
         VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO,
         VK_NULL_HANDLE,
         flags,
-        image_type,
+        imageType,
         format,
         extent,
-        mip_levels,
-        arr_layers,
+        mipLevels,
+        arrayLayers,
         samples,
         tiling,
         usage,
-        share_mode,
-        static_cast<uint32_t>( queue_indices.size() ),
-        queue_indices.data(),
+        shareMode,
+        static_cast<uint32_t>( queueFamilyIndices.size() ),
+        queueFamilyIndices.data(),
         layout
     };
 

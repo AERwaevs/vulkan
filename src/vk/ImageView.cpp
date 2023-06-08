@@ -13,9 +13,9 @@ ImageView::ImageView( ref_ptr<Image> in_image )
         format                           = image->format;
         subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT; //TODO - get correct aspect flags
         subresourceRange.baseMipLevel   = 0;
-        subresourceRange.levelCount     = image->mip_levels;
+        subresourceRange.levelCount     = image->mipLevels;
         subresourceRange.baseArrayLayer = 0;
-        subresourceRange.layerCount     = image->arr_layers;
+        subresourceRange.layerCount     = image->arrayLayers;
     }
 }
 

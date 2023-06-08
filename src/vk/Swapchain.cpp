@@ -8,7 +8,7 @@ Swapchain::Swapchain
     ref_ptr<PhysicalDevice> physical_device, ref_ptr<Device> device, ref_ptr<Surface> surface,
     uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old
 )
-: _device{ device }, _surface{ surface }
+: _device( device ), _surface( surface )
 {
     const auto details       = QuerySwapchainSupport( *physical_device, *surface );
     const auto extent        = SelectSwapExtent( details, width, height );
@@ -39,7 +39,7 @@ Swapchain::Swapchain
         surfaceFormat.colorSpace,
         extent,
         1u, //* imageArrayLayers is only > 1 if swapchain is stereoscopic
-        VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT,    //! preferences.imageUsage is always garbage?
+        preferences.imageUsage,    //! preferences.imageUsage is always garbage?
         graphicsFamily == presentFamily ? VK_SHARING_MODE_EXCLUSIVE : VK_SHARING_MODE_CONCURRENT,
         graphicsFamily == presentFamily ? 1u : 2u, //pQueueFamilyIndices
         queueFamilyIndices,

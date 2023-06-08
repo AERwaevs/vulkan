@@ -20,24 +20,18 @@ struct SwapchainSupportDetails
 struct SwapchainPreferences
 {
     // defaults to triple buffering
-    uint32_t            imageCount;
+    uint32_t            imageCount = 3u;
     // defaults to 8bits per channel unsigned float, SRGB
-    VkSurfaceFormatKHR  surfaceFormat;
+    VkSurfaceFormatKHR  surfaceFormat = VkSurfaceFormatKHR{ VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR };
     // defaults to vysnc on
-    VkPresentModeKHR    presentMode;
+    VkPresentModeKHR    presentMode = VK_PRESENT_MODE_FIFO_KHR;
     // defaults to render direct to image
-    VkImageUsageFlags   imageUsage;
+    VkImageUsageFlags   imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
 
-    static auto defaults()
-    {
-        return SwapchainPreferences
-        {
-            3,
-            VkSurfaceFormatKHR{ VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR },
-            VK_PRESENT_MODE_FIFO_KHR,
-            VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT
-        };
-    }
+    SwapchainPreferences()
+    : imageCount( 3u ), surfaceFormat{ VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR },
+      presentMode( VK_PRESENT_MODE_FIFO_KHR ), imageUsage( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT )
+    {};
 };
 
 SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfaceKHR surface );
@@ -64,7 +58,6 @@ private:
     VkSwapchainKHR          _swapchain;
     VkFormat                _format;
     VkExtent2D              _extent;
-
 };
 
 }// namespace aer::Graphics::vk

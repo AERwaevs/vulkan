@@ -13,16 +13,16 @@ class Image : public virtual Object, public Interfaces< Image, ICreate >
 {
 public:
     VkImageCreateFlags      flags       = 0;
-    VkImageType             image_type  = VK_IMAGE_TYPE_2D;
+    VkImageType             imageType   = VK_IMAGE_TYPE_2D;
     VkFormat                format      = VK_FORMAT_UNDEFINED;
     VkExtent3D              extent      = { 0, 0, 0 };
-    uint32_t                mip_levels  = 0;
-    uint32_t                arr_layers  = 0;
+    uint32_t                mipLevels   = 0;
+    uint32_t                arrayLayers = 0;
     VkSampleCountFlagBits   samples     = VK_SAMPLE_COUNT_1_BIT;
     VkImageTiling           tiling      = VK_IMAGE_TILING_OPTIMAL;
     VkImageUsageFlags       usage       = 0;
-    VkSharingMode           share_mode  = VK_SHARING_MODE_EXCLUSIVE;
-    std::vector<uint32_t>   queue_indices;
+    VkSharingMode           shareMode   = VK_SHARING_MODE_EXCLUSIVE;
+    std::vector<uint32_t>   queueFamilyIndices;
     VkImageLayout           layout      = VK_IMAGE_LAYOUT_UNDEFINED;
 public:
     Image( VkImage image, Device* device );

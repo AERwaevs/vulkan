@@ -134,6 +134,20 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     //} );
 }
 
+ref_ptr<PhysicalDevice> Instance::physical_device( VkQueueFlags flags, Surface* surface, const PhysicalDeviceTypes& prefs )
+{
+    for( uint32_t i = 0; i <= prefs.size(); ++i )
+    {
+        for( auto& device : _physical_devices )
+        {
+            if( i < prefs.size() && device->properties().deviceType != prefs[i] ) continue;
+            auto [ present_family, graphics_family ] = device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface );
+            if( graphics_family >= 0 && present_family >= 0 ) return device;
+        }
+    }
+    return{};
+}
+
 AEON_API Instance::~Instance()
 {
 #if AEON_DEBUG

@@ -10,11 +10,11 @@ ref_ptr<Viewport> Viewport::create< API::Vulkan >( Window* window )
     return VulkanViewport::create_if( VulkanSupported(), window );
 }
 
-const auto GetQueueSettings( ref_ptr<vk::PhysicalDevice> physical_device, ref_ptr<vk::Surface> surface )
+const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Surface* surface )
 {
     auto [ present_family, graphics_family ]
     {
-        physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() )
+        physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface )
     };
     return vk::QueueSettings
     {
@@ -27,18 +27,19 @@ VulkanViewport::VulkanViewport( Window* window )
 :   Viewport( window, VulkanRenderer::get_or_create().get() ),
     _instance( vk::Instance::get_or_create() ),
     _surface( vk::Surface::create( _instance, window ) ),
-    _physical_device( _instance->physical_devices().front() ),  //TODO remove hardcoded physical device selection
+    _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface.get(), _instance->DevicePreferences ) ),
     _device( vk::Device::create
     (
-      _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
+        _physical_device, _surface, GetQueueSettings( _physical_device.get(), _surface.get() )
     ) ),
-    _swapchain_prefs( vk::SwapchainPreferences::defaults() ),
-    _swapchain( vk::Swapchain::create
-    (
-      _physical_device, _device, _surface,
-      window->width(), window->height(), _swapchain_prefs
-    ) )
+    _swapchain_prefs()
 {
+    //? if _swapchain is created during initialisation, it seems to execute before _swapchain_prefs is constructed
+    _swapchain = vk::Swapchain::create
+    (
+        _physical_device, _device, _surface,
+        window->width(), window->height(), _swapchain_prefs
+    );
     AE_INFO( "VulkanViewport created" );
 }
 
