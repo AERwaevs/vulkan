@@ -9,7 +9,7 @@
 namespace aer::Graphics::vk
 {
 
-class Surface : public virtual Object, public Implements< Surface, ICreate >
+class Surface : public virtual Object, public Interfaces< Surface, ICreate >
 {
 public:
     Surface( ref_ptr<Instance> instance, Window* window );

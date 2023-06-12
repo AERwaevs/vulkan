@@ -23,7 +23,7 @@ namespace aer::Graphics::vk
     class PhysicalDevice;
     class Surface;
 
-    class Instance : public virtual Object, public Implements< Instance, ICreate, ISingleton >
+    class Instance : public Object, public Interfaces< Instance, ICreate, ISingleton >
     {
     public:
         Instance( Names extensions = RequiredExtensions, Names layers = RequiredLayers );

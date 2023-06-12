@@ -15,7 +15,7 @@ struct QueueSetting
 };
 using QueueSettings = Vector<QueueSetting>;
 
-class Device : public virtual Object, public Implements< Device, ICreate >
+class Device : public virtual Object, public Interfaces< Device, ICreate >
 {
 public:
     Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surface,
