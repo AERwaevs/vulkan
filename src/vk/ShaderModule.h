@@ -6,15 +6,16 @@
 
 namespace aer::Graphics::vk
 {
-
-using ByteCode = std::vector<char>;
+    
+struct ByteCode : public Object, public Interfaces< ByteCode, ICreate, IRead, ITypeInfo >, public std::vector<char>
+{
+    ByteCode( std::vector<char> bytes ) : std::vector<char>( bytes ) {};
+};
 
 class ShaderModule : public virtual Object, public Interfaces< ShaderModule, ICreate >
 {
 public:
-    ShaderModule( ref_ptr<Device> device, const std::vector<char>& byte_code );
-public:
-    static ByteCode ReadFromFile( const std::string& path );
+    ShaderModule( ref_ptr<Device> device, const ByteCode& byte_code );
 protected:
     virtual ~ShaderModule();
 

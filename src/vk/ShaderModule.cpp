@@ -5,7 +5,7 @@
 
 namespace aer::Graphics::vk
 {
-    ShaderModule::ShaderModule( ref_ptr<Device> device, const std::vector<char>& byte_code )
+    ShaderModule::ShaderModule( ref_ptr<Device> device, const ByteCode& byte_code )
     :   _device( device )
     {
         VkShaderModuleCreateInfo createInfo
@@ -24,21 +24,6 @@ namespace aer::Graphics::vk
     ShaderModule::~ShaderModule()
     {
         vkDestroyShaderModule( *_device, _module, VK_NULL_HANDLE );
-    }
-
-    ByteCode ShaderModule::ReadFromFile( const std::string& path )
-    {
-        std::ifstream file( path, std::ios::ate | std::ios::binary );
-        AE_WARN_IF( !file.is_open(), "Failed to open %s", path.c_str() );
-
-        std::size_t         file_size = static_cast<std::size_t>( file.tellg() );
-        std::vector<char>   code( file_size );
-
-        file.seekg(0);
-        file.read( code.data(), file_size );
-        file.close();
-
-        return code;
     }
     
 } // namespace aer::Graphics

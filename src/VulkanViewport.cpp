@@ -43,12 +43,16 @@ VulkanViewport::VulkanViewport( Window* window )
         window->width(), window->height(), _swapchain_prefs
     );
 
-    const std::string vert_path( "shaders/tri.vert.spv" );
-    const std::string frag_path( "shaders/tri.frag.spv" );
+    // get shader bytecode
+    auto vert_code = vk::ByteCode::read( "shaders/tri.vert.spv" );
+    auto frag_code = vk::ByteCode::read( "shaders/tri.frag.spv" );
 
-    auto vert_module = vk::ShaderModule::create( _device, vk::ShaderModule::ReadFromFile( vert_path ) );
-    auto frag_module = vk::ShaderModule::create( _device, vk::ShaderModule::ReadFromFile( frag_path ) );
+    // create shader modules
+    auto vert_module = vk::ShaderModule::create( _device, *vert_code );
+    auto frag_module = vk::ShaderModule::create( _device, *frag_code );
 
+    // create shader stages
+    
     AE_INFO( "VulkanViewport created" );
 }
 
