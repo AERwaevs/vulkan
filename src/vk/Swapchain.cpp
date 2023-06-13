@@ -10,16 +10,17 @@ Swapchain::Swapchain
 )
 : _device( device ), _surface( surface )
 {
-    const auto details       = QuerySwapchainSupport( *physical_device, *surface );
-    const auto extent        = SelectSwapExtent( details, width, height );
-    const auto surfaceFormat = SelectSwapSurfaceFormat( details, preferences.surfaceFormat );
-    const auto presentMode   = SelectSwapPresentMode( details, preferences.presentMode );
-          auto imageCount    = std::max( preferences.imageCount, details.capabilities.minImageCount + 1 );
-               imageCount    = details.capabilities.maxImageCount > 0
-                             ? std::min( imageCount, details.capabilities.maxImageCount )
-                             : imageCount;
+    const auto details          = QuerySwapchainSupport( *physical_device, *surface );
+    const auto extent           = SelectSwapExtent( details, width, height );
+    const auto surfaceFormat    = SelectSwapSurfaceFormat( details, preferences.surfaceFormat );
+    const auto presentMode      = SelectSwapPresentMode( details, preferences.presentMode );
+    const auto imageArrayLayers = 1u; //* imageArrayLayers is only > 1 if swapchain is stereoscopic
+          auto imageCount       = std::max( preferences.imageCount, details.capabilities.minImageCount + 1 );
+               imageCount       = details.capabilities.maxImageCount > 0
+                                ? std::min( imageCount, details.capabilities.maxImageCount )
+                                : imageCount;
     auto [ graphicsFamily, presentFamily ]{ physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, surface.get() ) };
-    uint32_t queueFamilyIndices[]
+    const std::vector<uint32_t> queueFamilyIndices
     {
         static_cast<uint32_t>( graphicsFamily ),
         static_cast<uint32_t>( presentFamily )
@@ -38,11 +39,11 @@ Swapchain::Swapchain
         surfaceFormat.format,
         surfaceFormat.colorSpace,
         extent,
-        1u, //* imageArrayLayers is only > 1 if swapchain is stereoscopic
-        preferences.imageUsage,    //! preferences.imageUsage is always garbage?
+        imageArrayLayers, 
+        preferences.imageUsage,
         graphicsFamily == presentFamily ? VK_SHARING_MODE_EXCLUSIVE : VK_SHARING_MODE_CONCURRENT,
-        graphicsFamily == presentFamily ? 1u : 2u, //pQueueFamilyIndices
-        queueFamilyIndices,
+        graphicsFamily == presentFamily ? 1u : static_cast<uint32_t>( queueFamilyIndices.size() ),
+        queueFamilyIndices.data(),
         details.capabilities.currentTransform,
         VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
         presentMode,
@@ -63,14 +64,22 @@ Swapchain::Swapchain
     for( std::size_t i = 0; i < images.size(); i++ )
     {
         auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
-        image_view->viewType = VK_IMAGE_VIEW_TYPE_2D;
-        image_view->format = surfaceFormat.format;
-        image_view->subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-        image_view->subresourceRange.baseMipLevel = 0;
-        image_view->subresourceRange.levelCount = 1;
+
+        image_view->image->usage                    = preferences.imageUsage;
+        image_view->image->extent                   = { _extent.width, _extent.width, 1 };
+        image_view->image->arrayLayers              = imageArrayLayers;
+        image_view->image->format                   = _format;
+        image_view->image->mipLevels                = 1;
+
+        image_view->viewType                        = VK_IMAGE_VIEW_TYPE_2D;
+        image_view->format                          = surfaceFormat.format;
+        image_view->subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+        image_view->subresourceRange.baseMipLevel   = 0;
+        image_view->subresourceRange.levelCount     = 1;
         image_view->subresourceRange.baseArrayLayer = 0;
-        image_view->subresourceRange.layerCount = 1;
+        image_view->subresourceRange.layerCount     = 1;
         image_view->Compile( device.get() );
+
         _views.push_back( image_view );
     }
 }

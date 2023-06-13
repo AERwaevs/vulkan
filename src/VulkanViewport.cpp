@@ -1,7 +1,7 @@
 #include <Graphics/VulkanViewport.h>
 #include <Graphics/VulkanRenderer.h>
 
-#include "vk/ShaderModule.h"
+#include "vk/state/ShaderModule.h"
 
 namespace aer::Graphics
 {

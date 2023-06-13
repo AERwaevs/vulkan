@@ -1,7 +1,4 @@
 #include "ShaderModule.h"
-#include "LogicalDevice.h"
-
-#include <glad/vulkan.h>
 
 namespace aer::Graphics::vk
 {
@@ -18,7 +15,7 @@ namespace aer::Graphics::vk
         };
 
         auto result = vkCreateShaderModule( *device, &createInfo, VK_NULL_HANDLE, &_module );
-        AE_FATAL_IF( result != VK_SUCCESS, "Failed to create shader module" );
+        AE_FATAL_IF( result != VK_SUCCESS, "Failed to create shader module: %s", ResultMessage( result ) );
     }
 
     ShaderModule::~ShaderModule()

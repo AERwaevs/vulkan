@@ -32,7 +32,7 @@ void Image::Compile( Device* device )
 
     _device = device;
     auto result = vkCreateImage( *_device, &create_info, VK_ALLOCATOR, &_image );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImage" );
+    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImage: %s", ResultMessage( result ) );
 #ifdef AEON_DEBUG
     AE_INFO
     (

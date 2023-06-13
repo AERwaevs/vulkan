@@ -61,9 +61,9 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/LogicalDevice.cpp
     ${VULKAN_SRC_DIR}/vk/Surface.cpp
     ${VULKAN_SRC_DIR}/vk/Swapchain.cpp
-    ${VULKAN_SRC_DIR}/vk/Image.cpp
-    ${VULKAN_SRC_DIR}/vk/ImageView.cpp
-    ${VULKAN_SRC_DIR}/vk/ShaderModule.cpp
+    ${VULKAN_SRC_DIR}/vk/state/Image.cpp
+    ${VULKAN_SRC_DIR}/vk/state/ImageView.cpp
+    ${VULKAN_SRC_DIR}/vk/state/ShaderModule.cpp
 )
 
 add_library( vulkan STATIC  

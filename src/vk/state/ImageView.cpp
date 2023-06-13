@@ -1,5 +1,4 @@
 #include "ImageView.h"
-#include "LogicalDevice.h"
 
 namespace aer::Graphics::vk
 {
@@ -10,7 +9,7 @@ ImageView::ImageView( ref_ptr<Image> in_image )
     if( image )
     {
         viewType                        = VK_IMAGE_VIEW_TYPE_2D; // TODO - handle other image types
-        format                           = image->format;
+        format                          = image->format;
         subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT; //TODO - get correct aspect flags
         subresourceRange.baseMipLevel   = 0;
         subresourceRange.levelCount     = image->mipLevels;
@@ -41,7 +40,7 @@ void ImageView::Compile( Device* device )
     }
 
     auto result = vkCreateImageView( *device, &create_info, VK_ALLOCATOR, &_image_view );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImageView" );
+    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImageView: %s", ResultMessage( result ) );
 }
 
 ImageView::~ImageView()

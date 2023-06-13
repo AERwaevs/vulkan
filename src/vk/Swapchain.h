@@ -4,8 +4,8 @@
 
 #include "LogicalDevice.h"
 #include "Surface.h"
-#include "Image.h"
-#include "ImageView.h"
+#include "state/Image.h"
+#include "state/ImageView.h"
 
 namespace aer::Graphics::vk
 {

@@ -4,7 +4,9 @@
 
 #include <glad/vulkan.h>
 
-#include "Instance.h"
+#include "../Instance.h"
+#include "../LogicalDevice.h"
+
 #include "Image.h"
 
 namespace aer::Graphics::vk
