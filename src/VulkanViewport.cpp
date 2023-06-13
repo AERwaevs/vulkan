@@ -52,13 +52,10 @@ VulkanViewport::VulkanViewport( Window* window )
     auto frag_module = vk::ShaderModule::create( _device, *frag_code );
 
     // create shader stages
-    
-    AE_INFO( "VulkanViewport created" );
 }
 
 VulkanViewport::~VulkanViewport()
 {
-    AE_INFO( "VulkanViewport destroyed" );
 }
 
 } // namespace aer::Graphics

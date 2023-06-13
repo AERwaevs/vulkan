@@ -11,12 +11,10 @@ template<> ref_ptr<Renderer> Renderer::create< API::Vulkan >()
 AEON_API VulkanRenderer::VulkanRenderer()
 : _vkinstance( vk::Instance::get_or_create() )
 {
-    AE_INFO( "VulkanRenderer created" );
 }
 
 AEON_API VulkanRenderer::~VulkanRenderer()
 {
-    AE_INFO( "VulkanRenderer destroyed" );
 }
 
 }
