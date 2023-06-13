@@ -27,11 +27,6 @@ struct SwapchainPreferences
     VkPresentModeKHR    presentMode = VK_PRESENT_MODE_FIFO_KHR;
     // defaults to render direct to image
     VkImageUsageFlags   imageUsage = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT;
-
-    SwapchainPreferences()
-    : imageCount( 3u ), surfaceFormat{ VK_FORMAT_B8G8R8A8_UNORM, VK_COLOR_SPACE_SRGB_NONLINEAR_KHR },
-      presentMode( VK_PRESENT_MODE_FIFO_KHR ), imageUsage( VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT )
-    {};
 };
 
 SwapchainSupportDetails QuerySwapchainSupport( VkPhysicalDevice device, VkSurfaceKHR surface );

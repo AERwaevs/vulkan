@@ -49,6 +49,7 @@ Surface::Surface( ref_ptr<Instance> instance, Window* window )
 
 Surface::~Surface()
 {
+    AE_INFO( "Destroying VkSurface" );
     vkDestroySurfaceKHR( *_instance, _surface, nullptr );
 }
 

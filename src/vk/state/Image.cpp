@@ -34,9 +34,10 @@ void Image::Compile( Device* device )
     auto result = vkCreateImage( *_device, &create_info, VK_ALLOCATOR, &_image );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImage: %s", ResultMessage( result ) );
 #ifdef AEON_DEBUG
-    AE_INFO
+    AE_INFO_IF
     (
-        "VkImage\n"
+        enable_ctor_logging,
+        "\nVkImage\n"
         "{\n"
         "    imageType              = %s\n"
         "    format                 = %u\n"
@@ -84,6 +85,7 @@ Image::~Image()
 {
     if( _image )
     {
+        AE_INFO_IF( enable_dtor_logging, "Destroying VkImage" );
         vkDestroyImage( *_device, _image, VK_ALLOCATOR );
         _image = VK_NULL_HANDLE;
     }

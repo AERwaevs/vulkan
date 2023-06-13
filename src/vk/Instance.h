@@ -97,6 +97,14 @@ namespace aer::Graphics::vk
         };
     };
 
+#ifdef  AEON_DEBUG
+    constexpr const bool enable_ctor_logging = false;
+    constexpr const bool enable_dtor_logging = false;
+#endif
+
+#define VK_INFO_CTOR( type ) AE_INFO_IF( enable_ctor_logging, "Creating "#type )
+#define VK_INFO_DTOR( type ) AE_INFO_IF( enable_dtor_logging, "Destroying "#type )
+
     constexpr const char* ResultMessage( VkResult result )
     {
         switch( result )

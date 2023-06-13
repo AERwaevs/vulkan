@@ -66,7 +66,7 @@ Swapchain::Swapchain
         auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
 
         image_view->image->usage                    = preferences.imageUsage;
-        image_view->image->extent                   = { _extent.width, _extent.width, 1 };
+        image_view->image->extent                   = { _extent.width, _extent.height, 1 };
         image_view->image->arrayLayers              = imageArrayLayers;
         image_view->image->format                   = _format;
         image_view->image->mipLevels                = 1;
@@ -86,6 +86,7 @@ Swapchain::Swapchain
 
 Swapchain::~Swapchain()
 {
+    AE_INFO( "Destroying VkSwapchain" );
     vkDestroySwapchainKHR( *_device, _swapchain, VK_ALLOCATOR );
 }
 

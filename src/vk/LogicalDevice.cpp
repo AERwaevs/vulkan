@@ -65,8 +65,9 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
     vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_graphics  );
 
 #ifdef AEON_DEBUG
-    AE_INFO
+    AE_INFO_IF
     (
+        enable_ctor_logging,
         "VkDevice\n"
         "{\n"
         "    Queue count             = %zu\n"
@@ -94,6 +95,7 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
 
 Device::~Device()
 {
+    AE_INFO_IF( enable_dtor_logging, "Destroying VkDevice" );
     vkDestroyDevice( _device, VK_ALLOCATOR );
 }
 

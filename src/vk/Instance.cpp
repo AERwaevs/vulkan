@@ -87,8 +87,9 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     gladLoaderLoadVulkan( _instance, nullptr, nullptr );
 
 #ifdef AEON_DEBUG
-    AE_INFO
+    AE_INFO_IF
     (
+        enable_dtor_logging,
         "VkInstance\n"
         "{\n"
         "    Enabled layer count     = %zu\n"
@@ -157,6 +158,7 @@ AEON_API Instance::~Instance()
     }
 #endif
     _physical_devices.clear();
+    AE_INFO_IF( enable_dtor_logging, "Destroying VkInstance" );
     if( _instance ) vkDestroyInstance( _instance, VK_ALLOCATOR );
 }
 
