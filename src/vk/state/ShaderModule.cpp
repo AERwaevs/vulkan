@@ -20,7 +20,6 @@ namespace aer::Graphics::vk
 
     ShaderModule::~ShaderModule()
     {
-        AE_INFO( "Destroying VkShaderModule" );
         vkDestroyShaderModule( *_device, _module, VK_NULL_HANDLE );
     }
     

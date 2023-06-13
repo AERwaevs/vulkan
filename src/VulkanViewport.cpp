@@ -2,6 +2,7 @@
 #include <Graphics/VulkanRenderer.h>
 
 #include "vk/state/ShaderModule.h"
+#include "vk/state/ShaderStage.h"
 
 namespace aer::Graphics
 {
@@ -54,8 +55,11 @@ VulkanViewport::VulkanViewport( Window* window )
     auto frag_module = vk::ShaderModule::create( _device, *frag_code );
 
     // create shader stages
-    //auto vert_stage = vk::ShaderStage::create( vert_module );
-    //auto frag_stage = vk::ShaderStage::create( frag_module );
+    ref_ptr<vk::ShaderStage> stages[]
+    {
+        vk::ShaderStage::create( VK_SHADER_STAGE_VERTEX_BIT, vert_module, "main" ),
+        vk::ShaderStage::create( VK_SHADER_STAGE_FRAGMENT_BIT, frag_module, "main" )
+    };
 
 }
 

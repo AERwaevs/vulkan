@@ -31,15 +31,11 @@ void ImageView::Compile( Device* device )
         components,
         subresourceRange
     };
+    
+    if( image ) image->Compile( device );
 
     _device = device;
-
-    if( image )
-    {
-        image->Compile( device );
-    }
-
-    auto result = vkCreateImageView( *device, &create_info, VK_ALLOCATOR, &_image_view );
+    auto result = vkCreateImageView( *_device, &create_info, VK_ALLOCATOR, &_image_view );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImageView: %s", ResultMessage( result ) );
 }
 

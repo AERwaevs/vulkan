@@ -16,6 +16,9 @@ class ShaderModule : public virtual Object, public Interfaces< ShaderModule, ICr
 {
 public:
     ShaderModule( ref_ptr<Device> device, const ByteCode& byte_code );
+    operator VkShaderModule() const { return _module; };
+public:
+    void compile();
 protected:
     virtual ~ShaderModule();
 
