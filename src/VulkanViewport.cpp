@@ -28,13 +28,15 @@ const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Sur
 VulkanViewport::VulkanViewport( Window* window )
 :   Viewport( window, VulkanRenderer::get_or_create().get() ),
     _instance( vk::Instance::get_or_create() ),
-    _surface( vk::Surface::create( _instance, window ) ),
-    _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface.get(), _instance->DevicePreferences ) ),
+    _surface( vk::Surface::create( _instance, window->native<vk::Window_t>() ) ),
+    _physical_device
+    (
+        _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface.get(), _instance->DevicePreferences )
+    ),
     _device( vk::Device::create
     (
         _physical_device, _surface, GetQueueSettings( _physical_device.get(), _surface.get() )
-    ) ),
-    _swapchain_prefs()
+    ) )
 {
     //? if _swapchain is created during initialisation, it seems to execute before _swapchain_prefs is constructed
     _swapchain = vk::Swapchain::create
@@ -52,6 +54,9 @@ VulkanViewport::VulkanViewport( Window* window )
     auto frag_module = vk::ShaderModule::create( _device, *frag_code );
 
     // create shader stages
+    //auto vert_stage = vk::ShaderStage::create( vert_module );
+    //auto frag_stage = vk::ShaderStage::create( frag_module );
+
 }
 
 VulkanViewport::~VulkanViewport()

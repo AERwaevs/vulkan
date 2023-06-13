@@ -1,7 +1,5 @@
 #pragma once
 
-#include <Graphics/Window.h>
-
 #include <glad/vulkan.h>
 
 #include "Instance.h"
@@ -9,29 +7,38 @@
 namespace aer::Graphics::vk
 {
 
-class Surface : public virtual Object, public Interfaces< Surface, ICreate >
+struct Surface : public Object
 {
-public:
-    Surface( ref_ptr<Instance> instance, Window* window );
-    operator VkSurfaceKHR() const { return _surface; }
+    template< typename... Args > static ref_ptr<Surface> create( Args... );
+    Surface( ref_ptr<Instance> instance ) : _instance( instance ), _surface( VK_NULL_HANDLE ) {};
 
+    operator VkSurfaceKHR() const { return _surface; }
+    auto     vk()           const { return _surface; }
 protected:
-    ~Surface();
-private:
+    virtual ~Surface();
     VkSurfaceKHR        _surface;
-    ref_ptr<Instance>    _instance;
+    ref_ptr<Instance>   _instance;
 };
 
 #if defined( AEON_PLATFORM_WINDOWS )
-class Win32Surface : public Surface
-{
-public:
-    Win32Surface( ref_ptr<Instance> instance, Window* window );
-};
+
+using Window_t = HWND;
+struct Win32Surface : public Surface    { Win32Surface( ref_ptr<Instance>, Window_t ); };
+
 #elif defined( AEON_PLATFORM_ANDROID )
-    Surface( ref_ptr<Instance> instance, ref_ptr<Window> window );
+
+using Window_t = ANativeWindow*;
+struct AndroidSurface : public Surface  { AndroidSurface( ref_ptr<Instance>, Window_t ); };
+
 #elif defined( AEON_PLATFORM_LINUX )
-    Surface( ref_ptr<Instance> instance, ref_ptr<Window> window );
+
+struct Window_t : private std::pair<xcb_connection_t*, xcb_window_t>
+{
+    auto connection(){ return first; };
+    auto window()    { return second; };
+}
+struct LinuxSurface : public Surface    { LinuxSurface( ref_ptr<Instance>, Window_t ); };
+
 #endif
 
 }

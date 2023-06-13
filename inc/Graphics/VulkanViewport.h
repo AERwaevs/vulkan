@@ -26,6 +26,6 @@ namespace aer::Graphics
         ref_ptr<vk::Device>          _device;
         ref_ptr<vk::Swapchain>       _swapchain;
         
-        vk::SwapchainPreferences    _swapchain_prefs;
+        vk::SwapchainPreferences    _swapchain_prefs = vk::SwapchainPreferences();
     };
 } // namespace aer::Graphics
