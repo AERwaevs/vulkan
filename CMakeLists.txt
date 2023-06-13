@@ -64,6 +64,7 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/state/Image.cpp
     ${VULKAN_SRC_DIR}/vk/state/ImageView.cpp
     ${VULKAN_SRC_DIR}/vk/state/ShaderModule.cpp
+    ${VULKAN_SRC_DIR}/vk/state/ShaderStage.cpp
 )
 
 add_library( vulkan STATIC  
