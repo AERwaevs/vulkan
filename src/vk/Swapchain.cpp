@@ -1,6 +1,6 @@
 #include "Swapchain.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 Swapchain::Swapchain
@@ -164,4 +164,4 @@ VkExtent2D SelectSwapExtent( const SwapchainSupportDetails& details, uint32_t wi
     };
 }
 
-}// namespace aer::Graphics::vk
+}// namespace aer::gfx::vk

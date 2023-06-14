@@ -1,6 +1,6 @@
 #include "DynamicState.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
     
 DynamicState::DynamicState()
@@ -21,4 +21,4 @@ DynamicState::DynamicState()
     };
 }
     
-} // namespace aer::Graphics::vk
+} // namespace aer::gfx::vk

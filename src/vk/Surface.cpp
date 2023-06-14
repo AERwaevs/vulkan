@@ -1,6 +1,6 @@
 #include "Surface.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 #ifdef AEON_PLATFORM_WINDOWS

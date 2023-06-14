@@ -1,6 +1,6 @@
 #include "ImageView.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 ImageView::ImageView( ref_ptr<Image> in_image )
@@ -50,4 +50,4 @@ ImageView::~ImageView()
     }
 }
 
-} // namespace aer::Graphics::vk
+} // namespace aer::gfx::vk

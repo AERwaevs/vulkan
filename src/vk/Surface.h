@@ -4,7 +4,7 @@
 
 #include "Instance.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 struct Surface : public Object

@@ -7,7 +7,7 @@
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
     using Name                          = const char*;
     using Names                         = std::vector<Name>;

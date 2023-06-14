@@ -1,7 +1,7 @@
 #include "LogicalDevice.h"
 #include "Instance.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 //? maybe remove requirement for a surface? this will allow for compute-only devices
@@ -99,4 +99,4 @@ Device::~Device()
     vkDestroyDevice( _device, VK_ALLOCATOR );
 }
 
-} // namespace aer::Graphics::vk
+} // namespace aer::gfx::vk

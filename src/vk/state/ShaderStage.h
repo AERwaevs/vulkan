@@ -6,7 +6,7 @@
 
 #include "ShaderModule.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 class ShaderStage : public virtual Object, public Interfaces< ShaderStage, ICreate >
@@ -26,4 +26,4 @@ public:
     std::string           name;
 };
     
-} // namespace aer::Graphics::vk
+} // namespace aer::gfx::vk

@@ -9,7 +9,7 @@
 #include "vk/LogicalDevice.h"
 #include "vk/Swapchain.h"
 
-namespace aer::Graphics
+namespace aer::gfx
 {
     class Window;
     
@@ -28,4 +28,4 @@ namespace aer::Graphics
         
         vk::SwapchainPreferences    _swapchain_prefs = vk::SwapchainPreferences();
     };
-} // namespace aer::Graphics
+} // namespace aer::gfx

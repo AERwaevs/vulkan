@@ -9,7 +9,7 @@
 
 #include "Image.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 class ImageView : public virtual Object, public Interfaces< ImageView, ICreate >

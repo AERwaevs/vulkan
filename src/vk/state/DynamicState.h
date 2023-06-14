@@ -6,7 +6,7 @@
 
 #include "ShaderStage.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
     
 class DynamicState : public Object, public Interfaces< DynamicState, ICreate, ITypeInfo >
@@ -15,4 +15,4 @@ public:
     DynamicState();
 };
     
-} // namespace aer::Graphics::vk
+} // namespace aer::gfx::vk

@@ -4,7 +4,7 @@
 
 #include "../LogicalDevice.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
     
 struct ByteCode : public Object, public Interfaces< ByteCode, ICreate, IRead, ITypeInfo >, public std::vector<char>

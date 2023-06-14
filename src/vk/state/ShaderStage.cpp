@@ -1,6 +1,6 @@
 #include "ShaderStage.h"
 
-namespace aer::Graphics::vk
+namespace aer::gfx::vk
 {
 
 void ShaderStage::compile()
@@ -8,4 +8,4 @@ void ShaderStage::compile()
     if( module ) module->compile();
 }
 
-} // namespace aer::Graphics::vk
+} // namespace aer::gfx::vk

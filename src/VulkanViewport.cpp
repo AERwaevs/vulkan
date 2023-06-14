@@ -5,7 +5,7 @@
 #include "vk/state/ShaderStage.h"
 #include "vk/state/DynamicState.h"
 
-namespace aer::Graphics
+namespace aer::gfx
 {
 
 template<>
@@ -71,4 +71,4 @@ VulkanViewport::~VulkanViewport()
 {
 }
 
-} // namespace aer::Graphics
+} // namespace aer::gfx
