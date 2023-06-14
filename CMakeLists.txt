@@ -50,6 +50,17 @@ set( VULKAN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src )
 set( VULKAN_HEADER    
     ${VULKAN_INC_DIR}/Graphics/VulkanViewport.h
     ${VULKAN_INC_DIR}/Graphics/VulkanRenderer.h
+    
+    ${VULKAN_SRC_DIR}/vk/Instance.h
+    ${VULKAN_SRC_DIR}/vk/PhysicalDevice.h
+    ${VULKAN_SRC_DIR}/vk/LogicalDevice.h
+    ${VULKAN_SRC_DIR}/vk/Surface.h
+    ${VULKAN_SRC_DIR}/vk/Swapchain.h
+    ${VULKAN_SRC_DIR}/vk/state/Image.h
+    ${VULKAN_SRC_DIR}/vk/state/ImageView.h
+    ${VULKAN_SRC_DIR}/vk/state/ShaderModule.h
+    ${VULKAN_SRC_DIR}/vk/state/ShaderStage.h
+    ${VULKAN_SRC_DIR}/vk/state/DynamicState.h
 )
 
 set( VULKAN_SRC    
@@ -65,6 +76,7 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/state/ImageView.cpp
     ${VULKAN_SRC_DIR}/vk/state/ShaderModule.cpp
     ${VULKAN_SRC_DIR}/vk/state/ShaderStage.cpp
+    ${VULKAN_SRC_DIR}/vk/state/DynamicState.cpp
 )
 
 add_library( vulkan STATIC  

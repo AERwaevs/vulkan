@@ -3,6 +3,7 @@
 
 #include "vk/state/ShaderModule.h"
 #include "vk/state/ShaderStage.h"
+#include "vk/state/DynamicState.h"
 
 namespace aer::Graphics
 {
@@ -61,6 +62,9 @@ VulkanViewport::VulkanViewport( Window* window )
         vk::ShaderStage::create( VK_SHADER_STAGE_FRAGMENT_BIT, frag_module, "main" )
     };
 
+    // create dynamic state
+    auto dynamic_state = vk::DynamicState::create();
+    AE_INFO( "Created: %s", vk::DynamicState::type_name() );
 }
 
 VulkanViewport::~VulkanViewport()
