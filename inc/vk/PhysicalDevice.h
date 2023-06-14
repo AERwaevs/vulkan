@@ -8,9 +8,8 @@
 namespace aer::gfx::vk
 {
 
-class PhysicalDevice : public Object
+struct PhysicalDevice : public Object
 {
-public:
                 PhysicalDevice( Instance* instance, VkPhysicalDevice device );
     operator    VkPhysicalDevice() const { return _device; }
 

@@ -20,10 +20,10 @@ namespace aer::gfx::vk
     Names                       ValidateInstanceLayerNames( Names& names );
     std::string                 UnpackNames( const Names& names );
 
-    class PhysicalDevice;
-    class Surface;
+    struct PhysicalDevice;
+    struct Surface;
 
-    class Instance : public Object, public Interfaces< Instance, ICreate, ISingleton >
+    struct Instance : public Object, public Interfaces< Instance, ICreate, ISingleton >
     {
     public:
         Instance( Names extensions = RequiredExtensions, Names layers = RequiredLayers );

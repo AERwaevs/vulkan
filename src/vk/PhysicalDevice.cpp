@@ -1,8 +1,8 @@
 #include <glad/vulkan.h>
 
-#include "Instance.h"
-#include "PhysicalDevice.h"
-#include "Swapchain.h"
+#include <vk/Instance.h>
+#include <vk/PhysicalDevice.h>
+#include <vk/Swapchain.h>
 
 namespace aer::gfx::vk
 {

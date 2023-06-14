@@ -51,16 +51,16 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/Graphics/VulkanViewport.h
     ${VULKAN_INC_DIR}/Graphics/VulkanRenderer.h
     
-    ${VULKAN_SRC_DIR}/vk/Instance.h
-    ${VULKAN_SRC_DIR}/vk/PhysicalDevice.h
-    ${VULKAN_SRC_DIR}/vk/LogicalDevice.h
-    ${VULKAN_SRC_DIR}/vk/Surface.h
-    ${VULKAN_SRC_DIR}/vk/Swapchain.h
-    ${VULKAN_SRC_DIR}/vk/state/Image.h
-    ${VULKAN_SRC_DIR}/vk/state/ImageView.h
-    ${VULKAN_SRC_DIR}/vk/state/ShaderModule.h
-    ${VULKAN_SRC_DIR}/vk/state/ShaderStage.h
-    ${VULKAN_SRC_DIR}/vk/state/DynamicState.h
+    ${VULKAN_INC_DIR}/vk/Instance.h
+    ${VULKAN_INC_DIR}/vk/PhysicalDevice.h
+    ${VULKAN_INC_DIR}/vk/LogicalDevice.h
+    ${VULKAN_INC_DIR}/vk/Surface.h
+    ${VULKAN_INC_DIR}/vk/Swapchain.h
+    ${VULKAN_INC_DIR}/vk/state/Image.h
+    ${VULKAN_INC_DIR}/vk/state/ImageView.h
+    ${VULKAN_INC_DIR}/vk/state/ShaderModule.h
+    ${VULKAN_INC_DIR}/vk/state/ShaderStage.h
+    ${VULKAN_INC_DIR}/vk/state/DynamicState.h
 )
 
 set( VULKAN_SRC    
@@ -95,7 +95,7 @@ target_include_directories( vulkan
 target_link_libraries( vulkan PRIVATE base graphics_interface loader )
 
 # spir-v ------------------------------------------------------------------------------------------
-set( SHADER_DIR ${VULKAN_INC_DIR}/Graphics/shaders )
+set( SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders )
 set( SHADER_COMPILER glslc )
 
 file( GLOB_RECURSE SHADER_CONF ${SHADER_DIR}/*.conf  ) # config file that replaces the default configuration
