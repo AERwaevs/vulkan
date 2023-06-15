@@ -16,6 +16,11 @@ VKAPI_ATTR VkBool32 debug_callback
 {
     switch ( severity )
     {
+        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
+        {
+            AE_INFO( "%s", pCallbackData->pMessage );
+            break;
+        }
         case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
         {
             AE_WARN( "%s", pCallbackData->pMessage );
