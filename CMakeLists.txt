@@ -63,7 +63,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/state/ShaderModule.h
     ${VULKAN_INC_DIR}/vk/state/ShaderStage.h
     ${VULKAN_INC_DIR}/vk/state/DynamicState.h
-    ${VULKAN_SRC_DIR}/vk/state/VertexInputState.h
+    ${VULKAN_INC_DIR}/vk/state/VertexInputState.h
 )
 
 set( VULKAN_SRC    
