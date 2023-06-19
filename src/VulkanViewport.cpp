@@ -4,6 +4,8 @@
 #include "vk/state/ShaderModule.h"
 #include "vk/state/ShaderStage.h"
 #include "vk/state/DynamicState.h"
+#include "vk/state/VertexInputState.h"
+#include "vk/state/InputAssemblyState.h"
 
 namespace aer::gfx
 {
@@ -28,16 +30,16 @@ const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Sur
 }
 
 VulkanViewport::VulkanViewport( Window* window )
-:   Viewport( window, VulkanRenderer::get_or_create().get() ),
+:   Viewport( window, VulkanRenderer::get_or_create() ),
     _instance( vk::Instance::get_or_create() ),
     _surface( vk::Surface::create( _instance, window->native<vk::Window_t>() ) ),
     _physical_device
     (
-        _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface.get(), _instance->DevicePreferences )
+        _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface, _instance->DevicePreferences )
     ),
     _device( vk::Device::create
     (
-        _physical_device, _surface, GetQueueSettings( _physical_device.get(), _surface.get() )
+        _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
     ) )
 {
     //? if _swapchain is created during initialisation, it seems to execute before _swapchain_prefs is constructed
@@ -64,7 +66,12 @@ VulkanViewport::VulkanViewport( Window* window )
 
     // create dynamic state
     auto dynamic_state = vk::DynamicState::create();
-    AE_INFO( "Created: %s", vk::DynamicState::type_name() );
+
+    // create vertex input state
+    auto vertex_input_state = vk::VertexInputState::create();
+
+    // create input assembly state
+    auto input_assembly_state = vk::InputAssemblyState::create( VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST );
 }
 
 VulkanViewport::~VulkanViewport()
