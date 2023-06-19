@@ -12,8 +12,6 @@
 
 namespace aer::gfx
 {
-    class Window;
-    
     class VulkanViewport : public Viewport, public Interfaces< VulkanViewport, ICreateIf >
     {
     public:
