@@ -4,16 +4,24 @@
 
 #include <Base/Base.h>
 
+#include "GraphicsPipelineState.h"
+
 namespace aer::gfx::vk
 {
     
-class InputAssemblyState : public Object, public Interfaces< InputAssemblyState, ICreate, ITypeInfo >
+class InputAssemblyState : public GraphicsPipelineState, public Interfaces< InputAssemblyState, ICreate, ITypeInfo >
 {
 public:
-    InputAssemblyState( VkPrimitiveTopology, VkBool32 = VK_FALSE );
-
-    VkPrimitiveTopology topology;
-    VkBool32            primitiveRestartEnable;
+    using Topology = VkPrimitiveTopology;
+    Topology topology;
+    VkBool32 primitiveRestartEnable;
+public:
+                InputAssemblyState();
+    explicit    InputAssemblyState( Topology, VkBool32 = VK_FALSE );
+    void        apply( VkGraphicsPipelineCreateInfo& ) const override;
+private:
+    // TODO move to scratch memory allocation
+    VkPipelineInputAssemblyStateCreateInfo inputAssemblyState;
 };
     
 } // namespace aer::gfx::vk

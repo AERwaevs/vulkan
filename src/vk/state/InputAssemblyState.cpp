@@ -3,17 +3,35 @@
 namespace aer::gfx::vk
 {
     
-InputAssemblyState::InputAssemblyState( VkPrimitiveTopology primitiveTopology, VkBool32 primitiveRestart )
-: topology( primitiveTopology ), primitiveRestartEnable( primitiveRestart )
-{
-    VkPipelineInputAssemblyStateCreateInfo vertexInputInfo
+InputAssemblyState::InputAssemblyState()
+:   topology( VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST ),
+    primitiveRestartEnable( VK_FALSE ),
+    inputAssemblyState
     {
-        VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
+        VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
         VK_NULL_HANDLE,     // pNext
         VkPipelineInputAssemblyStateCreateFlags{ 0 },
         topology,
         primitiveRestartEnable
-    };
+    }
+{}
+
+InputAssemblyState::InputAssemblyState( Topology primitiveTopology, VkBool32 primitiveRestart )
+:   topology( primitiveTopology ),
+    primitiveRestartEnable( primitiveRestart ),
+    inputAssemblyState
+    {
+        VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
+        VK_NULL_HANDLE,     // pNext
+        VkPipelineInputAssemblyStateCreateFlags{ 0 },
+        topology,
+        primitiveRestartEnable
+    }
+{}
+
+void InputAssemblyState::apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const
+{
+    pipelineInfo.pInputAssemblyState = &inputAssemblyState;
 }
 
 } // namespace aer::gfx::vk

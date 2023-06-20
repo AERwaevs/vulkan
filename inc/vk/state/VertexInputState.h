@@ -4,20 +4,25 @@
 
 #include <Base/Base.h>
 
+#include "GraphicsPipelineState.h"
+
 namespace aer::gfx::vk
 {
     
-class VertexInputState : public Object, public Interfaces< VertexInputState, ICreate, ITypeInfo >
+class VertexInputState : public GraphicsPipelineState, public Interfaces< VertexInputState, ICreate, ITypeInfo >
 {
 public:
     using Bindings   = std::vector<VkVertexInputBindingDescription>;
     using Attributes = std::vector<VkVertexInputAttributeDescription>;
-    
-    VertexInputState();
-    VertexInputState( const Bindings&, const Attributes& );
-    
     Bindings    vertexBindingDescriptions;
     Attributes  vertexAttributeDescriptions;
+public:
+                VertexInputState();
+    explicit    VertexInputState( const Bindings&, const Attributes& );
+    void        apply( VkGraphicsPipelineCreateInfo& ) const override;
+private:
+    // TODO move to scratch memory allocation
+    VkPipelineVertexInputStateCreateInfo vertexInputInfo;
 };
     
 } // namespace aer::gfx::vk
