@@ -42,8 +42,13 @@ public:
         ref_ptr<PhysicalDevice> physical_device, ref_ptr<Device> device, ref_ptr<Surface> surface,
         uint32_t width, uint32_t height, SwapchainPreferences& preferences, ref_ptr<Swapchain> old = {}
     );
-    operator VkSwapchainKHR() const { return _swapchain; }
     ~Swapchain();
+public:
+    operator VkSwapchainKHR() const { return _swapchain; }
+    auto vk()                 const { return _swapchain; }
+    auto format()             const { return _format; }
+    auto extent()             const { return _extent; }
+    auto imageViews()         const { return _extent; }
 private:
     ref_ptr<Device>         _device;
     ref_ptr<Surface>        _surface;
