@@ -6,6 +6,7 @@
 #include "vk/state/DynamicState.h"
 #include "vk/state/VertexInputState.h"
 #include "vk/state/InputAssemblyState.h"
+#include "vk/state/ViewportState.h"
 
 namespace aer::gfx
 {
@@ -72,6 +73,9 @@ VulkanViewport::VulkanViewport( Window* window )
 
     // create input assembly state
     auto input_assembly_state = vk::InputAssemblyState::create( VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST );
+
+    // create viewport state
+    auto viewport_state = vk::ViewportState::create( _swapchain->extent() );
 }
 
 VulkanViewport::~VulkanViewport()

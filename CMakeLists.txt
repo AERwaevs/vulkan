@@ -66,6 +66,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/state/DynamicState.h
     ${VULKAN_INC_DIR}/vk/state/VertexInputState.h
     ${VULKAN_INC_DIR}/vk/state/InputAssemblyState.h
+    ${VULKAN_INC_DIR}/vk/state/ViewportState.h
 )
 
 set( VULKAN_SRC    
@@ -85,6 +86,7 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/state/DynamicState.cpp
     ${VULKAN_SRC_DIR}/vk/state/VertexInputState.cpp
     ${VULKAN_SRC_DIR}/vk/state/InputAssemblyState.cpp
+    ${VULKAN_SRC_DIR}/vk/state/ViewportState.cpp
 )
 
 add_library( vulkan STATIC  

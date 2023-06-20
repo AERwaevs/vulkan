@@ -13,7 +13,7 @@ public:
     // TODO const-ify the apply function
     // ! REQUIRES scratch memory  
     virtual void    apply( VkGraphicsPipelineCreateInfo& ) {};
-    virtual void    apply( VkGraphicsPipelineCreateInfo& ) const = 0;
+    virtual void    apply( VkGraphicsPipelineCreateInfo& ) const {};
 protected:
     virtual         ~GraphicsPipelineState()                     = default;
 };
