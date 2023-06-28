@@ -37,4 +37,4 @@ protected:
 };
 using Images = std::vector<ref_ptr<Image>>;
 
-}
+} // namespace aer::gfx::vk

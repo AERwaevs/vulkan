@@ -63,4 +63,4 @@ private:
     VkQueue                 _queue_present;
 };
 
-}
+} // namespace aer::gfx::vk
