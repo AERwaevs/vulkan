@@ -70,6 +70,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/state/RasterizationState.h
     ${VULKAN_INC_DIR}/vk/state/MultisampleState.h
     ${VULKAN_INC_DIR}/vk/state/DepthStencilState.h
+    ${VULKAN_INC_DIR}/vk/state/ColorBlendState.h
 )
 
 set( VULKAN_SRC    
@@ -93,6 +94,7 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/state/RasterizationState.cpp
     ${VULKAN_SRC_DIR}/vk/state/MultisampleState.cpp
     ${VULKAN_SRC_DIR}/vk/state/DepthStencilState.cpp
+    ${VULKAN_SRC_DIR}/vk/state/ColorBlendState.cpp
 )
 
 add_library( vulkan STATIC  
