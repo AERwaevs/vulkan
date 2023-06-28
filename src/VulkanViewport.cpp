@@ -7,6 +7,10 @@
 #include "vk/state/VertexInputState.h"
 #include "vk/state/InputAssemblyState.h"
 #include "vk/state/ViewportState.h"
+#include "vk/state/RasterizationState.h"
+#include "vk/state/MultisampleState.h"
+#include "vk/state/DepthStencilState.h"
+#include "vk/state/ColorBlendState.h"
 
 namespace aer::gfx
 {
@@ -65,17 +69,14 @@ VulkanViewport::VulkanViewport( Window* window )
         vk::ShaderStage::create( VK_SHADER_STAGE_FRAGMENT_BIT, frag_module, "main" )
     };
 
-    // create dynamic state
-    auto dynamic_state = vk::DynamicState::create();
-
-    // create vertex input state
-    auto vertex_input_state = vk::VertexInputState::create();
-
-    // create input assembly state
-    auto input_assembly_state = vk::InputAssemblyState::create( VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST );
-
-    // create viewport state
-    auto viewport_state = vk::ViewportState::create( _swapchain->extent() );
+    auto dynamic_state          = vk::DynamicState::create();
+    auto vertex_input_state     = vk::VertexInputState::create();
+    auto input_assembly_state   = vk::InputAssemblyState::create();
+    auto viewport_state         = vk::ViewportState::create( _swapchain->extent() );
+    auto rasterization_state    = vk::RasterizationState::create();
+    auto multisample_state      = vk::MultisampleState::create( VK_SAMPLE_COUNT_4_BIT );
+    auto depthstencil_state     = vk::DepthStencilState::create();
+    auto colorblend_state       = vk::ColorBlendState::create();
 }
 
 VulkanViewport::~VulkanViewport()

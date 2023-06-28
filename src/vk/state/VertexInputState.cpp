@@ -9,10 +9,10 @@ VertexInputState::VertexInputState()
         VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO,
         VK_NULL_HANDLE,     // pNext
         VkPipelineVertexInputStateCreateFlags{ 0 },
-        0,          // vertexBindingDescriptionCount
-        nullptr,    // pVertexBindingDescriptions
-        0,          // vertexAttributeDescriptionCount
-        nullptr     // pVertexAttributeDescriptions
+        static_cast<uint32_t>( vertexBindingDescriptions.size() ),
+        vertexBindingDescriptions.empty() ? VK_NULL_HANDLE : vertexBindingDescriptions.data(),
+        static_cast<uint32_t>( vertexAttributeDescriptions.size() ),
+        vertexAttributeDescriptions.empty() ? VK_NULL_HANDLE : vertexAttributeDescriptions.data()
     }
 {}
     
@@ -25,9 +25,9 @@ VertexInputState::VertexInputState( const Bindings& bindings, const Attributes& 
         VK_NULL_HANDLE,     // pNext
         VkPipelineVertexInputStateCreateFlags{ 0 },
         static_cast<uint32_t>( vertexBindingDescriptions.size() ),
-        vertexBindingDescriptions.data(),
+        vertexBindingDescriptions.empty() ? VK_NULL_HANDLE : vertexBindingDescriptions.data(),
         static_cast<uint32_t>( vertexAttributeDescriptions.size() ),
-        vertexAttributeDescriptions.data()
+        vertexAttributeDescriptions.empty() ? VK_NULL_HANDLE : vertexAttributeDescriptions.data()
     }
 {}
 

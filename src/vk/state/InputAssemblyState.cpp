@@ -4,9 +4,7 @@ namespace aer::gfx::vk
 {
     
 InputAssemblyState::InputAssemblyState()
-:   topology( VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST ),
-    primitiveRestartEnable( VK_FALSE ),
-    inputAssemblyState
+:   inputAssemblyState
     {
         VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO,
         VK_NULL_HANDLE,     // pNext

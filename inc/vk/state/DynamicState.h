@@ -10,18 +10,22 @@
 namespace aer::gfx::vk
 {
     
-class DynamicState : public GraphicsPipelineState, public Interfaces< DynamicState, ICreate, ITypeInfo >
+struct DynamicState : public GraphicsPipelineState, public Interfaces< DynamicState, ICreate, ITypeInfo >
 {
-public:
     using DynamicStates = std::vector<VkDynamicState>;
-    DynamicStates dynamicStates;
-public:
-    // defaults to { VK_DYNAMIC_STATE_VIEWPORT, VK_DYNAMIC_STATE_SCISSOR }
-                DynamicState();
-    explicit    DynamicState( const DynamicStates& );
-    void        apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const override;
+
+                    DynamicState();
+    explicit        DynamicState( const DynamicStates& );
+
+    DynamicStates   dynamicStates
+    {{
+        VK_DYNAMIC_STATE_VIEWPORT,
+        VK_DYNAMIC_STATE_SCISSOR
+    }};
+    
+    void            apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const override;
 protected:
-    virtual ~DynamicState() = default;
+    virtual         ~DynamicState() = default;
 private:
     // TODO move to scratch memory allocation
     VkPipelineDynamicStateCreateInfo dynamicState;

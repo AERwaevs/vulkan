@@ -9,17 +9,20 @@
 namespace aer::gfx::vk
 {
     
-class VertexInputState : public GraphicsPipelineState, public Interfaces< VertexInputState, ICreate, ITypeInfo >
+struct VertexInputState : public GraphicsPipelineState, public Interfaces< VertexInputState, ICreate, ITypeInfo >
 {
-public:
     using Bindings   = std::vector<VkVertexInputBindingDescription>;
     using Attributes = std::vector<VkVertexInputAttributeDescription>;
-    Bindings    vertexBindingDescriptions;
-    Attributes  vertexAttributeDescriptions;
-public:
+
                 VertexInputState();
     explicit    VertexInputState( const Bindings&, const Attributes& );
+
+    Bindings    vertexBindingDescriptions;
+    Attributes  vertexAttributeDescriptions;
+
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
+protected:
+    virtual         ~VertexInputState() = default;
 private:
     // TODO move to scratch memory allocation
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;

@@ -4,21 +4,15 @@ namespace aer::gfx::vk
 {
 
 DynamicState::DynamicState()
-:   dynamicStates
-    {
-        VK_DYNAMIC_STATE_VIEWPORT,
-        VK_DYNAMIC_STATE_SCISSOR
-    },
-    dynamicState
+:   dynamicState
     {
         VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO,
         VK_NULL_HANDLE,     // pNext
         VkPipelineDynamicStateCreateFlags{ 0 },
         static_cast<uint32_t>( dynamicStates.size() ),
-        dynamicStates.data()
+        dynamicStates.empty() ? VK_NULL_HANDLE : dynamicStates.data()
     }
-{
-}
+{}
 
 DynamicState::DynamicState( const DynamicStates& states )
 :   dynamicStates{ states },
@@ -28,7 +22,7 @@ DynamicState::DynamicState( const DynamicStates& states )
         VK_NULL_HANDLE,     // pNext
         VkPipelineDynamicStateCreateFlags{ 0 },
         static_cast<uint32_t>( dynamicStates.size() ),
-        dynamicStates.data()
+        dynamicStates.empty() ? VK_NULL_HANDLE : dynamicStates.data()
     }
 {}
 
