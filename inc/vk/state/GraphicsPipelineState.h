@@ -10,12 +10,9 @@ namespace aer::gfx::vk
 class GraphicsPipelineState : public Object
 {
 public:
-    // TODO const-ify the apply function
-    // ! REQUIRES scratch memory  
-    virtual void    apply( VkGraphicsPipelineCreateInfo& ) {};
     virtual void    apply( VkGraphicsPipelineCreateInfo& ) const {};
 protected:
-    virtual         ~GraphicsPipelineState()                     = default;
+    virtual         ~GraphicsPipelineState() = default;
 };
 
 } // namespace aer::gfx::vk

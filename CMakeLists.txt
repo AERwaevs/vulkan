@@ -60,7 +60,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/state/Image.h
     ${VULKAN_INC_DIR}/vk/state/ImageView.h
     ${VULKAN_INC_DIR}/vk/state/Pipeline.h
-    ${VULKAN_INC_DIR}/vk/state/PipelineState.h
+    ${VULKAN_INC_DIR}/vk/state/GraphicsPipelineState.h
     ${VULKAN_INC_DIR}/vk/state/ShaderModule.h
     ${VULKAN_INC_DIR}/vk/state/ShaderStage.h
     ${VULKAN_INC_DIR}/vk/state/DynamicState.h
