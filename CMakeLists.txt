@@ -68,6 +68,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/state/InputAssemblyState.h
     ${VULKAN_INC_DIR}/vk/state/ViewportState.h
     ${VULKAN_INC_DIR}/vk/state/RasterizationState.h
+    ${VULKAN_INC_DIR}/vk/state/MultisampleState.h
 )
 
 set( VULKAN_SRC    
@@ -89,6 +90,7 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/state/InputAssemblyState.cpp
     ${VULKAN_SRC_DIR}/vk/state/ViewportState.cpp
     ${VULKAN_SRC_DIR}/vk/state/RasterizationState.cpp
+    ${VULKAN_SRC_DIR}/vk/state/MultisampleState.cpp
 )
 
 add_library( vulkan STATIC  
