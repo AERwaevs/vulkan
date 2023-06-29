@@ -57,9 +57,10 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/Surface.h
     ${VULKAN_INC_DIR}/vk/Swapchain.h
     ${VULKAN_INC_DIR}/vk/GraphicsPipeline.h
+    ${VULKAN_INC_DIR}/vk/PipelineLayout.h
+
     ${VULKAN_INC_DIR}/vk/state/Image.h
     ${VULKAN_INC_DIR}/vk/state/ImageView.h
-    ${VULKAN_INC_DIR}/vk/state/Pipeline.h
     ${VULKAN_INC_DIR}/vk/state/GraphicsPipelineState.h
     ${VULKAN_INC_DIR}/vk/state/ShaderModule.h
     ${VULKAN_INC_DIR}/vk/state/ShaderStage.h
@@ -83,6 +84,8 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/Surface.cpp
     ${VULKAN_SRC_DIR}/vk/Swapchain.cpp
     ${VULKAN_SRC_DIR}/vk/GraphicsPipeline.cpp
+    ${VULKAN_SRC_DIR}/vk/PipelineLayout.cpp
+
     ${VULKAN_SRC_DIR}/vk/state/Image.cpp
     ${VULKAN_SRC_DIR}/vk/state/ImageView.cpp
     ${VULKAN_SRC_DIR}/vk/state/ShaderModule.cpp
