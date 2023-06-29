@@ -9,11 +9,13 @@
 
 namespace aer::gfx::vk
 {
+    template< typename T >
+    using Vector                        = std::vector<T>;
     using Name                          = const char*;
-    using Names                         = std::vector<Name>;
-    using PhysicalDeviceTypes           = std::vector<VkPhysicalDeviceType>;
-    using InstanceLayerProperties       = std::vector<VkLayerProperties>;
-    using InstanceExtensionProperties   = std::vector<VkExtensionProperties>;
+    using Names                         = Vector<Name>;
+    using PhysicalDeviceTypes           = Vector<VkPhysicalDeviceType>;
+    using InstanceLayerProperties       = Vector<VkLayerProperties>;
+    using InstanceExtensionProperties   = Vector<VkExtensionProperties>;
 
     InstanceLayerProperties     EnumerateInstanceLayerProperties();
     InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_name );

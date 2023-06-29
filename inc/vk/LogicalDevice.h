@@ -10,8 +10,8 @@ namespace aer::gfx::vk
 
 struct QueueSetting
 {
-    int    queue_family_index{ -1 };
-    floats queue_priorities{};
+    int             queue_family_index{ -1 };
+    Vector<float>   queue_priorities{};
 };
 using QueueSettings = Vector<QueueSetting>;
 
