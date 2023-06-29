@@ -3,19 +3,26 @@
 namespace aer::gfx::vk
 {
 
-PipelineLayout::PipelineLayout( Device* device )
-:   _device( device ),
+PipelineLayout::PipelineLayout( Device* device, const SetLayouts& in_setLayouts, const PushConstantRanges& in_pushConstantRanges )
+:   setLayouts{ in_setLayouts },
+    pushConstantRanges{ in_pushConstantRanges },
+    _device( device ),
     _pipelineLayout( VK_NULL_HANDLE )
+{
+
+}
+
+void PipelineLayout::Compile( Device* device )
 {
     VkPipelineLayoutCreateInfo createInfo
     {
         VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,
         VK_NULL_HANDLE,
         VkPipelineCreateFlags{ 0 },
-        0,                  // setLayoutCount
-        VK_NULL_HANDLE,     // pSetLayouts
-        0,                  // pushConstantRangeCount
-        VK_NULL_HANDLE,     // pPushConstantRanges
+        static_cast<uint32_t>( setLayouts.size() ),
+        setLayouts.empty() ? VK_NULL_HANDLE : setLayouts.data(),
+        static_cast<uint32_t>( pushConstantRanges.size() ),
+        pushConstantRanges.empty() ? VK_NULL_HANDLE : pushConstantRanges.data()
     };
 
     auto result = vkCreatePipelineLayout( *_device, &createInfo, VK_ALLOCATOR, &_pipelineLayout );
