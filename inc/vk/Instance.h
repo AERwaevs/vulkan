@@ -1,8 +1,8 @@
 #pragma once
 
-#include <Base/Base.h>
-
 #include <glad/vulkan.h>
+
+#include <Base/Base.h>
 
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE
