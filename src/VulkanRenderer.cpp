@@ -9,7 +9,6 @@ template<> ref_ptr<Renderer> Renderer::create< API::Vulkan >()
 }
 
 VulkanRenderer::VulkanRenderer()
-: _vkinstance( vk::Instance::get_or_create() )
 {
 }
 

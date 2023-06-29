@@ -28,11 +28,8 @@ namespace aer::gfx
     {
     public:
         VulkanRenderer();
-        ref_ptr<vk::Instance> vkinstance() const { return _vkinstance; }
     protected:
         virtual         ~VulkanRenderer() = default;
-    private:
-        ref_ptr<vk::Instance>        _vkinstance;
     };
 
 }
