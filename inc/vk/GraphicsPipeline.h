@@ -7,6 +7,9 @@
 namespace aer::gfx::vk
 {
 
-class GraphicsPipeline : public Object, Interfaces
+class GraphicsPipeline : public Object, Interfaces< GraphicsPipeline, ICreate >
+{
+
+};
 
 } // namespace aer::gfx::vk
