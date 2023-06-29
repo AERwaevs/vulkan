@@ -1,6 +1,8 @@
 #include <Graphics/VulkanViewport.h>
 #include <Graphics/VulkanRenderer.h>
 
+#include <vk/PipelineLayout.h>
+
 #include <vk/state/ShaderModule.h>
 #include <vk/state/ShaderStage.h>
 #include <vk/state/DynamicState.h>
@@ -77,6 +79,8 @@ VulkanViewport::VulkanViewport( Window* window )
     auto multisample_state      = vk::MultisampleState::create( VK_SAMPLE_COUNT_4_BIT );
     auto depthstencil_state     = vk::DepthStencilState::create();
     auto colorblend_state       = vk::ColorBlendState::create();
+    auto pipeline_layout        = vk::PipelineLayout::create( _device );
+         pipeline_layout->Compile( _device );
 }
 
 VulkanViewport::~VulkanViewport()
