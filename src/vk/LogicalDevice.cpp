@@ -63,34 +63,6 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
     gladLoaderLoadVulkan( *_instance, *_physical_device, _device );
     vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_present  );
     vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_graphics  );
-
-#ifdef AEON_DEBUG
-    AE_INFO_IF
-    (
-        enable_ctor_logging,
-        "VkDevice\n"
-        "{\n"
-        "    Queue count             = %zu\n"
-        "    Queues                  = %s\n"
-        "    Enabled layer count     = %zu\n"
-        "    Enabled layer names     = %s\n"
-        "    Enabled extension count = %zu\n"
-        "    Enabled extension names = %s\n"
-        "}\n",
-        queue_infos.size(),
-        [&]()
-        {
-            std::stringstream queues;
-            for( auto info : queue_infos )
-            {
-                queues << info.queueFamilyIndex << " ";
-            }
-            return queues.str();
-        }().c_str(), 
-        layers.size(), UnpackNames( layers ).c_str(),
-        extensions.size(), UnpackNames( extensions ).c_str()
-    );
-#endif
 }
 
 Device::~Device()
