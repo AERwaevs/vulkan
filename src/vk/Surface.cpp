@@ -68,8 +68,7 @@ LinuxSurface::Linuxurface( ref_ptr<Instance> instance, Window_t arg )
 
 Surface::~Surface()
 {
-    AE_INFO_IF( enable_dtor_logging, "Destroying VkSurface" );
-    vkDestroySurfaceKHR( *_instance, _surface, nullptr );
+    vkDestroySurfaceKHR( *_instance, _surface, VK_ALLOCATOR );
 }
 
 }
