@@ -86,7 +86,6 @@ Swapchain::Swapchain
 
 Swapchain::~Swapchain()
 {
-    AE_INFO( "Destroying VkSwapchain" );
     vkDestroySwapchainKHR( *_device, _swapchain, VK_ALLOCATOR );
 }
 

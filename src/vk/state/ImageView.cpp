@@ -43,7 +43,6 @@ ImageView::~ImageView()
 {
     if( _image_view )
     {
-        AE_INFO( "Destroying VkImageView" );
         vkDestroyImageView( *_device, _image_view, VK_ALLOCATOR );
         _image_view = VK_NULL_HANDLE;
         _device = {};
