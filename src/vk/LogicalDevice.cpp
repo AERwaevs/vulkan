@@ -67,7 +67,6 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
 
 Device::~Device()
 {
-    AE_INFO_IF( enable_dtor_logging, "Destroying VkDevice" );
     vkDestroyDevice( _device, VK_ALLOCATOR );
 }
 

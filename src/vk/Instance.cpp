@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
 
-#ifdef AEON_DEBUG
+#ifndef NDEBUG
 VKAPI_ATTR VkBool32 debug_callback
 (
     VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
@@ -55,7 +55,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
         VK_API_VERSION_1_2
     };
 
-#ifdef AEON_DEBUG
+#ifndef NDEBUG
     VkDebugUtilsMessengerCreateInfoEXT debugInfo
     {
         VK_STRUCTURE_TYPE_DEBUG_UTILS_MESSENGER_CREATE_INFO_EXT,
@@ -74,7 +74,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     VkInstanceCreateInfo instanceInfo
     {
         VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO,
-#ifdef AEON_DEBUG
+#ifndef NDEBUG
         static_cast<VkDebugUtilsMessengerCreateInfoEXT*>( &debugInfo ),
 #else
         VK_NULL_HANDLE,
@@ -91,20 +91,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: %s", ResultMessage( result ) );
     gladLoaderLoadVulkan( _instance, nullptr, nullptr );
 
-#ifdef AEON_DEBUG
-    AE_INFO_IF
-    (
-        enable_dtor_logging,
-        "VkInstance\n"
-        "{\n"
-        "    Enabled layer count     = %zu\n"
-        "    Enabled layer names     = %s\n"
-        "    Enabled extension count = %zu\n"
-        "    Enabled extension names = %s\n"
-        "}\n",
-        layers.size(), UnpackNames( layers ).c_str(),
-        extensions.size(), UnpackNames( extensions ).c_str()
-    );
+#ifndef NDEBUG
     GetProcAddr( CreateDebugUtilsMessenger,  "vkCreateDebugUtilsMessengerEXT"  );
     GetProcAddr( DestroyDebugUtilsMessenger, "vkDestroyDebugUtilsMessengerEXT" );
 
@@ -156,14 +143,13 @@ ref_ptr<PhysicalDevice> Instance::physical_device( VkQueueFlags flags, Surface* 
 
 AEON_API Instance::~Instance()
 {
-#if AEON_DEBUG
+#if AER_DEBUG
     if( DestroyDebugUtilsMessenger )
     {
         DestroyDebugUtilsMessenger( _instance, _debug_messenger, VK_ALLOCATOR );
     }
 #endif
     _physical_devices.clear();
-    AE_INFO_IF( enable_dtor_logging, "Destroying VkInstance" );
     if( _instance ) vkDestroyInstance( _instance, VK_ALLOCATOR );
 }
 

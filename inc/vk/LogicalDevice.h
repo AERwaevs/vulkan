@@ -40,7 +40,7 @@ public:
 public:
     static inline const Names RequiredLayers
     {
-#ifdef  AEON_DEBUG
+#ifndef NDEBUG
         "VK_LAYER_KHRONOS_validation"
 #endif 
     };
