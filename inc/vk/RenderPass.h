@@ -14,13 +14,15 @@ struct AttachmentReference;
 struct SubpassDescription;
 struct SubpassDependency;
 
-struct RenderPass : public Object, public Interfaces< RenderPass, ICreate >
+struct RenderPass : public Object
 {
     using Attachments           = std::vector<AttachmentDescription>;
     using Subpasses             = std::vector<SubpassDescription>;
     using Dependencies          = std::vector<SubpassDependency>;
     using CorrelatedViewMasks   = std::vector<uint32_t>;
 
+    static ref_ptr<RenderPass> create( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead = false );
+    
     RenderPass
     (
         Device* in_device, const Attachments& in_attachments, const Subpasses& in_subpasses, 
@@ -56,32 +58,32 @@ struct AttachmentReference
 {
     uint32_t                        attachment      = 0;
     VkImageLayout                   layout          = VK_IMAGE_LAYOUT_UNDEFINED;
-    VkImageAspectFlags              aspectMask      = 0;
+    VkImageAspectFlags              aspectMask      = VK_IMAGE_ASPECT_NONE;
 };
 
 struct SubpassDescription
 {
     VkSubpassDescriptionFlags        flags                   = 0;
     VkPipelineBindPoint              pipelineBindPoint       = VK_PIPELINE_BIND_POINT_GRAPHICS;
-    std::vector<AttachmentReference> inputAttachments;              // attachments that are read from shader
-    std::vector<AttachmentReference> colorAttachments;              //? attachments used as color buffers?
-    std::vector<AttachmentReference> resolveAttachments;            // attachments used for multisampling color attachments
-    std::vector<AttachmentReference> depthStencilAttachments;       // attachments for depth & stencil data
-    std::vector<uint32_t>            preserveAttachments;           // attachments not used by this subpass, but for which data must be preserved for later subpasses 
+    std::vector<AttachmentReference> inputAttachments;                // attachments that are read from shader
+    std::vector<AttachmentReference> colorAttachments;                //? attachments used as color buffers?
+    std::vector<AttachmentReference> resolveAttachments;              // attachments used for multisampling color attachments
+    std::vector<AttachmentReference> depthStencilAttachments;         // attachments for depth & stencil data
+    std::vector<uint32_t>            preserveAttachments;             // attachments not used by this subpass, but for which data must be preserved for later subpasses 
     uint32_t                         viewMask               = 0;
     VkResolveModeFlagBits            depthResolveMode       = VK_RESOLVE_MODE_NONE;
     VkResolveModeFlagBits            stencilResolveMode     = VK_RESOLVE_MODE_NONE;
-    std::vector<AttachmentReference> depthStencilResolveAttachements;
+    std::vector<AttachmentReference> depthStencilResolveAttachements; // attachments used for resolving depth & stencil data
 };
 
 struct SubpassDependency
 {
     uint32_t                srcSubpass      = VK_SUBPASS_EXTERNAL;
     uint32_t                dstSubpass      = 0;
-    VkPipelineStageFlags    srcStageMask    = 0;
-    VkPipelineStageFlags    dstStageMask    = 0;
-    VkAccessFlags           srcAccessMask   = 0;
-    VkAccessFlags           dstAccessMask   = 0;
+    VkPipelineStageFlags    srcStageMask    = VK_PIPELINE_STAGE_NONE;
+    VkPipelineStageFlags    dstStageMask    = VK_PIPELINE_STAGE_NONE;
+    VkAccessFlags           srcAccessMask   = VK_ACCESS_NONE;
+    VkAccessFlags           dstAccessMask   = VK_ACCESS_NONE;
     VkDependencyFlags       dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT;
     int32_t                 viewOffset      = 0;
 };

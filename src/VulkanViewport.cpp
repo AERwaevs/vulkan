@@ -41,10 +41,7 @@ VulkanViewport::VulkanViewport( Window* window )
 :   Viewport( window, VulkanRenderer::get_or_create() ),
     _instance( vk::Instance::get_or_create() ),
     _surface( vk::Surface::create( _instance, window->native<vk::Window_t>() ) ),
-    _physical_device
-    (
-        _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface, _instance->DevicePreferences )
-    ),
+    _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface ) ),
     _device( vk::Device::create
     (
         _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
@@ -71,47 +68,7 @@ VulkanViewport::VulkanViewport( Window* window )
     };
 
     //* create renderPass
-    RenderPass::Attachments attachments
-    {
-        { .format = _swapchain->format() }, // colorAttachment
-        { .format = VK_FORMAT_D32_SFLOAT }  // depthAttachment
-    };
-    AttachmentReference colorAttachmentRef
-    {
-        .attachment = 0,
-        .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
-    };
-    SubpassDependency colorDependency
-    {
-        .srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-        .dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
-        .srcAccessMask = 0,
-        .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
-    };
-    // TODO depth buffering
-    AttachmentReference depthAttachmentRef
-    {
-        .attachment = 1,
-        .layout     = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
-    };
-    SubpassDependency depthDependency
-    {
-        .srcStageMask  = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
-        .dstStageMask  = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
-        .srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
-        .dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
-    };
-    RenderPass::Subpasses subpasses
-    {{
-            .colorAttachments{ colorAttachmentRef },
-            .depthStencilAttachments{ depthAttachmentRef }
-    }};
-    RenderPass::Dependencies dependencies
-    {
-        colorDependency,
-        depthDependency
-    };
-    auto renderpass             = RenderPass::create( _device, attachments, subpasses, dependencies );
+    auto renderpass             = RenderPass::create( _device, _swapchain->format(), VK_FORMAT_D32_SFLOAT );
 
     //* create graphics pipeline
     auto dynamic_state          = DynamicState::create();

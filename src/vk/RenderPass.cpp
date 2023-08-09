@@ -60,11 +60,11 @@ RenderPass::RenderPass
                 auto& src = references[i];
                 auto& dst = vk_references[i];
 
-                dst.sType           = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
-                dst.pNext           = VK_NULL_HANDLE;
-                dst.attachment      = src.attachment;
-                dst.layout          = src.layout;
-                dst.aspectMask      = src.aspectMask;
+                dst.sType      = VK_STRUCTURE_TYPE_ATTACHMENT_REFERENCE_2;
+                dst.pNext      = VK_NULL_HANDLE;
+                dst.attachment = src.attachment;
+                dst.layout     = src.layout;
+                dst.aspectMask = src.aspectMask;
             }
             return vk_references;
         };
@@ -75,19 +75,19 @@ RenderPass::RenderPass
             auto& src = subpasses[i];
             auto& dst = vk_subpasses[i];
 
-            dst.sType                           = VK_STRUCTURE_TYPE_SUBPASS_DESCRIPTION_2;
-            dst.pNext                           = VK_NULL_HANDLE;
-            dst.flags                           = src.flags;
-            dst.pipelineBindPoint               = src.pipelineBindPoint;
-            dst.inputAttachmentCount            = static_cast<uint32_t>( src.inputAttachments.size() );
-            dst.pInputAttachments               = copyReference( src.inputAttachments) ;
-            dst.colorAttachmentCount            = static_cast<uint32_t>( src.colorAttachments.size() );
-            dst.pColorAttachments               = copyReference( src.colorAttachments );
-            dst.pResolveAttachments             = copyReference( src.resolveAttachments );
-            dst.pDepthStencilAttachment         = copyReference( src.depthStencilAttachments );
-            dst.preserveAttachmentCount         = static_cast<uint32_t>( src.preserveAttachments.size() );
-            dst.pPreserveAttachments            = src.preserveAttachments.empty() ? nullptr : src.preserveAttachments.data();
-            dst.viewMask                        = src.viewMask;
+            dst.sType                   = VK_STRUCTURE_TYPE_SUBPASS_DESCRIPTION_2;
+            dst.pNext                   = VK_NULL_HANDLE;
+            dst.flags                   = src.flags;
+            dst.pipelineBindPoint       = src.pipelineBindPoint;
+            dst.inputAttachmentCount    = static_cast<uint32_t>( src.inputAttachments.size() );
+            dst.pInputAttachments       = copyReference( src.inputAttachments) ;
+            dst.colorAttachmentCount    = static_cast<uint32_t>( src.colorAttachments.size() );
+            dst.pColorAttachments       = copyReference( src.colorAttachments );
+            dst.pResolveAttachments     = copyReference( src.resolveAttachments );
+            dst.pDepthStencilAttachment = copyReference( src.depthStencilAttachments );
+            dst.preserveAttachmentCount = static_cast<uint32_t>( src.preserveAttachments.size() );
+            dst.pPreserveAttachments    = src.preserveAttachments.empty() ? nullptr : src.preserveAttachments.data();
+            dst.viewMask                = src.viewMask;
         }
         return vk_subpasses;
     };
@@ -139,6 +139,52 @@ RenderPass::~RenderPass()
 {
     if( _pipelineLayout ) vkDestroyPipelineLayout( *device, _pipelineLayout, VK_ALLOCATOR );
     if( _renderPass )     vkDestroyRenderPass( *device, _renderPass, VK_ALLOCATOR );
+}
+
+ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead )
+{
+    RenderPass::Attachments attachments
+    {
+        { .format = imageFormat }, // colorAttachment
+        { .format = depthFormat }  // depthAttachment
+    };
+    AttachmentReference colorAttachmentRef
+    {
+        .attachment = 0,
+        .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    };
+    SubpassDependency colorDependency
+    {
+        .srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .srcAccessMask = 0,
+        .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
+    };
+    AttachmentReference depthAttachmentRef
+    {
+        .attachment = 1,
+        .layout     = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+    };
+    SubpassDependency depthDependency
+    {
+        .srcStageMask  = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
+        .dstStageMask  = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
+        .srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
+        .dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
+    };
+    RenderPass::Subpasses subpasses
+    {{
+            .colorAttachments{ colorAttachmentRef },
+            .depthStencilAttachments{ depthAttachmentRef }
+    }};
+
+    RenderPass::Dependencies dependencies
+    {
+        colorDependency,
+        depthDependency
+    };
+
+    return ref_ptr<RenderPass>( new RenderPass( device, attachments, subpasses, dependencies ) );
 }
 
 } // namespace aer::gfx::vk
