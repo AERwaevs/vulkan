@@ -34,7 +34,7 @@ namespace aer::gfx::vk
 
         using PhysicalDevices = std::vector<ref_ptr<PhysicalDevice>>;
         PhysicalDevices&         physical_devices() { return _physical_devices; }
-        ref_ptr<PhysicalDevice>  physical_device( VkQueueFlags flags, Surface* surface, const PhysicalDeviceTypes& prefs );
+        ref_ptr<PhysicalDevice>  physical_device( VkQueueFlags flags, Surface* surface, const PhysicalDeviceTypes& prefs = DevicePreferences );
 
         template< typename F >
         VkResult GetProcAddr( F& proc_addr, const char* name ) const
