@@ -48,9 +48,9 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     { 
         VK_STRUCTURE_TYPE_APPLICATION_INFO,
         VK_NULL_HANDLE, //pNext
-        "AEON Application",
+        "AER Application",
         VK_MAKE_API_VERSION( 1, 0, 1, 0 ),
-        "AEON",
+        "AER",
         VK_MAKE_API_VERSION( 1, 0, 1, 0 ),
         VK_API_VERSION_1_2
     };
@@ -118,13 +118,6 @@ AEON_API Instance::Instance( Names extensions, Names layers )
     {
         _physical_devices.emplace_back( new PhysicalDevice( this, device ) );
     }
-
-    //TODO provide a sort function so we use best device as primary
-    //std::sort( _physical_devices.begin(), _physical_devices.end(), 
-    //[]( const ref_ptr<PhysicalDevice>& a, const ref_ptr<PhysicalDevice>& b )
-    //{
-    //    return a->Capability() > b->Capability();
-    //} );
 }
 
 ref_ptr<PhysicalDevice> Instance::physical_device( VkQueueFlags flags, Surface* surface, const PhysicalDeviceTypes& prefs )
@@ -143,7 +136,7 @@ ref_ptr<PhysicalDevice> Instance::physical_device( VkQueueFlags flags, Surface* 
 
 AEON_API Instance::~Instance()
 {
-#if AER_DEBUG
+#ifndef NDEBUG
     if( DestroyDebugUtilsMessenger )
     {
         DestroyDebugUtilsMessenger( _instance, _debug_messenger, VK_ALLOCATOR );
@@ -158,11 +151,11 @@ InstanceLayerProperties EnumerateInstanceLayerProperties()
     VkResult result{ VK_SUCCESS };
     uint32_t vk_layer_count{ 0 };
     result = vkEnumerateInstanceLayerProperties( &vk_layer_count, nullptr );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer count: %s", ResultMessage( result ) );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance layer count: %s", ResultMessage( result ) );
 
     Vector<VkLayerProperties> vk_layers(vk_layer_count);
     result = vkEnumerateInstanceLayerProperties( &vk_layer_count, vk_layers.data() );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get layer properties: %s", ResultMessage( result ) );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance layer properties: %s", ResultMessage( result ) );
 
     return vk_layers;
 }
@@ -172,11 +165,11 @@ InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_nam
     VkResult result{ VK_SUCCESS };
     uint32_t count{ 0 };
     result = vkEnumerateInstanceExtensionProperties( layer_name, &count, nullptr );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension count: %s", ResultMessage( result ) );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance extension count: %s", ResultMessage( result ) );
 
     Vector<VkExtensionProperties> vk_extensions(count);
     result = vkEnumerateInstanceExtensionProperties( layer_name, &count, vk_extensions.data() );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get extension properties: %s", ResultMessage( result ) );
+    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance extension properties: %s", ResultMessage( result ) );
 
     return vk_extensions;
 }
@@ -185,15 +178,14 @@ Names ValidateInstanceLayerNames( Names& names )
 {
     if( names.empty() ) return names;
 
-    auto available_layers = EnumerateInstanceLayerProperties();
+    auto instance_layers = EnumerateInstanceLayerProperties();
 
-    std::set<std::string> layer_names;
-    for( const auto& layer : available_layers ) { layer_names.insert( layer.layerName ); }
+    std::set<std::string> available_layers{ instance_layers.begin(), instance_layers.end() };
 
     Names validated_names{ names.size() };
     for( const auto& requested : names )
     {
-        if( layer_names.count( requested ) != 0 ) validated_names.push_back( requested );
+        if( available_layers.contains( requested ) ) validated_names.push_back( requested );
         else AE_WARN( "Invalid layer requested : %s", requested );
     }
     
@@ -202,13 +194,12 @@ Names ValidateInstanceLayerNames( Names& names )
 
 std::string UnpackNames( const Names& names )
 {
-    std::string unpacked;
-    for( std::size_t i = 0; i < names.size(); i++ )
+    std::stringstream unpacked;
+    for( std::size_t i = 0; i < names.size(); )
     {
-        unpacked.append( names[i] );
-        if( i != names.size() - 1 ) unpacked.append( ", " );
+        unpacked << names[i] << ( ++i < names.size() ? ", " : "" );
     }
-    return unpacked;
+    return unpacked.str();
 }
 
 }
