@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
+#include "vk.h"
 #include "Instance.h"
 
 namespace aer::gfx::vk

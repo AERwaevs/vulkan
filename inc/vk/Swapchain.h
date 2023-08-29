@@ -1,7 +1,6 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
+#include "vk.h"
 #include "LogicalDevice.h"
 #include "Surface.h"
 #include "state/Image.h"
