@@ -51,6 +51,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/Graphics/VulkanViewport.h
     ${VULKAN_INC_DIR}/Graphics/VulkanRenderer.h
     
+    ${VULKAN_INC_DIR}/vk/vk.h
     ${VULKAN_INC_DIR}/vk/Instance.h
     ${VULKAN_INC_DIR}/vk/PhysicalDevice.h
     ${VULKAN_INC_DIR}/vk/LogicalDevice.h
