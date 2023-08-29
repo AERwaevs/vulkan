@@ -1,5 +1,3 @@
-#include <glad/vulkan.h>
-
 #include <vk/Instance.h>
 #include <vk/PhysicalDevice.h>
 #include <vk/Swapchain.h>
