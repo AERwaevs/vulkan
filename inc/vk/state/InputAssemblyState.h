@@ -1,9 +1,5 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
-#include <Base/Base.h>
-
 #include "GraphicsPipelineState.h"
 
 namespace aer::gfx::vk
@@ -20,9 +16,6 @@ struct InputAssemblyState : public GraphicsPipelineState, public Interfaces< Inp
     VkBool32    primitiveRestartEnable = VK_FALSE;
     
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineInputAssemblyStateCreateInfo inputAssemblyState;
 };
     
 } // namespace aer::gfx::vk

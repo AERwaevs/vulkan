@@ -1,9 +1,5 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
-#include <Base/Base.h>
-
 #include "GraphicsPipelineState.h"
 
 namespace aer::gfx::vk
@@ -23,9 +19,6 @@ struct MultisampleState : public GraphicsPipelineState, public Interfaces< Multi
     VkBool32                alphaToOneEnable      = VK_FALSE;
     
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineMultisampleStateCreateInfo multisampleState;
 };
     
 } // namespace aer::gfx::vk

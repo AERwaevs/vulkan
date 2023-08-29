@@ -1,9 +1,6 @@
 #pragma once
 
-#include <Base/Base.h>
-
-#include <glad/vulkan.h>
-
+#include "../vk.h"
 #include "../Instance.h"
 #include "../LogicalDevice.h"
 

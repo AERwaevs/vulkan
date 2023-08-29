@@ -1,9 +1,5 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
-#include <Base/Base.h>
-
 #include "GraphicsPipelineState.h"
 
 namespace aer::gfx::vk
@@ -38,9 +34,6 @@ public:
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
 protected:
     virtual     ~ViewportState() = default;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineViewportStateCreateInfo viewportState;
 };
     
 } // namespace aer::gfx::vk

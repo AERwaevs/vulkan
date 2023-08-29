@@ -1,9 +1,5 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
-#include <Base/Base.h>
-
 #include "GraphicsPipelineState.h"
 
 namespace aer::gfx::vk
@@ -23,9 +19,5 @@ namespace aer::gfx::vk
         float            maxDepthBounds        = 1.0f;
         
         void    apply( VkGraphicsPipelineCreateInfo& pipelineCreateInfo ) const override;
-
-    private:
-        // TODO move to scratch memory allocation
-        VkPipelineDepthStencilStateCreateInfo depthStencilState;
     };
 } // namespace aer::gfx::vk

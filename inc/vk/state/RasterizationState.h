@@ -1,9 +1,5 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
-#include <Base/Base.h>
-
 #include "GraphicsPipelineState.h"
 
 namespace aer::gfx::vk
@@ -25,9 +21,6 @@ struct RasterizationState : public GraphicsPipelineState, public Interfaces< Ras
     float               lineWidth               = 1.0f;
     
     void                apply( VkGraphicsPipelineCreateInfo& ) const override;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineRasterizationStateCreateInfo rasterizationState;
 };
     
 } // namespace aer::gfx::vk

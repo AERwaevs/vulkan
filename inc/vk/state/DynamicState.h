@@ -1,9 +1,5 @@
 #pragma once
 
-#include <Base/Base.h>
-
-#include <glad/vulkan.h>
-
 #include "GraphicsPipelineState.h"
 #include "ShaderStage.h"
 
@@ -26,9 +22,6 @@ struct DynamicState : public GraphicsPipelineState, public Interfaces< DynamicSt
     void            apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const override;
 protected:
     virtual         ~DynamicState() = default;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineDynamicStateCreateInfo dynamicState;
 };
     
 } // namespace aer::gfx::vk
