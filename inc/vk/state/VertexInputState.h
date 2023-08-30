@@ -19,9 +19,6 @@ struct VertexInputState : public GraphicsPipelineState, public Interfaces< Verte
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
 protected:
     virtual         ~VertexInputState() = default;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineVertexInputStateCreateInfo vertexInputInfo;
 };
     
 } // namespace aer::gfx::vk

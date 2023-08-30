@@ -19,9 +19,5 @@ namespace aer::gfx::vk
         float            maxDepthBounds        = 1.0f;
         
         void    apply( VkGraphicsPipelineCreateInfo& pipelineCreateInfo ) const override;
-
-    private:
-        // TODO move to scratch memory allocation
-        VkPipelineDepthStencilStateCreateInfo depthStencilState;
     };
 } // namespace aer::gfx::vk

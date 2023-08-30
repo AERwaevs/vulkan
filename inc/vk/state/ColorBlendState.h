@@ -28,9 +28,5 @@ namespace aer::gfx::vk
         float       blendConstants[4] = { 0.0f, 0.0f, 0.0f, 0.0f };
 
         void apply(VkGraphicsPipelineCreateInfo& pipelineCreateInfo) const override;
-
-    private:
-        // TODO move to scratch memory allocation
-        VkPipelineColorBlendStateCreateInfo colorBlendState;
     };
 } // namespace aer::gfx::vk

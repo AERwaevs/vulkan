@@ -21,9 +21,6 @@ struct RasterizationState : public GraphicsPipelineState, public Interfaces< Ras
     float               lineWidth               = 1.0f;
     
     void                apply( VkGraphicsPipelineCreateInfo& ) const override;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineRasterizationStateCreateInfo rasterizationState;
 };
     
 } // namespace aer::gfx::vk

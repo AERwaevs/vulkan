@@ -34,9 +34,6 @@ public:
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
 protected:
     virtual     ~ViewportState() = default;
-private:
-    // TODO move to scratch memory allocation
-    VkPipelineViewportStateCreateInfo viewportState;
 };
     
 } // namespace aer::gfx::vk
