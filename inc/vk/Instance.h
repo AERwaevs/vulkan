@@ -4,6 +4,10 @@
 
 namespace aer::gfx::vk
 {
+    using InstanceLayerProperties     = Vector<VkLayerProperties>;
+    using InstanceExtensionProperties = Vector<VkExtensionProperties>;
+    using PhysicalDeviceTypes         = Vector<VkPhysicalDeviceType>;
+    
     InstanceLayerProperties     EnumerateInstanceLayerProperties();
     InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_name );
     Names                       ValidateInstanceLayerNames( Names& names );

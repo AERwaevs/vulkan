@@ -4,6 +4,8 @@
 
 #include <Base/Base.h>
 
+#define AEON_VK_VERSION GLAD_MAKE_VERSION( 1, 2 )
+
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE
 
@@ -13,11 +15,8 @@ namespace aer::gfx::vk
     using Vector                        = std::vector<T>;
     using Name                          = const char*;
     using Names                         = Vector<Name>;
-    using PhysicalDeviceTypes           = Vector<VkPhysicalDeviceType>;
-    using InstanceLayerProperties       = Vector<VkLayerProperties>;
-    using InstanceExtensionProperties   = Vector<VkExtensionProperties>;
 
-    constexpr auto ResultMessage( VkResult result )
+    constexpr inline auto ResultMessage( VkResult result )
     {
         switch( result )
         {

@@ -31,7 +31,7 @@ namespace aer::gfx::vk
         }
     {}
     
-    void ColorBlendState::apply(VkGraphicsPipelineCreateInfo& pipelineCreateInfo) const
+    void ColorBlendState::apply( VkGraphicsPipelineCreateInfo& pipelineCreateInfo ) const
     {
         pipelineCreateInfo.pColorBlendState = &colorBlendState;
     }

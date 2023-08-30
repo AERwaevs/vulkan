@@ -26,7 +26,7 @@ DynamicState::DynamicState( const DynamicStates& states )
     }
 {}
 
-void DynamicState::apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const
+void DynamicState::apply( Context& context, VkGraphicsPipelineCreateInfo& pipelineInfo ) const
 {
     pipelineInfo.pDynamicState = &dynamicState;
 }

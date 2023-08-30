@@ -1,11 +1,6 @@
 #pragma once
 
-#include <Base/Base.h>
-
-#include <glad/vulkan.h>
-
 #include "GraphicsPipelineState.h"
-#include "ShaderStage.h"
 
 namespace aer::gfx::vk
 {

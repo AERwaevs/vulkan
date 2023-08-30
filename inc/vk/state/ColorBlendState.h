@@ -1,7 +1,5 @@
 #pragma once
 
-#include <glad/vulkan.h>
-
 #include "GraphicsPipelineState.h"
 
 namespace aer::gfx::vk
