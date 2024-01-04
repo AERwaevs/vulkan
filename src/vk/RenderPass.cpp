@@ -170,7 +170,7 @@ ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, Vk
         .srcStageMask  = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
         .dstStageMask  = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
         .srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
-        .dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
+        .dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT
     };
     RenderPass::Subpasses subpasses
     {{
@@ -184,7 +184,7 @@ ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, Vk
         depthDependency
     };
 
-    return ref_ptr<RenderPass>( new RenderPass( device, attachments, subpasses, dependencies ) );
+    return ref_ptr( new RenderPass( device, attachments, subpasses, dependencies ) );
 }
 
 } // namespace aer::gfx::vk
