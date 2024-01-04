@@ -1,8 +1,9 @@
 #include <Graphics/VulkanViewport.h>
 #include <Graphics/VulkanRenderer.h>
 
-#include <vk/PipelineLayout.h>
 #include <vk/RenderPass.h>
+#include <vk/PipelineLayout.h>
+#include <vk/GraphicsPipeline.h>
 
 #include <vk/state/ShaderModule.h>
 #include <vk/state/ShaderStage.h>
@@ -81,6 +82,31 @@ VulkanViewport::VulkanViewport( Window* window )
     auto colorblend_state       = ColorBlendState::create();
     auto pipeline_layout        = PipelineLayout::create( _device );
          pipeline_layout->Compile( _device );
+
+    VkPipelineShaderStageCreateInfo pipelineShaderStages[]
+    {
+        {
+            VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO, VK_NULL_HANDLE, VkPipelineShaderStageCreateFlags{ 0 },
+            stages[0]->stage, *stages[0]->module, stages[0]->name.c_str(), VK_NULL_HANDLE // pSpecializationInfo
+        },
+        {
+            VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO, VK_NULL_HANDLE, VkPipelineShaderStageCreateFlags{ 0 },
+            stages[1]->stage, *stages[1]->module, stages[1]->name.c_str(), VK_NULL_HANDLE // pSpecializationInfo
+        }
+    };
+
+    VkGraphicsPipelineCreateInfo pipelineCreateInfo
+    {
+        VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
+        VK_NULL_HANDLE,
+        VkPipelineCacheCreateFlags{ 0 },
+        2,  // ~= stages.size()
+        pipelineShaderStages
+    };
+
+    
+
+    //auto graphics_pipeline      = GraphicsPipeline::create();
 }
 
 VulkanViewport::~VulkanViewport()
