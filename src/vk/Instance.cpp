@@ -5,43 +5,6 @@
 namespace aer::gfx::vk
 {
 
-#ifndef NDEBUG
-VKAPI_ATTR VkBool32 debug_callback
-(
-    VkDebugUtilsMessageSeverityFlagBitsEXT      severity,
-    VkDebugUtilsMessageTypeFlagsEXT             type,
-    const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-    void*                                       pUserData
-)
-{
-    switch ( severity )
-    {
-        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
-        {
-            AE_INFO( "%s", pCallbackData->pMessage );
-            break;
-        }
-        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
-        {
-            AE_WARN( "%s", pCallbackData->pMessage );
-            break;
-        }
-        case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
-        {
-            AE_ERROR( "%s", pCallbackData->pMessage );
-            break;
-        }        
-        default:
-            break;
-    }
-
-    
-    AE_INFO_IF( type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
-                "VK_PERFORMANCE %s", pCallbackData->pMessage );
-    return VK_FALSE; // only used if testing validation layers
-};
-#endif
-
 AEON_API Instance::Instance( Names extensions, Names layers )
 {
     VkApplicationInfo appInfo
@@ -180,7 +143,8 @@ Names ValidateInstanceLayerNames( Names& names )
 
     auto instance_layers = EnumerateInstanceLayerProperties();
 
-    std::set<std::string> available_layers{ instance_layers.begin(), instance_layers.end() };
+    std::set<std::string> available_layers;
+    for( auto layer : instance_layers ) { available_layers.emplace( layer.layerName ); }
 
     Names validated_names{ names.size() };
     for( const auto& requested : names )
