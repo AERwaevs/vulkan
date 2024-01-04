@@ -20,6 +20,7 @@ namespace aer::gfx
         VulkanViewport( Window* window );
         ~VulkanViewport();
 
+        VulkanRenderer& Renderer() const { return static_cast<VulkanRenderer&>(*_renderer); }
     private:
         ref_ptr<vk::Instance>        _instance;
         ref_ptr<vk::Surface>         _surface;
