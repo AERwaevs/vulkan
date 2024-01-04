@@ -19,6 +19,9 @@ struct MultisampleState : public GraphicsPipelineState, public Interfaces< Multi
     VkBool32                alphaToOneEnable      = VK_FALSE;
     
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
+private:
+    // TODO move to scratch memory allocation
+    VkPipelineMultisampleStateCreateInfo multisampleState;
 };
     
 } // namespace aer::gfx::vk

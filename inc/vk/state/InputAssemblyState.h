@@ -16,6 +16,9 @@ struct InputAssemblyState : public GraphicsPipelineState, public Interfaces< Inp
     VkBool32    primitiveRestartEnable = VK_FALSE;
     
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
+private:
+    // TODO move to scratch memory allocation
+    VkPipelineInputAssemblyStateCreateInfo inputAssemblyState;
 };
     
 } // namespace aer::gfx::vk
