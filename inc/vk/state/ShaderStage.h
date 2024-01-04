@@ -23,5 +23,6 @@ public:
     ref_ptr<ShaderModule> module;
     std::string           name;
 };
-    
+using ShaderStages = std::vector<ref_ptr<ShaderStage>>;
+
 } // namespace aer::gfx::vk

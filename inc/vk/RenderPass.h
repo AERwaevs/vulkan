@@ -21,12 +21,10 @@ struct RenderPass : public Object
 
     static ref_ptr<RenderPass> create( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead = false );
     
-    RenderPass
-    (
-        Device* in_device, const Attachments& in_attachments, const Subpasses& in_subpasses, 
-        const Dependencies& in_dependencies, const CorrelatedViewMasks in_correlatedViewMasks = {}
-    );
+    RenderPass( Device*, const Attachments&, const Subpasses&, const Dependencies&, const CorrelatedViewMasks = {} );
     ~RenderPass();
+    
+    operator VkRenderPass () const { return _renderPass; }
 
     const ref_ptr<Device>       device;
     const Attachments           attachments;

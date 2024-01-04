@@ -5,8 +5,6 @@
 #include <vk/PipelineLayout.h>
 #include <vk/GraphicsPipeline.h>
 
-#include <vk/state/ShaderModule.h>
-#include <vk/state/ShaderStage.h>
 #include <vk/state/DynamicState.h>
 #include <vk/state/VertexInputState.h>
 #include <vk/state/InputAssemblyState.h>
@@ -46,7 +44,8 @@ VulkanViewport::VulkanViewport( Window* window )
     _device( vk::Device::create
     (
         _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
-    ) )
+    ) ),
+    _context( vk::Context::create( _device ) )
 {
     using namespace vk;
 
@@ -57,56 +56,34 @@ VulkanViewport::VulkanViewport( Window* window )
         window->width(), window->height(), _swapchain_prefs
     );
 
+    _context->renderPass = RenderPass::create( _device, _swapchain->format(), VK_FORMAT_D32_SFLOAT );
+    _context->states =
+    {
+        DynamicState::create(),
+        VertexInputState::create(),
+        InputAssemblyState::create(),
+        ViewportState::create( _swapchain->extent() ),
+        RasterizationState::create(),
+        MultisampleState::create( VK_SAMPLE_COUNT_4_BIT ),  //TODO - this needs to match the renderpass color and/or depth attachment
+        DepthStencilState::create(),
+        ColorBlendState::create()
+    };
+
     //* create shaders
     auto vert_code   = ByteCode::read( "shaders/tri.vert.spv" );
     auto frag_code   = ByteCode::read( "shaders/tri.frag.spv" );
     auto vert_module = ShaderModule::create( _device, *vert_code );
     auto frag_module = ShaderModule::create( _device, *frag_code );
-    ref_ptr<ShaderStage> stages[]
+    ShaderStages stages
     {
         ShaderStage::create( VK_SHADER_STAGE_VERTEX_BIT, vert_module, "main" ),
         ShaderStage::create( VK_SHADER_STAGE_FRAGMENT_BIT, frag_module, "main" )
     };
-
-    //* create renderPass
-    auto renderpass             = RenderPass::create( _device, _swapchain->format(), VK_FORMAT_D32_SFLOAT );
-
-    //* create graphics pipeline
-    auto dynamic_state          = DynamicState::create();
-    auto vertex_input_state     = VertexInputState::create();
-    auto input_assembly_state   = InputAssemblyState::create();
-    auto viewport_state         = ViewportState::create( _swapchain->extent() );
-    auto rasterization_state    = RasterizationState::create();
-    auto multisample_state      = MultisampleState::create( VK_SAMPLE_COUNT_4_BIT );
-    auto depthstencil_state     = DepthStencilState::create();
-    auto colorblend_state       = ColorBlendState::create();
-    auto pipeline_layout        = PipelineLayout::create( _device );
-         pipeline_layout->Compile( _device );
-
-    VkPipelineShaderStageCreateInfo pipelineShaderStages[]
-    {
-        {
-            VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO, VK_NULL_HANDLE, VkPipelineShaderStageCreateFlags{ 0 },
-            stages[0]->stage, *stages[0]->module, stages[0]->name.c_str(), VK_NULL_HANDLE // pSpecializationInfo
-        },
-        {
-            VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO, VK_NULL_HANDLE, VkPipelineShaderStageCreateFlags{ 0 },
-            stages[1]->stage, *stages[1]->module, stages[1]->name.c_str(), VK_NULL_HANDLE // pSpecializationInfo
-        }
-    };
-
-    VkGraphicsPipelineCreateInfo pipelineCreateInfo
-    {
-        VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO,
-        VK_NULL_HANDLE,
-        VkPipelineCacheCreateFlags{ 0 },
-        2,  // ~= stages.size()
-        pipelineShaderStages
-    };
-
     
-
-    //auto graphics_pipeline      = GraphicsPipeline::create();
+    _pipelineLayout = PipelineLayout::create( _context->device );
+    _pipelineLayout->Compile( *_context );
+    _graphicsPipeline = GraphicsPipeline::create( _pipelineLayout, stages, _context->states );
+    _graphicsPipeline->Compile( *_context );
 }
 
 VulkanViewport::~VulkanViewport()

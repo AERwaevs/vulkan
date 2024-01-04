@@ -12,8 +12,9 @@ PipelineLayout::PipelineLayout( Device* device, const SetLayouts& in_setLayouts,
 
 }
 
-void PipelineLayout::Compile( Device* device )
+void PipelineLayout::Compile( Context& context )
 {
+    if( !_device ) _device = context.device;
     VkPipelineLayoutCreateInfo createInfo
     {
         VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO,

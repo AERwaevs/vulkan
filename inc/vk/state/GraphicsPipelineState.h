@@ -13,4 +13,6 @@ protected:
     virtual         ~GraphicsPipelineState() = default;
 };
 
+using GraphicsPipelineStates = std::vector<ref_ptr<GraphicsPipelineState>>;
+
 } // namespace aer::gfx::vk

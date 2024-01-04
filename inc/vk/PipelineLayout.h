@@ -2,6 +2,7 @@
 
 #include "vk.h"
 #include "LogicalDevice.h"
+#include "Context.h"
 
 namespace aer::gfx::vk
 {
@@ -19,7 +20,7 @@ public:
     SetLayouts          setLayouts;
     PushConstantRanges  pushConstantRanges;
 
-    void Compile( Device* device );
+    void Compile( Context& context );
 protected:
     ~PipelineLayout();
 private:
