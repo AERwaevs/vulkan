@@ -6,6 +6,14 @@
 
 #define AEON_VK_VERSION GLAD_MAKE_VERSION( 1, 2 )
 
+inline bool vk_supported()
+{
+    static bool loaded( false );
+    if( loaded ) return true;
+    static auto version( gladLoaderLoadVulkan( nullptr, nullptr, nullptr ) );
+    return loaded = ( version >= AEON_VK_VERSION );
+}
+
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE
 

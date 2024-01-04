@@ -22,7 +22,7 @@ namespace aer::gfx
 template<>
 ref_ptr<Viewport> Viewport::create< API::Vulkan >( Window* window )
 {
-    return VulkanViewport::create_if( VulkanSupported(), window );
+    return VulkanViewport::create_if( vk_supported(), window );
 }
 
 const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Surface* surface )
