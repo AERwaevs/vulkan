@@ -5,8 +5,11 @@
 namespace aer::gfx::vk
 {
 
-class GraphicsPipeline : public Object, Interfaces< GraphicsPipeline, ICreate >
+class GraphicsPipeline : public Object, public Interfaces< GraphicsPipeline, ICreate >
 {
+public:
+    GraphicsPipeline();
+    ~GraphicsPipeline();
 
 };
 
