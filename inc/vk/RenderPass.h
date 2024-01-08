@@ -34,7 +34,6 @@ struct RenderPass : public Object
 
 protected:
     VkRenderPass          _renderPass;
-    VkPipelineLayout      _pipelineLayout;
 };
 
 struct AttachmentDescription
