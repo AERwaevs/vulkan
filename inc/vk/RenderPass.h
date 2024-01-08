@@ -19,7 +19,7 @@ struct RenderPass : public Object
     using Dependencies          = std::vector<SubpassDependency>;
     using CorrelatedViewMasks   = std::vector<uint32_t>;
 
-    static ref_ptr<RenderPass> create( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead = false );
+    static ref_ptr<RenderPass> create( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples = VK_SAMPLE_COUNT_1_BIT, bool requiresDepthRead = false );
     
     RenderPass( Device*, const Attachments&, const Subpasses&, const Dependencies&, const CorrelatedViewMasks = {} );
     ~RenderPass();

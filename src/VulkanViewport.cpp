@@ -56,7 +56,17 @@ VulkanViewport::VulkanViewport( Window* window )
         window->width(), window->height(), _swapchain_prefs
     );
 
-    _context->renderPass = RenderPass::create( _device, _swapchain->format(), VK_FORMAT_D32_SFLOAT );
+    _context->renderPass = RenderPass::create( _device, _swapchain->format(), VK_FORMAT_D32_SFLOAT, VK_SAMPLE_COUNT_4_BIT );
+    const auto maxSamples = [&]()
+    {
+        VkSampleCountFlagBits maxSamples( VK_SAMPLE_COUNT_1_BIT );
+        for( const auto& attachment : _context->renderPass->attachments )
+        {
+            maxSamples = std::max( maxSamples, attachment.samples );
+        }
+        return maxSamples;
+    }();
+
     _context->states =
     {
         DynamicState::create(),
@@ -64,7 +74,7 @@ VulkanViewport::VulkanViewport( Window* window )
         InputAssemblyState::create(),
         ViewportState::create( _swapchain->extent() ),
         RasterizationState::create(),
-        MultisampleState::create( VK_SAMPLE_COUNT_4_BIT ),  //TODO - this needs to match the renderpass color and/or depth attachment
+        MultisampleState::create( maxSamples ),  //TODO - this needs to match the renderpass color and/or depth attachment
         DepthStencilState::create(),
         ColorBlendState::create()
     };

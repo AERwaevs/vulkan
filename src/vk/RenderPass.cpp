@@ -141,12 +141,12 @@ RenderPass::~RenderPass()
     if( _renderPass )     vkDestroyRenderPass( *device, _renderPass, VK_ALLOCATOR );
 }
 
-ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead )
+ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead )
 {
     RenderPass::Attachments attachments
     {
-        { .format = imageFormat }, // colorAttachment
-        { .format = depthFormat }  // depthAttachment
+        { .format = imageFormat, .samples = samples }, // colorAttachment
+        { .format = depthFormat, .samples = samples }  // depthAttachment
     };
     AttachmentReference colorAttachmentRef
     {
