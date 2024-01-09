@@ -22,7 +22,7 @@ public:
 
     void Compile( Context& context );
 protected:
-    ~PipelineLayout();
+    virtual ~PipelineLayout();
 private:
     ref_ptr<Device>     _device;
     VkPipelineLayout    _pipelineLayout;
