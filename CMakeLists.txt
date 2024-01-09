@@ -60,6 +60,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/GraphicsPipeline.h
     ${VULKAN_INC_DIR}/vk/PipelineLayout.h
     ${VULKAN_INC_DIR}/vk/RenderPass.h
+    ${VULKAN_INC_DIR}/vk/Framebuffer.h
     ${VULKAN_INC_DIR}/vk/Context.h
 
     ${VULKAN_INC_DIR}/vk/state/Image.h
@@ -90,6 +91,7 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/GraphicsPipeline.cpp
     ${VULKAN_SRC_DIR}/vk/PipelineLayout.cpp
     ${VULKAN_SRC_DIR}/vk/RenderPass.cpp
+    ${VULKAN_SRC_DIR}/vk/Framebuffer.cpp
     ${VULKAN_SRC_DIR}/vk/Context.cpp
 
     ${VULKAN_SRC_DIR}/vk/state/Image.cpp
