@@ -25,6 +25,9 @@ public:
     ref_ptr<Image> image;
 public:
     ImageView( ref_ptr<Image> in_image = {} );
+
+    operator VkImageView()  const { return _imageView; }
+    auto vk()               const { return _imageView; }
 public:
     void Compile( Device* device );
 protected:
