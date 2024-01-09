@@ -35,16 +35,16 @@ void ImageView::Compile( Device* device )
     if( image ) image->Compile( device );
 
     _device = device;
-    auto result = vkCreateImageView( *_device, &create_info, VK_ALLOCATOR, &_image_view );
+    auto result = vkCreateImageView( *_device, &create_info, VK_ALLOCATOR, &_imageView );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImageView: %s", ResultMessage( result ) );
 }
 
 ImageView::~ImageView()
 {
-    if( _image_view )
+    if( _imageView )
     {
-        vkDestroyImageView( *_device, _image_view, VK_ALLOCATOR );
-        _image_view = VK_NULL_HANDLE;
+        vkDestroyImageView( *_device, _imageView, VK_ALLOCATOR );
+        _imageView = VK_NULL_HANDLE;
         _device = {};
     }
 }

@@ -31,7 +31,7 @@ protected:
     virtual ~ImageView();
 protected:
     ref_ptr<Device>         _device;
-    VkImageView             _image_view = VK_NULL_HANDLE;
+    VkImageView             _imageView = VK_NULL_HANDLE;
 };
 using ImageViews = std::vector<ref_ptr<ImageView>>;
 
