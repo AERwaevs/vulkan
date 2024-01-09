@@ -47,7 +47,7 @@ public:
     auto vk()                 const { return _swapchain; }
     auto format()             const { return _format; }
     auto extent()             const { return _extent; }
-    auto imageViews()         const { return _extent; }
+    auto imageViews()         const { return _views; }
 private:
     ref_ptr<Device>         _device;
     ref_ptr<Surface>        _surface;
