@@ -10,6 +10,9 @@
 #include <vk/Context.h>
 #include <vk/PipelineLayout.h>
 #include <vk/GraphicsPipeline.h>
+#include <vk/Framebuffer.h>
+#include <vk/state/Image.h>
+#include <vk/state/ImageView.h>
 
 #include "VulkanRenderer.h"
 
@@ -33,7 +36,14 @@ namespace aer::gfx
         ref_ptr<vk::Context>            _context;
         ref_ptr<vk::PipelineLayout>     _pipelineLayout;
         ref_ptr<vk::GraphicsPipeline>   _graphicsPipeline;
+        vk::Framebuffers                _framebuffers;
         
+        ref_ptr<vk::Image>              _multisampleImage;
+        ref_ptr<vk::Image>              _multisampleDepthImage;
+
+        ref_ptr<vk::Image>              _depthImage;
+        ref_ptr<vk::ImageView>          _depthImageView;
+
         vk::SwapchainPreferences    _swapchain_prefs{};
     };
 } // namespace aer::gfx
