@@ -17,7 +17,7 @@ struct Image : public virtual Object, public Interfaces< Image, ICreate >
     VkSampleCountFlagBits   samples     = VK_SAMPLE_COUNT_1_BIT;
     VkImageTiling           tiling      = VK_IMAGE_TILING_OPTIMAL;
     VkImageUsageFlags       usage       = 0;
-    VkSharingMode           shareMode   = VK_SHARING_MODE_EXCLUSIVE;
+    VkSharingMode           sharingMode = VK_SHARING_MODE_EXCLUSIVE;
     std::vector<uint32_t>   queueFamilyIndices;
     VkImageLayout           layout      = VK_IMAGE_LAYOUT_UNDEFINED;
 

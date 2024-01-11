@@ -24,7 +24,7 @@ void Image::Compile( Device* device )
         samples,
         tiling,
         usage,
-        shareMode,
+        sharingMode,
         static_cast<uint32_t>( queueFamilyIndices.size() ),
         queueFamilyIndices.data(),
         layout
