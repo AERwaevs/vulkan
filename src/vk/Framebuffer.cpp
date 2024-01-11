@@ -18,11 +18,11 @@ Framebuffer::Framebuffer( ref_ptr<RenderPass> renderPass, const ImageViews& atta
         .pNext              = VK_NULL_HANDLE,
         .flags              = VkFramebufferCreateFlags{ 0 },
         .renderPass         = *renderPass,
-        .attachmentCount    = static_cast<uint32_t>( attachments.size() ),
+        .attachmentCount    = static_cast<uint32_t>( vk_attachments.size() ),
         .pAttachments       = vk_attachments.data(),
-        .width              = _width,
-        .height             = _height,
-        .layers             = _layers
+        .width              = width,
+        .height             = height,
+        .layers             = layers
     };
 
     auto result = vkCreateFramebuffer( _device, &createInfo, VK_ALLOCATOR, &_framebuffer );
