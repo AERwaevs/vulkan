@@ -24,7 +24,7 @@ struct Image : public virtual Object, public Interfaces< Image, ICreate >
     Image( VkImage image, Device* device );
     operator VkImage() const { return _image; };
     
-    void Compile( Device* device = nullptr );
+    void Compile( Device* device );
 
 protected:
     virtual ~Image();
