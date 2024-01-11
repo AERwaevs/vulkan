@@ -3,15 +3,32 @@
 namespace aer::gfx::vk
 {
 
-ImageView::ImageView( ref_ptr<Image> in_image )
+ImageView::ImageView( ref_ptr<Image> in_image, VkImageAspectFlags aspectFlags )
 : image( in_image )
 {
     if( image )
     {
+        const auto aspect = [&]() -> VkImageAspectFlags
+        {
+            switch( image->format )
+            {
+                case VK_FORMAT_D16_UNORM_S8_UINT:
+                case VK_FORMAT_D24_UNORM_S8_UINT:
+                case VK_FORMAT_D32_SFLOAT_S8_UINT:
+                    return VK_IMAGE_ASPECT_DEPTH_BIT | VK_IMAGE_ASPECT_STENCIL_BIT;
+                case VK_FORMAT_D16_UNORM:
+                case VK_FORMAT_D32_SFLOAT:
+                case VK_FORMAT_X8_D24_UNORM_PACK32:
+                    return VK_IMAGE_ASPECT_DEPTH_BIT;
+                default:
+                    return VK_IMAGE_ASPECT_COLOR_BIT;
+            };
+        }();
+
         viewType                        = VK_IMAGE_VIEW_TYPE_2D; // TODO - handle other image types
         format                          = image->format;
-        subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT; //TODO - get correct aspect flags
         subresourceRange.baseMipLevel   = 0;
+        subresourceRange.aspectMask     = aspectFlags ? aspectFlags : aspect;
         subresourceRange.levelCount     = image->mipLevels;
         subresourceRange.baseArrayLayer = 0;
         subresourceRange.layerCount     = image->arrayLayers;
