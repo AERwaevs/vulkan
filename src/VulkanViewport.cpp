@@ -56,7 +56,7 @@ VulkanViewport::VulkanViewport( Window* window )
         window->width(), window->height(), _swapchain_prefs
     );
 
-    _context->renderPass = RenderPass::create( _device, _swapchain->format(), VK_FORMAT_D32_SFLOAT, VK_SAMPLE_COUNT_4_BIT );
+    _context->renderPass = RenderPass::create( _device, _swapchain->format() );
     const auto maxSamples = [&]()
     {
         VkSampleCountFlagBits maxSamples( VK_SAMPLE_COUNT_1_BIT );
@@ -95,29 +95,29 @@ VulkanViewport::VulkanViewport( Window* window )
     _graphicsPipeline = GraphicsPipeline::create( _pipelineLayout, stages, _context->states );
     _graphicsPipeline->Compile( *_context );
 
-    //* create depth image
-    _depthImage = Image::create();
-    _depthImage->imageType          = VK_IMAGE_TYPE_2D;
-    _depthImage->format             = VK_FORMAT_D32_SFLOAT;
-    _depthImage->extent             = { _swapchain->extent().width, _swapchain->extent().height, 1 };
-    _depthImage->mipLevels          = 1;
-    _depthImage->arrayLayers        = 1;
-    _depthImage->samples            = maxSamples;
-    _depthImage->tiling             = VK_IMAGE_TILING_OPTIMAL;
-    _depthImage->usage              = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
-    _depthImage->sharingMode        = VK_SHARING_MODE_EXCLUSIVE;
-    _depthImage->queueFamilyIndices = {};
-    _depthImage->layout             = VK_IMAGE_LAYOUT_UNDEFINED;
-    _depthImage->Compile( _device );
+    // TODO - handle depth
+    //_depthImage = Image::create();
+    //_depthImage->imageType          = VK_IMAGE_TYPE_2D;
+    //_depthImage->format             = VK_FORMAT_D32_SFLOAT;
+    //_depthImage->extent             = { _swapchain->extent().width, _swapchain->extent().height, 1 };
+    //_depthImage->mipLevels          = 1;
+    //_depthImage->arrayLayers        = 1;
+    //_depthImage->samples            = maxSamples;
+    //_depthImage->tiling             = VK_IMAGE_TILING_OPTIMAL;
+    //_depthImage->usage              = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT;
+    //_depthImage->sharingMode        = VK_SHARING_MODE_EXCLUSIVE;
+    //_depthImage->queueFamilyIndices = {};
+    //_depthImage->layout             = VK_IMAGE_LAYOUT_UNDEFINED;
+    //_depthImage->Compile( _device );
 
-    _depthImageView = ImageView::create( _depthImage );
-    _depthImageView->Compile( _device );
+    //_depthImageView = ImageView::create( _depthImage );
+    //_depthImageView->Compile( _device );
     
     //* create framebuffer
     const auto& imageViews = _swapchain->imageViews();
     for( std::size_t i = 0; i < imageViews.size(); i++ )
     {
-        std::vector<ref_ptr<ImageView>> attachments { imageViews[i], _depthImageView };
+        std::vector<ref_ptr<ImageView>> attachments { imageViews[i] };
         _framebuffers.push_back( Framebuffer::create( _context->renderPass, attachments, _swapchain->extent().width, _swapchain->extent().height, 1 ) );
     }
 }

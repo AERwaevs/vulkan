@@ -38,11 +38,12 @@ namespace aer::gfx
         ref_ptr<vk::GraphicsPipeline>   _graphicsPipeline;
         vk::Framebuffers                _framebuffers;
         
-        ref_ptr<vk::Image>              _multisampleImage;
-        ref_ptr<vk::Image>              _multisampleDepthImage;
-
-        ref_ptr<vk::Image>              _depthImage;
-        ref_ptr<vk::ImageView>          _depthImageView;
+        // TODO - handle multisampling
+        //ref_ptr<vk::Image>              _multisampleImage;
+        //ref_ptr<vk::Image>              _multisampleDepthImage;
+        // TODO - handle depth
+        //ref_ptr<vk::Image>              _depthImage;
+        //ref_ptr<vk::ImageView>          _depthImageView;
 
         vk::SwapchainPreferences    _swapchain_prefs{};
     };

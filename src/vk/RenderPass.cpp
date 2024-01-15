@@ -141,17 +141,22 @@ RenderPass::~RenderPass()
     if( _renderPass )     vkDestroyRenderPass( *device, _renderPass, VK_ALLOCATOR );
 }
 
-ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead )
+ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat )
 {
-    RenderPass::Attachments attachments
+    AttachmentDescription colorAttachment
     {
-        { .format = imageFormat, .samples = samples }, // colorAttachment
-        { .format = depthFormat, .samples = samples }  // depthAttachment
+        .format      = imageFormat, 
+        .finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
     };
+
     AttachmentReference colorAttachmentRef
     {
         .attachment = 0,
         .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    };
+    SubpassDescription subpass
+    {
+        .colorAttachments{ colorAttachmentRef }
     };
     SubpassDependency colorDependency
     {
@@ -160,10 +165,105 @@ ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, Vk
         .srcAccessMask = 0,
         .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
     };
+
+    return ref_ptr( new RenderPass( device, { colorAttachment }, { subpass }, { colorDependency } ) );
+}
+
+ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkSampleCountFlagBits samples )
+{
+    if( samples == VK_SAMPLE_COUNT_1_BIT )
+    {
+        return create( device, imageFormat );
+    }
+
+    AttachmentDescription colorAttachment
+    {
+        .format         = imageFormat,
+        .samples        = samples,
+        .loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR,
+        .finalLayout    = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    };
+    AttachmentDescription resolveAttachment
+    {
+        .format         = imageFormat,
+        .storeOp        = VK_ATTACHMENT_STORE_OP_STORE, 
+        .finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+    };
+
+    AttachmentReference colorAttachmentRef
+    {
+        .attachment = 0,
+        .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    };
+    AttachmentReference resolveAttachmentRef
+    {
+        .attachment = 1,
+        .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    };
+    SubpassDescription subpass
+    {
+            .colorAttachments{ colorAttachmentRef },
+            .resolveAttachments{ resolveAttachmentRef }
+    };
+
+    SubpassDependency colorDependency
+    {
+        .srcSubpass      = VK_SUBPASS_EXTERNAL,
+        .srcStageMask    = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+        .dstStageMask    = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .srcAccessMask   = VK_ACCESS_MEMORY_READ_BIT,
+        .dstAccessMask   = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+        .dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT
+    };
+    SubpassDependency resolveDependency
+    {
+        .dstSubpass     = VK_SUBPASS_EXTERNAL,
+        .srcStageMask   = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .dstStageMask   = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+        .srcAccessMask  = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+        .dstAccessMask  = VK_ACCESS_MEMORY_READ_BIT,
+        .dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT
+    };
+
+    return ref_ptr( new RenderPass( device, { colorAttachment, resolveAttachment }, { subpass }, { colorDependency, resolveDependency } ) );
+}
+
+ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead )
+{
+    AttachmentDescription colorAttachment
+    {
+        .format         = imageFormat,
+        .finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+    };
+    AttachmentDescription depthAttachment
+    {
+        .format         = depthFormat,
+        .storeOp        = requiresDepthRead ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE,
+        .finalLayout    = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+    };
+
+    AttachmentReference colorAttachmentRef
+    {
+        .attachment = 0,
+        .layout     = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+    };
     AttachmentReference depthAttachmentRef
     {
         .attachment = 1,
         .layout     = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+    };
+    SubpassDescription subpass
+    {
+        .colorAttachments{ colorAttachmentRef },
+        .depthStencilAttachments{ depthAttachmentRef }
+    };
+
+    SubpassDependency colorDependency
+    {
+        .srcStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .dstStageMask  = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .srcAccessMask = 0,
+        .dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT
     };
     SubpassDependency depthDependency
     {
@@ -172,19 +272,85 @@ ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, Vk
         .srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
         .dstAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT
     };
-    RenderPass::Subpasses subpasses
-    {{
-            .colorAttachments{ colorAttachmentRef },
-            .depthStencilAttachments{ depthAttachmentRef }
-    }};
 
-    RenderPass::Dependencies dependencies
+    return ref_ptr( new RenderPass( device, { colorAttachment, depthAttachment }, { subpass }, { colorDependency, depthDependency } ) );
+}
+
+ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead )
+{
+    if( samples == VK_SAMPLE_COUNT_1_BIT )
     {
-        colorDependency,
-        depthDependency
+        return create( device, imageFormat, depthFormat, requiresDepthRead );
+    }
+
+    RenderPass::Attachments attachments
+    {
+        {
+            .format         = imageFormat,
+            .samples        = samples,
+            .loadOp         = VK_ATTACHMENT_LOAD_OP_CLEAR,
+            .finalLayout    = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL
+        },
+        {
+            .format         = imageFormat,
+            .storeOp        = VK_ATTACHMENT_STORE_OP_STORE, 
+            .finalLayout    = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR
+        },
+        {
+            .format         = depthFormat,
+            .samples        = samples,
+            .storeOp        = requiresDepthRead ? VK_ATTACHMENT_STORE_OP_STORE : VK_ATTACHMENT_STORE_OP_DONT_CARE,
+            .finalLayout    = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
+        }
+    };
+    if( requiresDepthRead )
+    {
+        AttachmentDescription depthResolveAttachment
+        {
+            .format         = depthFormat,
+            .storeOp        = VK_ATTACHMENT_STORE_OP_STORE,
+            .finalLayout    = VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL
+        };
+        attachments.emplace_back( depthResolveAttachment );
+    }
+
+    SubpassDescription subpass
+    {
+        .colorAttachments{        { .attachment = 0, .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL } },
+        .resolveAttachments{      { .attachment = 1, .layout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL } },
+        .depthStencilAttachments{ { .attachment = 2, .layout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL } }
+    };
+    if( requiresDepthRead )
+    {
+        AttachmentReference depthResolveAttachmentRef
+        {
+            .attachment = 3,
+            .layout     = VK_IMAGE_LAYOUT_DEPTH_STENCIL_READ_ONLY_OPTIMAL
+        };
+        subpass.depthResolveMode = VK_RESOLVE_MODE_AVERAGE_BIT;
+        subpass.depthStencilResolveAttachements.emplace_back( depthResolveAttachmentRef );
+    }
+
+    SubpassDependency colorDependency
+    {
+        .srcSubpass      = VK_SUBPASS_EXTERNAL,
+        .srcStageMask    = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+        .dstStageMask    = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT,
+        .srcAccessMask   = VK_ACCESS_MEMORY_READ_BIT,
+        .dstAccessMask   = VK_ACCESS_COLOR_ATTACHMENT_READ_BIT | VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT,
+        .dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT
+    };
+    SubpassDependency depthDependency
+    {
+        .srcSubpass      = VK_SUBPASS_EXTERNAL,
+        .srcStageMask    = VK_PIPELINE_STAGE_BOTTOM_OF_PIPE_BIT,
+        .dstStageMask    = VK_PIPELINE_STAGE_EARLY_FRAGMENT_TESTS_BIT | VK_PIPELINE_STAGE_LATE_FRAGMENT_TESTS_BIT,
+        .srcAccessMask   = VK_ACCESS_MEMORY_READ_BIT,
+        .dstAccessMask   = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_READ_BIT | VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT,
+        .dependencyFlags = VK_DEPENDENCY_BY_REGION_BIT
     };
 
-    return ref_ptr( new RenderPass( device, attachments, subpasses, dependencies ) );
+    return ref_ptr<RenderPass>( new RenderPass( device, attachments, { subpass }, { colorDependency, depthDependency } ) );
 }
 
 } // namespace aer::gfx::vk
