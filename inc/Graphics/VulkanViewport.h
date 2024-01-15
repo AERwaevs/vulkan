@@ -11,6 +11,7 @@
 #include <vk/PipelineLayout.h>
 #include <vk/GraphicsPipeline.h>
 #include <vk/Framebuffer.h>
+#include <vk/CommandPool.h>
 #include <vk/state/Image.h>
 #include <vk/state/ImageView.h>
 
@@ -37,6 +38,7 @@ namespace aer::gfx
         ref_ptr<vk::PipelineLayout>     _pipelineLayout;
         ref_ptr<vk::GraphicsPipeline>   _graphicsPipeline;
         vk::Framebuffers                _framebuffers;
+        ref_ptr<vk::CommandPool>        _commandPool;
         
         // TODO - handle multisampling
         //ref_ptr<vk::Image>              _multisampleImage;

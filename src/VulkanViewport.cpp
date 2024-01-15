@@ -120,6 +120,11 @@ VulkanViewport::VulkanViewport( Window* window )
         std::vector<ref_ptr<ImageView>> attachments { imageViews[i] };
         _framebuffers.push_back( Framebuffer::create( _context->renderPass, attachments, _swapchain->extent().width, _swapchain->extent().height, 1 ) );
     }
+
+    auto graphicsFamily = -1;
+    std::tie( graphicsFamily, std::ignore ) = _physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, _surface );
+
+    _commandPool = CommandPool::create( _device, graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 }
 
 VulkanViewport::~VulkanViewport()
