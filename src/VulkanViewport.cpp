@@ -3,6 +3,7 @@
 
 #include <vk/RenderPass.h>
 #include <vk/PipelineLayout.h>
+#include <vk/CommandBuffer.h>
 #include <vk/GraphicsPipeline.h>
 
 #include <vk/state/DynamicState.h>
@@ -121,10 +122,16 @@ VulkanViewport::VulkanViewport( Window* window )
         _framebuffers.push_back( Framebuffer::create( _context->renderPass, attachments, _swapchain->extent().width, _swapchain->extent().height, 1 ) );
     }
 
-    auto graphicsFamily = -1;
-    std::tie( graphicsFamily, std::ignore ) = _physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, _surface );
+    //* create command pool
+    auto graphicsFamily = [&]
+    {
+        uint32_t graphicsFamily;
+        std::tie( graphicsFamily, std::ignore ) = _physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, _surface );
+        return graphicsFamily;
+    }();
+    _commandPool    = CommandPool::create( _device, graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
+    _commandBuffer  = _commandPool->allocate();
 
-    _commandPool = CommandPool::create( _device, graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 }
 
 VulkanViewport::~VulkanViewport()

@@ -63,6 +63,7 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/Framebuffer.h
     ${VULKAN_INC_DIR}/vk/Context.h
     ${VULKAN_INC_DIR}/vk/CommandPool.h
+    ${VULKAN_INC_DIR}/vk/CommandBuffer.h
 
     ${VULKAN_INC_DIR}/vk/state/Image.h
     ${VULKAN_INC_DIR}/vk/state/ImageView.h
@@ -95,6 +96,7 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/Framebuffer.cpp
     ${VULKAN_SRC_DIR}/vk/Context.cpp
     ${VULKAN_SRC_DIR}/vk/CommandPool.cpp
+    ${VULKAN_SRC_DIR}/vk/CommandBuffer.cpp
 
     ${VULKAN_SRC_DIR}/vk/state/Image.cpp
     ${VULKAN_SRC_DIR}/vk/state/ImageView.cpp

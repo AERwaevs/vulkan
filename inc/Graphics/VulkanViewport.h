@@ -39,6 +39,7 @@ namespace aer::gfx
         ref_ptr<vk::GraphicsPipeline>   _graphicsPipeline;
         vk::Framebuffers                _framebuffers;
         ref_ptr<vk::CommandPool>        _commandPool;
+        ref_ptr<vk::CommandBuffer>      _commandBuffer;
         
         // TODO - handle multisampling
         //ref_ptr<vk::Image>              _multisampleImage;
