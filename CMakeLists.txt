@@ -18,10 +18,10 @@ endif()
 set( GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/glad" )
 set( LOADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/loader")
 
+
 set( VK_EXTENSIONS
     "VK_KHR_surface"
     "VK_EXT_debug_utils"
-    "VK_KHR_win32_surface"
     "VK_KHR_swapchain"
 )
 
@@ -41,7 +41,10 @@ glad_add_library( loader STATIC
     API         vulkan=1.3
     EXTENSIONS  ${VK_EXTENSIONS}
 )
-target_compile_definitions( loader PUBLIC $<$<BOOL:${WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX> )
+target_compile_definitions( loader PUBLIC
+    $<$<BOOL:${WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX>
+    $<$<BOOL:${UNIX}>:VK_USE_PLATFORM_XCB_KHR >
+)
 # AEON::Vulkan ------------------------------------------------------------------------------------
 set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )

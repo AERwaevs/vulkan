@@ -3,7 +3,7 @@
 namespace aer::gfx::vk
 {
 
-#ifdef AEON_PLATFORM_WINDOWS
+#if defined( AEON_PLATFORM_WINDOWS )
 
 template<> ref_ptr<Surface>
 Surface::create( ref_ptr<Instance> instance, Window_t window )
@@ -24,7 +24,7 @@ Win32Surface::Win32Surface( ref_ptr<Instance> instance, Window_t window )
     };
     auto result = vkCreateWin32SurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 
-#elif AEON_PLATFORM_ANDROID
+#elif defined( AEON_PLATFORM_ANDROID )
 
 template<> ref_ptr<Surface>
 Surface::create( ref_ptr<Instance> instance, Window_t window )
@@ -34,6 +34,7 @@ Surface::create( ref_ptr<Instance> instance, Window_t window )
 
 AndroidSurface::AndroidSurface( ref_ptr<Instance> instance, Window_t window )
 : Surface( instance )
+{
     VkAndroidSurfaceCreateInfoKHR surfaceCreateInfo
     {
         VK_STRUCTURE_TYPE_ANDROID_SURFACE_CREATE_INFO_KHR,
@@ -43,22 +44,21 @@ AndroidSurface::AndroidSurface( ref_ptr<Instance> instance, Window_t window )
     };
     auto result = vkCreateAndroidSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 
-#elif AEON_PLATFORM_LINUX
+#elif defined( AEON_PLATFORM_LINUX )
 template<> ref_ptr<Surface>
 Surface::create( ref_ptr<Instance> instance, Window_t window )
 {
-    return ref_ptr<AndroidSurface>( new AndroidSurface( instance, window ) );
+    return ref_ptr<LinuxSurface>( new LinuxSurface( instance, window ) );
 }
 
-LinuxSurface::Linuxurface( ref_ptr<Instance> instance, Window_t arg )
+LinuxSurface::LinuxSurface( ref_ptr<Instance> instance, Window_t arg )
 : Surface( instance )
+{
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo
     {
-        VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR,
-        VK_NULL_HANDLE, // pNext
-        VkXcbSurfaceCreateFlagsKHR{ 0 },
-        arg.connection,
-        arg.window
+        VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR, VK_NULL_HANDLE, VkXcbSurfaceCreateFlagsKHR{ 0 },
+        arg.connection(),
+        arg.window()
     };
     auto result = vkCreateXcbSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 

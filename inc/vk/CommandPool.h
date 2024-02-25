@@ -3,6 +3,8 @@
 #include <vk/vk.h>
 #include <vk/LogicalDevice.h>
 
+#include <mutex>
+
 namespace aer::gfx::vk
 {
 

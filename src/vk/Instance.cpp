@@ -52,8 +52,7 @@ AEON_API Instance::Instance( Names extensions, Names layers )
 
     auto result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &_instance );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: %s", ResultMessage( result ) );
-    gladLoaderLoadVulkan( _instance, nullptr, nullptr );
-
+    
 #ifndef NDEBUG
     GetProcAddr( CreateDebugUtilsMessenger,  "vkCreateDebugUtilsMessengerEXT"  );
     GetProcAddr( DestroyDebugUtilsMessenger, "vkDestroyDebugUtilsMessengerEXT" );

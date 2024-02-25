@@ -73,15 +73,15 @@ namespace aer::gfx::vk
         static inline const Names RequiredExtensions
         {
             VK_KHR_SURFACE_EXTENSION_NAME,
-#ifdef  AEON_PLATFORM_WINDOWS
+#if defined( AEON_PLATFORM_WINDOWS )
             VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
-#elif   AEON_PLATFORM_IOS
+#elif defined( AEON_PLATFORM_IOS )
             VK_EXT_METAL_SURFACE_EXTENSION_NAME,
-#elif   AEON_PLATFORM_MACOS
+#elif defined( AEON_PLATFORM_MACOS )
             "VK_MVK_macos_surface",
-#elif   AEON_PLATFORM_ANDROID
+#elif defined( AEON_PLATFORM_ANDROID )
             "VK_KHR_android_surface",
-#elif   AEON_PLATFORM_LINUX
+#elif defined( AEON_PLATFORM_LINUX )
             VK_KHR_XCB_SURFACE_EXTENSION_NAME,
 #endif
 #ifndef NDEBUG

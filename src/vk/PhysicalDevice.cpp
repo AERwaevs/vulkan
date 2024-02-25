@@ -8,7 +8,6 @@ namespace aer::gfx::vk
 PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )
 : _instance( instance ), _device( device )
 {
-    gladLoaderLoadVulkan( *instance, _device, nullptr );
     vkGetPhysicalDeviceProperties( device, &_properties );
     vkGetPhysicalDeviceFeatures( device, &_features );
     
