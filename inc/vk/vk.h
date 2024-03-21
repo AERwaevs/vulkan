@@ -1,6 +1,8 @@
 #pragma once
 
-#if !defined( AEON_PLATFORM_WINDOWS )
+#include <Base/Base.h>
+
+#if defined( AEON_PLATFORM_LINUX )
     #include <vulkan/vulkan.h>
 
     inline bool vk_supported() { return true; }
@@ -18,8 +20,6 @@
         return loaded = ( version >= AEON_VK_VERSION );
     }
 #endif
-
-#include <Base/Base.h>
 
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE

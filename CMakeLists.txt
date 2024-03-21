@@ -15,35 +15,10 @@ if( GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git" )
     endif()
 endif()
 # vulkan_loader -----------------------------------------------------------------------------------
-set( GLAD_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/glad" )
-set( LOADER_DIR "${CMAKE_CURRENT_SOURCE_DIR}/lib/loader")
-
-
 set( VK_EXTENSIONS
     "VK_KHR_surface"
     "VK_EXT_debug_utils"
     "VK_KHR_swapchain"
-)
-
-if( NOT EXISTS "${GLAD_DIR}/cmake/CMakeLists.txt" )
-    message( FATAL_ERROR "Glad submodule not present! GIT_SUBMODULE was turned off or failed. Please update submodules and try again." )
-endif()
-
-if( NOT EXISTS "${LOADER_DIR}/include/glad/vulkan.h" )
-    message( STATUS "Vulkan header not found, generating a loader" )
-endif()
-
-add_subdirectory( "${GLAD_DIR}/cmake" GLAD_DIR )
-glad_add_library( loader STATIC
-    EXCLUDE_FROM_ALL
-    LOADER
-    LOCATION    ${LOADER_DIR}
-    API         vulkan=1.3
-    EXTENSIONS  ${VK_EXTENSIONS}
-)
-target_compile_definitions( loader PUBLIC
-    $<$<BOOL:${WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX>
-    $<$<BOOL:${UNIX}>:VK_USE_PLATFORM_XCB_KHR >
 )
 # AEON::Vulkan ------------------------------------------------------------------------------------
 set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
@@ -121,16 +96,24 @@ add_library( vulkan STATIC
     ${VULKAN_SRC}
 )
 
+target_compile_definitions( vulkan PUBLIC
+    $<$<BOOL:${AER_WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX>
+    $<$<BOOL:${AER_LINUX}>:VK_USE_PLATFORM_XCB_KHR >
+)
+
 target_include_directories( vulkan 
     PUBLIC
         $<BUILD_INTERFACE:${VULKAN_INC_DIR}>
 	    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
     PRIVATE
         $<BUILD_INTERFACE:${VULKAN_SRC_DIR}>
-        $<BUILD_INTERFACE:${LOADER_DIR}/include>
 )
-target_link_libraries( vulkan PRIVATE base graphics_interface loader )
-
+target_link_libraries( vulkan 
+    PRIVATE
+        base
+        graphics_interface
+    $<$<BOOL:${AER_LINUX}>:PkgConfig::xcb>
+)
 # spir-v ------------------------------------------------------------------------------------------
 set( SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders )
 set( SHADER_COMPILER glslc )

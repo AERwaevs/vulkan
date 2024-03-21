@@ -2,6 +2,11 @@
 
 #include "vk.h"
 
+#if defined( AEON_PLATFORM_LINUX )
+    #include <xcb/xcb.h>
+    #include <vulkan/vulkan_xcb.h>
+#endif
+
 namespace aer::gfx::vk
 {
     using InstanceLayerProperties     = Vector<VkLayerProperties>;

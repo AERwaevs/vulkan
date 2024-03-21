@@ -39,7 +39,7 @@ struct Window_t : private std::pair<xcb_connection_t*, xcb_window_t>
     auto window()    { return second; };
 };
 
-struct LinuxSurface : public Surface    { LinuxSurface( ref_ptr<Instance>, Window_t ); };
+struct XCBSurface : public Surface    { XCBSurface( ref_ptr<Instance>, Window_t ); };
 
 #endif
 

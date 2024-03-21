@@ -48,10 +48,10 @@ AndroidSurface::AndroidSurface( ref_ptr<Instance> instance, Window_t window )
 template<> ref_ptr<Surface>
 Surface::create( ref_ptr<Instance> instance, Window_t window )
 {
-    return ref_ptr<LinuxSurface>( new LinuxSurface( instance, window ) );
+    return ref_ptr<XCBSurface>( new XCBSurface( instance, window ) );
 }
 
-LinuxSurface::LinuxSurface( ref_ptr<Instance> instance, Window_t arg )
+XCBSurface::XCBSurface( ref_ptr<Instance> instance, Window_t arg )
 : Surface( instance )
 {
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo
