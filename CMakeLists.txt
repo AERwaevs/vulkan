@@ -1,25 +1,21 @@
 # cmake -------------------------------------------------------------------------------------------
 cmake_minimum_required( VERSION 3.20 )
-# submodules --------------------------------------------------------------------------------------
-find_package( Git QUIET )
-if( GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git" )
-    option( GIT_SUBMODULE "Check submodules during build" ON )
-    if( GIT_SUBMODULE )
-        message(STATUS "Submodule update")
-        execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-                        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-                        RESULT_VARIABLE GIT_SUBMOD_RESULT)
-        if(NOT GIT_SUBMOD_RESULT EQUAL "0")
-            message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
-        endif()
-    endif()
+
+set( CMAKE_CXX_STANDARD          23  )
+set( CMAKE_CXX_STANDARD_REQUIRED ON  )
+set( CMAKE_CXX_EXTENSIONS        OFF )
+
+if( ANDROID )
+    set( AER_ANDROID 1 )
+elseif( WIN32 )
+    set( AER_WIN32 1 )
+elseif ( APPLE )
+    set( AER_APPLE 1 )
+else()
+    set( AER_LINUX 1 )
 endif()
-# vulkan_loader -----------------------------------------------------------------------------------
-set( VK_EXTENSIONS
-    "VK_KHR_surface"
-    "VK_EXT_debug_utils"
-    "VK_KHR_swapchain"
-)
+
+find_package( Vulkan REQUIRED )
 # AEON::Vulkan ------------------------------------------------------------------------------------
 set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
@@ -97,7 +93,7 @@ add_library( vulkan STATIC
 )
 
 target_compile_definitions( vulkan PUBLIC
-    $<$<BOOL:${AER_WIN32}>:VK_USE_PLATFORM_WIN32_KHR NOMINMAX>
+    $<$<BOOL:${AER_WIN32}>:VK_USE_PLATFORM_WIN32_KHR>
     $<$<BOOL:${AER_LINUX}>:VK_USE_PLATFORM_XCB_KHR >
 )
 
@@ -112,6 +108,7 @@ target_link_libraries( vulkan
     PRIVATE
         base
         graphics_interface
+        Vulkan::Vulkan
     $<$<BOOL:${AER_LINUX}>:PkgConfig::xcb>
 )
 # spir-v ------------------------------------------------------------------------------------------

@@ -56,7 +56,7 @@ struct AttachmentReference
 {
     uint32_t                        attachment      = 0;
     VkImageLayout                   layout          = VK_IMAGE_LAYOUT_UNDEFINED;
-    VkImageAspectFlags              aspectMask      = VK_IMAGE_ASPECT_NONE;
+    VkImageAspectFlags              aspectMask      = VK_IMAGE_ASPECT_NONE_KHR;
 };
 
 struct SubpassDescription

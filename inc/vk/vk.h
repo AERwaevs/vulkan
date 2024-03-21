@@ -7,18 +7,8 @@
 
     inline bool vk_supported() { return true; }
 #else
-    #define VK_USE_PLATFORM_WIN32_KHR
-    #include <glad/vulkan.h>
-
-    #define AEON_VK_VERSION GLAD_MAKE_VERSION( 1, 2 )
-
-    inline bool vk_supported()
-    {
-        static bool loaded( false );
-        if( loaded ) return true;
-        static auto version( gladLoaderLoadVulkan( nullptr, nullptr, nullptr ) );
-        return loaded = ( version >= AEON_VK_VERSION );
-    }
+    #include <vulkan/vulkan.h>
+    inline bool vk_supported() { return true; }
 #endif
 
 //* Define to later control vulkan memory management

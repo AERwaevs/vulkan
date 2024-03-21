@@ -24,7 +24,7 @@ public:
     };
     ref_ptr<Image> image;
 public:
-    ImageView( ref_ptr<Image> in_image = {}, VkImageAspectFlags = VK_IMAGE_ASPECT_NONE );
+    ImageView( ref_ptr<Image> in_image = {}, VkImageAspectFlags = VK_IMAGE_ASPECT_NONE_KHR );
 
     operator VkImageView()  const { return _imageView; }
     auto vk()               const { return _imageView; }
