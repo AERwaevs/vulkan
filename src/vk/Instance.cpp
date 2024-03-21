@@ -108,6 +108,12 @@ AEON_API Instance::~Instance()
     if( _instance ) vkDestroyInstance( _instance, VK_ALLOCATOR );
 }
 
+ref_ptr<Instance> Instance::get_or_create( Names extensions, Names layers ) noexcept
+{
+    static ref_ptr<Instance> _singleton( Instance::create( extensions, layers ) );
+    return _singleton;
+}
+
 InstanceLayerProperties EnumerateInstanceLayerProperties()
 {
     VkResult result{ VK_SUCCESS };

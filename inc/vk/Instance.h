@@ -21,11 +21,13 @@ namespace aer::gfx::vk
     struct PhysicalDevice;
     struct Surface;
 
-    struct Instance : public Object, public Interfaces< Instance, ICreate, ISingleton >
+    struct Instance : public Object, public Interfaces< Instance, ICreate >
     {
     public:
-        Instance( Names extensions = RequiredExtensions, Names layers = RequiredLayers );
+        Instance( Names extensions, Names layers );
 
+        static ref_ptr<Instance> get_or_create( Names extensions = RequiredExtensions, Names layers = RequiredLayers ) noexcept;
+        
         operator    VkInstance() const { return _instance; }
 
         using PhysicalDevices = std::vector<ref_ptr<PhysicalDevice>>;
