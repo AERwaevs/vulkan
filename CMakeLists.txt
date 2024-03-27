@@ -5,6 +5,9 @@ set( CMAKE_CXX_STANDARD          23  )
 set( CMAKE_CXX_STANDARD_REQUIRED ON  )
 set( CMAKE_CXX_EXTENSIONS        OFF )
 
+# dependencies ------------------------------------------------------------------------------------
+find_package( Vulkan REQUIRED )
+
 if( ANDROID )
     set( AER_ANDROID 1 )
 elseif( WIN32 )
@@ -13,9 +16,10 @@ elseif ( APPLE )
     set( AER_APPLE 1 )
 else()
     set( AER_LINUX 1 )
+    find_package( PkgConfig REQUIRED )
+    pkg_check_modules( xcb REQUIRED IMPORTED_TARGET xcb )
 endif()
 
-find_package( Vulkan REQUIRED )
 # AEON::Vulkan ------------------------------------------------------------------------------------
 set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
