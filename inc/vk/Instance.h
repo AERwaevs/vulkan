@@ -2,7 +2,7 @@
 
 #include "vk.h"
 
-#if defined( AEON_PLATFORM_LINUX )
+#if defined( AER_PLATFORM_LINUX )
     #include <xcb/xcb.h>
     #include <vulkan/vulkan_xcb.h>
 #endif
@@ -80,15 +80,15 @@ namespace aer::gfx::vk
         static inline const Names RequiredExtensions
         {
             VK_KHR_SURFACE_EXTENSION_NAME,
-#if defined( AEON_PLATFORM_WINDOWS )
+#if defined( AER_PLATFORM_WINDOWS )
             VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
-#elif defined( AEON_PLATFORM_IOS )
+#elif defined( AER_PLATFORM_IOS )
             VK_EXT_METAL_SURFACE_EXTENSION_NAME,
-#elif defined( AEON_PLATFORM_MACOS )
+#elif defined( AER_PLATFORM_MACOS )
             "VK_MVK_macos_surface",
-#elif defined( AEON_PLATFORM_ANDROID )
+#elif defined( AER_PLATFORM_ANDROID )
             "VK_KHR_android_surface",
-#elif defined( AEON_PLATFORM_LINUX )
+#elif defined( AER_PLATFORM_LINUX )
             VK_KHR_XCB_SURFACE_EXTENSION_NAME,
 #endif
 #ifndef NDEBUG

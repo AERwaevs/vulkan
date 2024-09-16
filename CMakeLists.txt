@@ -16,7 +16,7 @@ else()
 endif()
 
 find_package( Vulkan REQUIRED )
-# AEON::Vulkan ------------------------------------------------------------------------------------
+# AER::Vulkan ------------------------------------------------------------------------------------
 set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
 set( VULKAN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src )

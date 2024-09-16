@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
 
-AEON_API Instance::Instance( Names extensions, Names layers )
+ Instance::Instance( Names extensions, Names layers )
 {
     VkApplicationInfo appInfo
     { 
@@ -96,7 +96,7 @@ ref_ptr<PhysicalDevice> Instance::physical_device( VkQueueFlags flags, Surface* 
     return{};
 }
 
-AEON_API Instance::~Instance()
+ Instance::~Instance()
 {
 #ifndef NDEBUG
     if( DestroyDebugUtilsMessenger )

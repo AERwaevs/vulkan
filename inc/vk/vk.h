@@ -2,7 +2,7 @@
 
 #include <Base/Base.h>
 
-#if defined( AEON_PLATFORM_LINUX )
+#if defined( AER_PLATFORM_LINUX )
     #include <vulkan/vulkan.h>
 
     inline bool vk_supported() { return true; }

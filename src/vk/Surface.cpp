@@ -3,7 +3,7 @@
 namespace aer::gfx::vk
 {
 
-#if defined( AEON_PLATFORM_WINDOWS )
+#if defined( AER_PLATFORM_WINDOWS )
 
 template<> ref_ptr<Surface>
 Surface::create( ref_ptr<Instance> instance, Window_t window )
@@ -24,7 +24,7 @@ Win32Surface::Win32Surface( ref_ptr<Instance> instance, Window_t window )
     };
     auto result = vkCreateWin32SurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 
-#elif defined( AEON_PLATFORM_ANDROID )
+#elif defined( AER_PLATFORM_ANDROID )
 
 template<> ref_ptr<Surface>
 Surface::create( ref_ptr<Instance> instance, Window_t window )
@@ -44,7 +44,7 @@ AndroidSurface::AndroidSurface( ref_ptr<Instance> instance, Window_t window )
     };
     auto result = vkCreateAndroidSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 
-#elif defined( AEON_PLATFORM_LINUX )
+#elif defined( AER_PLATFORM_LINUX )
 template<> ref_ptr<Surface>
 Surface::create( ref_ptr<Instance> instance, Window_t window )
 {

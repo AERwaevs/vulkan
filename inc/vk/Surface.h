@@ -19,17 +19,17 @@ protected:
     ref_ptr<Instance>   _instance;
 };
 
-#if defined( AEON_PLATFORM_WINDOWS )
+#if defined( AER_PLATFORM_WINDOWS )
 
 using Window_t = HWND;
 struct Win32Surface : public Surface    { Win32Surface( ref_ptr<Instance>, Window_t ); };
 
-#elif defined( AEON_PLATFORM_ANDROID )
+#elif defined( AER_PLATFORM_ANDROID )
 
 using Window_t = ANativeWindow*;
 struct AndroidSurface : public Surface  { AndroidSurface( ref_ptr<Instance>, Window_t ); };
 
-#elif defined( AEON_PLATFORM_LINUX )
+#elif defined( AER_PLATFORM_LINUX )
 #include <xcb/xcb.h>
 #include <vulkan/vulkan_xcb.h>
 
