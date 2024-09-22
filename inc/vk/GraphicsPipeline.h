@@ -19,6 +19,8 @@ public:
             GraphicsPipeline( PipelineLayout*, const ShaderStages&, const GraphicsPipelineStates&, Subpass = 0 );
     virtual ~GraphicsPipeline();
 public:
+    operator VkPipeline() const { return _pipeline; }
+public:
     void    Compile( Context& );
 
 public:

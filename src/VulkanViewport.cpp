@@ -130,8 +130,51 @@ VulkanViewport::VulkanViewport( Window* window )
         return graphicsFamily;
     }();
     _commandPool    = CommandPool::create( _device, graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
-    _commandBuffer  = _commandPool->allocate();
 
+    //TODO create command buffer
+    _commandBuffer  = _commandPool->allocate();
+    _commandBuffer->begin( VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT );
+
+    //TODO begin render pass
+    VkClearValue clearColor = {{{ 0.0f, 0.0f, 0.0f, 1.0f }}};
+    VkRenderPassBeginInfo renderPassInfo
+    {
+        .sType           = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+        .renderPass      = *_context->renderPass,
+        .framebuffer     = *_framebuffers[0],
+        .renderArea      = VkRect2D{ VkOffset2D{ 0, 0 }, _swapchain->extent() },
+        .clearValueCount = 1,
+        .pClearValues    = &clearColor
+    };
+    VkViewport viewport
+    {
+        .x        = 0.0f,
+        .y        = 0.0f,
+        .width    = static_cast<float>( _swapchain->extent().width ),
+        .height   = static_cast<float>( _swapchain->extent().height ),
+        .minDepth = 0.0f,
+        .maxDepth = 1.0f
+    };
+    VkRect2D scissor
+    {
+        .offset = { 0, 0 },
+        .extent = _swapchain->extent()
+    };
+
+    //TODO record commands
+    vkCmdBeginRenderPass( *_commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE );
+    vkCmdBindPipeline( *_commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, *_graphicsPipeline );
+    vkCmdSetViewport( *_commandBuffer, 0, 1, &viewport );
+    vkCmdSetScissor( *_commandBuffer, 0, 1, &scissor );
+    vkCmdDraw( *_commandBuffer, 3, 1, 0, 0 );
+    vkCmdEndRenderPass( *_commandBuffer );
+    
+    auto result = vkEndCommandBuffer( *_commandBuffer );
+    AE_ERROR_IF( result != VK_SUCCESS, "Failed to record command buffer: %s", ResultMessage( result ) );
+
+    _imageAvailableSemaphore = Semaphore::create( _device );
+    _renderFinishedSemaphore = Semaphore::create( _device );
+    _inFlightFence           = Fence::create( _device );
 }
 
 VulkanViewport::~VulkanViewport()

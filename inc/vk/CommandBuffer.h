@@ -14,10 +14,10 @@ public:
 
     operator VkCommandBuffer() const { return _commandBuffer; }
 
-    void begin( VkCommandBufferUsageFlags );
+    void begin( VkCommandBufferUsageFlags = VkCommandBufferUsageFlags{ 0 } );
 
 protected:
-    void reset( VkCommandBufferResetFlags = VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT );
+    void reset( VkCommandBufferResetFlags = VkCommandBufferUsageFlags{ 0 } );
 
     virtual ~CommandBuffer();
     friend CommandPool;
