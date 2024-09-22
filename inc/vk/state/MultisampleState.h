@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-struct MultisampleState : public GraphicsPipelineState, public Interfaces< MultisampleState, ICreate, ITypeInfo >
+struct MultisampleState : public inherit< MultisampleState, GraphicsPipelineState >
 {
     using SampleMasks = std::vector<VkSampleMask>;
 

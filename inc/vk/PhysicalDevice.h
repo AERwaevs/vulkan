@@ -7,7 +7,7 @@
 namespace aer::gfx::vk
 {
 
-struct PhysicalDevice : public Object
+struct PhysicalDevice : public inherit< PhysicalDevice, Object >
 {
                 PhysicalDevice( Instance* instance, VkPhysicalDevice device );
     operator    VkPhysicalDevice() const { return _device; }

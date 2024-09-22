@@ -21,7 +21,7 @@ namespace aer::gfx
 template<>
 ref_ptr<Viewport> Viewport::create< API::Vulkan >( Window* window )
 {
-    return VulkanViewport::create_if( vk_supported(), window );
+    return VulkanViewport::create( window );
 }
 
 const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Surface* surface )
@@ -38,7 +38,7 @@ const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Sur
 }
 
 VulkanViewport::VulkanViewport( Window* window )
-:   Viewport( window, VulkanRenderer::get_or_create() ),
+:   inherit( window, Renderer::get_or_create() ),
     _instance( vk::Instance::get_or_create() ),
     _surface( vk::Surface::create( _instance, window->native<vk::Window_t>() ) ),
     _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface ) ),
@@ -81,8 +81,8 @@ VulkanViewport::VulkanViewport( Window* window )
     };
 
     //* create shaders
-    auto vert_code   = ByteCode::read( "shaders/tri.vert.spv" );
-    auto frag_code   = ByteCode::read( "shaders/tri.frag.spv" );
+    auto vert_code   = read<ByteCode>( "shaders/tri.vert.spv" );
+    auto frag_code   = read<ByteCode>( "shaders/tri.frag.spv" );
     auto vert_module = ShaderModule::create( _device, *vert_code );
     auto frag_module = ShaderModule::create( _device, *frag_code );
     ShaderStages stages

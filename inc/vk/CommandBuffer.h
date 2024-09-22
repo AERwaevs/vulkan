@@ -7,7 +7,7 @@
 namespace aer::gfx::vk
 {
 
-class CommandBuffer : public Object, public Interfaces< CommandBuffer, ICreate >
+class CommandBuffer : public inherit< CommandBuffer, Object >
 {
 public:
     CommandBuffer( CommandPool*, VkCommandBuffer, VkCommandBufferLevel = VK_COMMAND_BUFFER_LEVEL_PRIMARY );

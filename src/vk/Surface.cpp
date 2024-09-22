@@ -12,7 +12,7 @@ Surface::create( ref_ptr<Instance> instance, Window_t window )
 }
 
 Win32Surface::Win32Surface( ref_ptr<Instance> instance, Window_t window )
-: Surface( instance )
+: inherit( instance )
 {
     VkWin32SurfaceCreateInfoKHR surfaceCreateInfo
     {
@@ -33,7 +33,7 @@ Surface::create( ref_ptr<Instance> instance, Window_t window )
 }
 
 AndroidSurface::AndroidSurface( ref_ptr<Instance> instance, Window_t window )
-: Surface( instance )
+: inherit( instance )
 {
     VkAndroidSurfaceCreateInfoKHR surfaceCreateInfo
     {
@@ -52,7 +52,7 @@ Surface::create( ref_ptr<Instance> instance, Window_t window )
 }
 
 XCBSurface::XCBSurface( ref_ptr<Instance> instance, Window_t arg )
-: Surface( instance )
+: inherit( instance )
 {
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo
     {

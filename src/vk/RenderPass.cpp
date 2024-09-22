@@ -19,7 +19,7 @@ RenderPass::RenderPass
     dependencies( in_dependencies ),
     correlatedViewMasks( in_correlatedViewMasks )
 {
-    auto scratch = scratch_memory::create( 1024 );
+    auto scratch = Object::create<scratch_memory>( 1024 );
 
     auto copyAttachments = [&]() -> VkAttachmentDescription2*
     {

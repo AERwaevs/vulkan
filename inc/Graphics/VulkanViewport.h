@@ -19,7 +19,7 @@
 
 namespace aer::gfx
 {
-    class VulkanViewport : public Viewport, public Interfaces< VulkanViewport, ICreateIf >
+    class VulkanViewport : public inherit< VulkanViewport, Viewport >
     {
         friend class VulkanRenderer;
 

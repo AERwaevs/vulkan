@@ -33,7 +33,7 @@ VkSurfaceFormatKHR      SelectSwapSurfaceFormat( const SwapchainSupportDetails& 
 VkPresentModeKHR        SelectSwapPresentMode(   const SwapchainSupportDetails& details, VkPresentModeKHR preferred );
 VkExtent2D              SelectSwapExtent(        const SwapchainSupportDetails& details, uint32_t width, uint32_t height );
 
-class Swapchain : public virtual Object, public Interfaces< Swapchain, ICreate >
+class Swapchain : public inherit< Swapchain, Object >
 {
 public:
     Swapchain

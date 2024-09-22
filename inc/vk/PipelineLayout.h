@@ -10,7 +10,7 @@ namespace aer::gfx::vk
 using SetLayouts            = std::vector<VkDescriptorSetLayout>;
 using PushConstantRanges    = std::vector<VkPushConstantRange>;
 
-class PipelineLayout : public Object, public Interfaces< PipelineLayout, ICreate >
+class PipelineLayout : public inherit< PipelineLayout, Object >
 {
 public:
     PipelineLayout( Device* device, const SetLayouts& in_setLayouts = {}, const PushConstantRanges& in_pushConstantRanges = {} );

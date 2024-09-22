@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-struct InputAssemblyState : public GraphicsPipelineState, public Interfaces< InputAssemblyState, ICreate, ITypeInfo >
+struct InputAssemblyState : public inherit< InputAssemblyState, GraphicsPipelineState >
 {
     using Topology = VkPrimitiveTopology;
 

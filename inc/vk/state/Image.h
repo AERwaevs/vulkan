@@ -6,7 +6,7 @@
 namespace aer::gfx::vk
 {
 
-struct Image : public virtual Object, public Interfaces< Image, ICreate >
+struct Image : public inherit< Image, Object >
 {
     VkImageCreateFlags      flags       = 0;
     VkImageType             imageType   = VK_IMAGE_TYPE_2D;

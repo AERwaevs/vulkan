@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-struct TessellationState : public GraphicsPipelineState, public Interfaces< TessellationState, ICreate, ITypeInfo >
+struct TessellationState : public inherit< TessellationState, GraphicsPipelineState >
 {
     TessellationState( uint32_t in_patchControlPoints = 1);
 

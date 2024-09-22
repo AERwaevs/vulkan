@@ -8,7 +8,7 @@
 namespace aer::gfx::vk
 {
     
-class Framebuffer : public Object, public Interfaces< Framebuffer, ICreate >
+class Framebuffer : public inherit< Framebuffer, Object >
 {
 public:
     Framebuffer( ref_ptr<RenderPass> renderPass, const ImageViews& attachments, uint32_t width, uint32_t height, uint32_t layers );

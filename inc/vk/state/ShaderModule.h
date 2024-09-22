@@ -6,12 +6,12 @@
 namespace aer::gfx::vk
 {
     
-struct ByteCode : public Object, public Interfaces< ByteCode, ICreate, IRead, ITypeInfo >, public std::vector<char>
+struct ByteCode : public inherit< ByteCode, Object >, public std::vector<char>
 {
     ByteCode( std::vector<char> bytes ) : std::vector<char>( bytes ) {};
 };
 
-class ShaderModule : public virtual Object, public Interfaces< ShaderModule, ICreate >
+class ShaderModule : public inherit< ShaderModule, Object >
 {
 public:
     ShaderModule( ref_ptr<Device> device, const ByteCode& byte_code );

@@ -8,7 +8,7 @@
 namespace aer::gfx::vk
 {
 
-class ImageView : public virtual Object, public Interfaces< ImageView, ICreate >
+class ImageView : public inherit< ImageView, Object >
 {
 public:
     VkImageViewCreateFlags  flags        = 0;
