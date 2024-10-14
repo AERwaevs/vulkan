@@ -6,11 +6,10 @@
 
 namespace aer::gfx
 {
-    class VulkanRenderer : public inherit< VulkanRenderer, Renderer >
+    class VulkanRenderer : public Renderer
     {
     public:
         VulkanRenderer();
-    protected:
         virtual         ~VulkanRenderer() noexcept = default;
     };
 

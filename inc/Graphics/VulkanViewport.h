@@ -12,6 +12,7 @@
 #include <vk/GraphicsPipeline.h>
 #include <vk/Framebuffer.h>
 #include <vk/CommandPool.h>
+#include <vk/CommandBuffer.h>
 #include <vk/Semaphore.h>
 #include <vk/Fence.h>
 
@@ -29,8 +30,6 @@ namespace aer::gfx
     public:
         VulkanViewport( Window* window );
         ~VulkanViewport();
-
-        VulkanRenderer& Renderer() const { return static_cast<VulkanRenderer&>(*_renderer); }
     private:
         ref_ptr<vk::Instance>           _instance;
         ref_ptr<vk::Surface>            _surface;
