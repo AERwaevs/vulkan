@@ -96,7 +96,7 @@ ref_ptr<PhysicalDevice> Instance::physical_device( VkQueueFlags flags, Surface* 
     return{};
 }
 
- Instance::~Instance()
+Instance::~Instance() noexcept
 {
 #ifndef NDEBUG
     if( DestroyDebugUtilsMessenger )

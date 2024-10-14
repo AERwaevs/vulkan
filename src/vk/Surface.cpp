@@ -3,6 +3,11 @@
 namespace aer::gfx::vk
 {
 
+Surface::~Surface() noexcept
+{
+    if( _surface ) vkDestroySurfaceKHR( *_instance, _surface, VK_ALLOCATOR );
+}
+
 #if defined( AER_PLATFORM_WINDOWS )
 
 template<> ref_ptr<Surface>
@@ -64,11 +69,6 @@ XCBSurface::XCBSurface( ref_ptr<Instance> instance, Window_t arg )
 
 #endif
     AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: %s", ResultMessage( result ) );
-}
-
-Surface::~Surface()
-{
-    vkDestroySurfaceKHR( *_instance, _surface, VK_ALLOCATOR );
 }
 
 }

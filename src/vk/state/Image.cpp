@@ -35,7 +35,7 @@ void Image::Compile( Device* device )
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImage: %s", ResultMessage( result ) );
 }
 
-Image::~Image()
+Image::~Image() noexcept
 {
     if( _image )
     {

@@ -17,6 +17,12 @@ CommandPool::CommandPool( Device* device, uint32_t in_queueFamilyIndex, VkComman
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create command pool: %s", ResultMessage( result ) );
 }
 
+CommandPool::CommandPool( CommandPool&& rhs )
+:   queueFamilyIndex( rhs.queueFamilyIndex ), flags( rhs.flags ), _device( std::move( rhs._device ) ), _commandPool( rhs._commandPool )
+{
+    rhs._commandPool = VK_NULL_HANDLE;
+}
+
 CommandPool::~CommandPool()
 {
     if( _commandPool ) vkDestroyCommandPool( *_device, _commandPool, VK_ALLOCATOR );
