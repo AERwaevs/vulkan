@@ -38,15 +38,15 @@ const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Sur
 }
 
 VulkanViewport::VulkanViewport( Window* window )
-:   inherit( window, Renderer::get_or_create() ),
+:   inherit( window ),
     _instance( vk::Instance::get_or_create() ),
     _surface( vk::Surface::create( _instance, window->native<vk::Window_t>() ) ),
-    _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface ) ),
+    _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface.get() ) ),
     _device( vk::Device::create
     (
-        _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
+        _physical_device, _surface, GetQueueSettings( _physical_device.get(), _surface.get() )
     ) ),
-    _context( vk::Context::create( _device ) )
+    _context( vk::Context::create( _device.get() ) )
 {
     using namespace vk;
 
@@ -57,7 +57,7 @@ VulkanViewport::VulkanViewport( Window* window )
         window->width(), window->height(), _swapchain_prefs
     );
 
-    _context->renderPass = RenderPass::create( _device, _swapchain->format() );
+    _context->renderPass = RenderPass::create( _device.get(), _swapchain->format() );
     const auto maxSamples = [&]()
     {
         VkSampleCountFlagBits maxSamples( VK_SAMPLE_COUNT_1_BIT );
@@ -91,9 +91,9 @@ VulkanViewport::VulkanViewport( Window* window )
         ShaderStage::create( VK_SHADER_STAGE_FRAGMENT_BIT, frag_module, "main" )
     };
     
-    _pipelineLayout = PipelineLayout::create( _context->device );
+    _pipelineLayout = PipelineLayout::create( _context->device.get() );
     _pipelineLayout->Compile( *_context );
-    _graphicsPipeline = GraphicsPipeline::create( _pipelineLayout, stages, _context->states );
+    _graphicsPipeline = GraphicsPipeline::create( _pipelineLayout.get(), stages, _context->states );
     _graphicsPipeline->Compile( *_context );
 
     // TODO - handle depth
@@ -126,10 +126,10 @@ VulkanViewport::VulkanViewport( Window* window )
     auto graphicsFamily = [&]
     {
         uint32_t graphicsFamily;
-        std::tie( graphicsFamily, std::ignore ) = _physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, _surface );
+        std::tie( graphicsFamily, std::ignore ) = _physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, _surface.get() );
         return graphicsFamily;
     }();
-    _commandPool    = CommandPool::create( _device, graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
+    _commandPool    = CommandPool::create( _device.get(), graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 
     //TODO create command buffer
     _commandBuffer  = _commandPool->allocate();
@@ -172,9 +172,9 @@ VulkanViewport::VulkanViewport( Window* window )
     auto result = vkEndCommandBuffer( *_commandBuffer );
     AE_ERROR_IF( result != VK_SUCCESS, "Failed to record command buffer: %s", ResultMessage( result ) );
 
-    _imageAvailableSemaphore = Semaphore::create( _device );
-    _renderFinishedSemaphore = Semaphore::create( _device );
-    _inFlightFence           = Fence::create( _device );
+    _imageAvailableSemaphore = Semaphore::create( _device.get() );
+    _renderFinishedSemaphore = Semaphore::create( _device.get() );
+    _inFlightFence           = Fence::create( _device.get() );
 }
 
 VulkanViewport::~VulkanViewport()
