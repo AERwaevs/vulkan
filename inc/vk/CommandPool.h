@@ -14,7 +14,9 @@ class CommandPool : public inherit< CommandPool, Object >
 {
 public:
     CommandPool( Device* device, uint32_t in_queueFamilyIndex, VkCommandPoolCreateFlags in_flags = 0 );
-
+    CommandPool( const CommandPool& ) = delete;
+    CommandPool( CommandPool&& rhs );
+    virtual ~CommandPool();
     operator VkCommandPool() const { return _commandPool; }
 
     const uint32_t                  queueFamilyIndex;
@@ -27,7 +29,6 @@ protected:
     void free( CommandBuffer* commandBuffer );
 
     friend CommandBuffer;
-    virtual ~CommandPool();
 
 private:
     std::mutex      _mutex;

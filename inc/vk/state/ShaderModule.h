@@ -16,10 +16,9 @@ class ShaderModule : public inherit< ShaderModule, Object >
 public:
     ShaderModule( ref_ptr<Device> device, const ByteCode& byte_code );
     operator VkShaderModule() const { return _module; };
+    virtual ~ShaderModule();
 public:
     void compile();
-protected:
-    virtual ~ShaderModule();
 
 protected:
     ref_ptr<Device> _device;

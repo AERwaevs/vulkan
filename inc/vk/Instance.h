@@ -25,6 +25,7 @@ namespace aer::gfx::vk
     {
     public:
         Instance( Names extensions, Names layers );
+        ~Instance() noexcept;
 
         static ref_ptr<Instance> get_or_create( Names extensions = RequiredExtensions, Names layers = RequiredLayers ) noexcept;
         
@@ -47,9 +48,6 @@ namespace aer::gfx::vk
             }
             else return VK_SUCCESS;
         }
-
-    protected:
-        virtual ~Instance();
 
     private:
 

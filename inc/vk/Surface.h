@@ -10,11 +10,10 @@ struct Surface : public inherit< Surface, Object >
 {
     template< typename... Args > static ref_ptr<Surface> create( Args... );
     Surface( ref_ptr<Instance> instance ) : _instance( instance ), _surface( VK_NULL_HANDLE ) {};
+    ~Surface() noexcept;
 
     operator VkSurfaceKHR() const { return _surface; }
     auto     vk()           const { return _surface; }
-protected:
-    virtual ~Surface();
     VkSurfaceKHR        _surface;
     ref_ptr<Instance>   _instance;
 };
@@ -22,7 +21,7 @@ protected:
 #if defined( AER_PLATFORM_WINDOWS )
 
 using Window_t = HWND;
-struct Win32Surface : public inherit< Win32Surface, Surface > { Win32Surface( ref_ptr<Instance>, Window_t ); };
+struct Win32Surface : public inherit< Win32Surface, Surface >{ Win32Surface( ref_ptr<Instance>, Window_t ); };
 
 #elif defined( AER_PLATFORM_ANDROID )
 

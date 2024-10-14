@@ -12,13 +12,12 @@ struct VertexInputState : public inherit< VertexInputState, GraphicsPipelineStat
 
                 VertexInputState();
     explicit    VertexInputState( const Bindings&, const Attributes& );
+    virtual         ~VertexInputState() = default;
 
     Bindings    vertexBindingDescriptions;
     Attributes  vertexAttributeDescriptions;
 
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
-protected:
-    virtual         ~VertexInputState() = default;
 private:
     // TODO move to scratch memory allocation
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;

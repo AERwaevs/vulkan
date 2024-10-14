@@ -12,7 +12,7 @@ class Framebuffer : public inherit< Framebuffer, Object >
 {
 public:
     Framebuffer( ref_ptr<RenderPass> renderPass, const ImageViews& attachments, uint32_t width, uint32_t height, uint32_t layers );
-
+    virtual ~Framebuffer();
 
     operator VkFramebuffer() const { return _framebuffer; }
 
@@ -20,8 +20,6 @@ public:
     uint32_t height() const  { return _height; }
     uint32_t layers() const  { return _layers; }
 
-protected:
-    virtual ~Framebuffer();
 protected:
     VkDevice        _device;
     VkFramebuffer   _framebuffer;

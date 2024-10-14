@@ -11,6 +11,7 @@ struct DynamicState : public inherit< DynamicState, GraphicsPipelineState >
 
                     DynamicState();
     explicit        DynamicState( const DynamicStates& );
+    virtual         ~DynamicState() = default;
 
     DynamicStates   dynamicStates
     {{
@@ -19,8 +20,6 @@ struct DynamicState : public inherit< DynamicState, GraphicsPipelineState >
     }};
     
     void            apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const override;
-protected:
-    virtual         ~DynamicState() = default;
 private:
         // TODO move to scratch memory allocation
     VkPipelineDynamicStateCreateInfo dynamicState;

@@ -9,8 +9,7 @@ class GraphicsPipelineState : public inherit< GraphicsPipelineState, Object >
 {
 public:
     virtual void    apply( VkGraphicsPipelineCreateInfo& ) const {};
-protected:
-    virtual         ~GraphicsPipelineState() = default;
+    virtual         ~GraphicsPipelineState() noexcept = default;
 };
 
 using GraphicsPipelineStates = std::vector<ref_ptr<GraphicsPipelineState>>;

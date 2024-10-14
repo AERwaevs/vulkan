@@ -11,6 +11,7 @@ class CommandBuffer : public inherit< CommandBuffer, Object >
 {
 public:
     CommandBuffer( CommandPool*, VkCommandBuffer, VkCommandBufferLevel = VK_COMMAND_BUFFER_LEVEL_PRIMARY );
+    virtual ~CommandBuffer();
 
     operator VkCommandBuffer() const { return _commandBuffer; }
 
@@ -19,7 +20,6 @@ public:
 protected:
     void reset( VkCommandBufferResetFlags = VkCommandBufferUsageFlags{ 0 } );
 
-    virtual ~CommandBuffer();
     friend CommandPool;
 private:
     ref_ptr<CommandPool>    _commandPool;

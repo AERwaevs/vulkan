@@ -29,11 +29,10 @@ public:
                 ViewportState();
     explicit    ViewportState( VkExtent2D );
     explicit    ViewportState( int32_t, int32_t, uint32_t, uint32_t );
+    virtual     ~ViewportState() = default;
 public:
     void        set( int32_t x, int32_t y, uint32_t width, uint32_t height );
     void        apply( VkGraphicsPipelineCreateInfo& ) const override;
-protected:
-    virtual     ~ViewportState() = default;
 private:
     // TODO move to scratch memory allocation
     VkPipelineViewportStateCreateInfo viewportState;
