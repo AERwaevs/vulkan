@@ -12,6 +12,10 @@
 #include <vk/GraphicsPipeline.h>
 #include <vk/Framebuffer.h>
 #include <vk/CommandPool.h>
+#include <vk/CommandBuffer.h>
+#include <vk/Semaphore.h>
+#include <vk/Fence.h>
+
 #include <vk/state/Image.h>
 #include <vk/state/ImageView.h>
 
@@ -19,15 +23,13 @@
 
 namespace aer::gfx
 {
-    class VulkanViewport : public Viewport, public Interfaces< VulkanViewport, ICreateIf >
+    class VulkanViewport : public inherit< VulkanViewport, Viewport >
     {
         friend class VulkanRenderer;
 
     public:
         VulkanViewport( Window* window );
         ~VulkanViewport();
-
-        VulkanRenderer& Renderer() const { return static_cast<VulkanRenderer&>(*_renderer); }
     private:
         ref_ptr<vk::Instance>           _instance;
         ref_ptr<vk::Surface>            _surface;
@@ -40,6 +42,9 @@ namespace aer::gfx
         vk::Framebuffers                _framebuffers;
         ref_ptr<vk::CommandPool>        _commandPool;
         ref_ptr<vk::CommandBuffer>      _commandBuffer;
+        ref_ptr<vk::Semaphore>          _imageAvailableSemaphore;
+        ref_ptr<vk::Semaphore>          _renderFinishedSemaphore;
+        ref_ptr<vk::Fence>              _inFlightFence;
         
         // TODO - handle multisampling
         //ref_ptr<vk::Image>              _multisampleImage;

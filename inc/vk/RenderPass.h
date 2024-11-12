@@ -12,7 +12,7 @@ struct AttachmentReference;
 struct SubpassDescription;
 struct SubpassDependency;
 
-struct RenderPass : public Object
+struct RenderPass : public inherit< RenderPass, Object >
 {
     using Attachments           = std::vector<AttachmentDescription>;
     using Subpasses             = std::vector<SubpassDescription>;

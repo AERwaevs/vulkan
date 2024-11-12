@@ -5,12 +5,13 @@
 namespace aer::gfx::vk
 {
     
-struct DynamicState : public GraphicsPipelineState, public Interfaces< DynamicState, ICreate, ITypeInfo >
+struct DynamicState : public inherit< DynamicState, GraphicsPipelineState >
 {
     using DynamicStates = std::vector<VkDynamicState>;
 
                     DynamicState();
     explicit        DynamicState( const DynamicStates& );
+    virtual         ~DynamicState() = default;
 
     DynamicStates   dynamicStates
     {{
@@ -19,8 +20,6 @@ struct DynamicState : public GraphicsPipelineState, public Interfaces< DynamicSt
     }};
     
     void            apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const override;
-protected:
-    virtual         ~DynamicState() = default;
 private:
         // TODO move to scratch memory allocation
     VkPipelineDynamicStateCreateInfo dynamicState;

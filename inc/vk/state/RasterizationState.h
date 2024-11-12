@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-struct RasterizationState : public GraphicsPipelineState, public Interfaces< RasterizationState, ICreate, ITypeInfo >
+struct RasterizationState : public inherit< RasterizationState, GraphicsPipelineState >
 {
                         RasterizationState();
 

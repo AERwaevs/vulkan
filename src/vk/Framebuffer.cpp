@@ -7,6 +7,7 @@ Framebuffer::Framebuffer( ref_ptr<RenderPass> renderPass, const ImageViews& atta
     : _device( *renderPass->device ), _framebuffer( VK_NULL_HANDLE ), _width( 0 ), _height( 0 ), _layers( 0 )
 {
     std::vector<VkImageView> vk_attachments;
+    vk_attachments.reserve( attachments.size() );
     for( auto& attachment : attachments )
     {
         vk_attachments.emplace_back( *attachment );

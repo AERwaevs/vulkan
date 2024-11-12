@@ -3,7 +3,7 @@
 namespace aer::gfx
 {
 
-template<> ref_ptr<Renderer> Renderer::create< API::Vulkan >()
+template<> ref_ptr<Renderer> Renderer::get_or_create< API::Vulkan >()
 {
     return aer::create<VulkanRenderer>();
 }

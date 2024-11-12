@@ -21,7 +21,7 @@ namespace aer::gfx
 template<>
 ref_ptr<Viewport> Viewport::create< API::Vulkan >( Window* window )
 {
-    return VulkanViewport::create_if( vk_supported(), window );
+    return VulkanViewport::create( window );
 }
 
 const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Surface* surface )
@@ -38,15 +38,15 @@ const inline auto GetQueueSettings( vk::PhysicalDevice* physical_device, vk::Sur
 }
 
 VulkanViewport::VulkanViewport( Window* window )
-:   Viewport( window, VulkanRenderer::get_or_create() ),
+:   inherit( window ),
     _instance( vk::Instance::get_or_create() ),
     _surface( vk::Surface::create( _instance, window->native<vk::Window_t>() ) ),
-    _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface ) ),
+    _physical_device( _instance->physical_device( VK_QUEUE_GRAPHICS_BIT, _surface.get() ) ),
     _device( vk::Device::create
     (
-        _physical_device, _surface, GetQueueSettings( _physical_device, _surface )
+        _physical_device, _surface, GetQueueSettings( _physical_device.get(), _surface.get() )
     ) ),
-    _context( vk::Context::create( _device ) )
+    _context( vk::Context::create( _device.get() ) )
 {
     using namespace vk;
 
@@ -57,7 +57,7 @@ VulkanViewport::VulkanViewport( Window* window )
         window->width(), window->height(), _swapchain_prefs
     );
 
-    _context->renderPass = RenderPass::create( _device, _swapchain->format() );
+    _context->renderPass = RenderPass::create( _device.get(), _swapchain->format() );
     const auto maxSamples = [&]()
     {
         VkSampleCountFlagBits maxSamples( VK_SAMPLE_COUNT_1_BIT );
@@ -81,8 +81,8 @@ VulkanViewport::VulkanViewport( Window* window )
     };
 
     //* create shaders
-    auto vert_code   = ByteCode::read( "shaders/tri.vert.spv" );
-    auto frag_code   = ByteCode::read( "shaders/tri.frag.spv" );
+    auto vert_code   = read<ByteCode>( "shaders/tri.vert.spv" );
+    auto frag_code   = read<ByteCode>( "shaders/tri.frag.spv" );
     auto vert_module = ShaderModule::create( _device, *vert_code );
     auto frag_module = ShaderModule::create( _device, *frag_code );
     ShaderStages stages
@@ -91,9 +91,9 @@ VulkanViewport::VulkanViewport( Window* window )
         ShaderStage::create( VK_SHADER_STAGE_FRAGMENT_BIT, frag_module, "main" )
     };
     
-    _pipelineLayout = PipelineLayout::create( _context->device );
+    _pipelineLayout = PipelineLayout::create( _context->device.get() );
     _pipelineLayout->Compile( *_context );
-    _graphicsPipeline = GraphicsPipeline::create( _pipelineLayout, stages, _context->states );
+    _graphicsPipeline = GraphicsPipeline::create( _pipelineLayout.get(), stages, _context->states );
     _graphicsPipeline->Compile( *_context );
 
     // TODO - handle depth
@@ -126,12 +126,55 @@ VulkanViewport::VulkanViewport( Window* window )
     auto graphicsFamily = [&]
     {
         uint32_t graphicsFamily;
-        std::tie( graphicsFamily, std::ignore ) = _physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, _surface );
+        std::tie( graphicsFamily, std::ignore ) = _physical_device->GetQueueFamilies( VK_QUEUE_GRAPHICS_BIT, _surface.get() );
         return graphicsFamily;
     }();
-    _commandPool    = CommandPool::create( _device, graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
-    _commandBuffer  = _commandPool->allocate();
+    _commandPool    = CommandPool::create( _device.get(), graphicsFamily, VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT );
 
+    //TODO create command buffer
+    _commandBuffer  = _commandPool->allocate();
+    _commandBuffer->begin( VK_COMMAND_BUFFER_USAGE_SIMULTANEOUS_USE_BIT );
+
+    //TODO begin render pass
+    VkClearValue clearColor = {{{ 0.0f, 0.0f, 0.0f, 1.0f }}};
+    VkRenderPassBeginInfo renderPassInfo
+    {
+        .sType           = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO,
+        .renderPass      = *_context->renderPass,
+        .framebuffer     = *_framebuffers[0],
+        .renderArea      = VkRect2D{ VkOffset2D{ 0, 0 }, _swapchain->extent() },
+        .clearValueCount = 1,
+        .pClearValues    = &clearColor
+    };
+    VkViewport viewport
+    {
+        .x        = 0.0f,
+        .y        = 0.0f,
+        .width    = static_cast<float>( _swapchain->extent().width ),
+        .height   = static_cast<float>( _swapchain->extent().height ),
+        .minDepth = 0.0f,
+        .maxDepth = 1.0f
+    };
+    VkRect2D scissor
+    {
+        .offset = { 0, 0 },
+        .extent = _swapchain->extent()
+    };
+
+    //TODO record commands
+    vkCmdBeginRenderPass( *_commandBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE );
+    vkCmdBindPipeline( *_commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, *_graphicsPipeline );
+    vkCmdSetViewport( *_commandBuffer, 0, 1, &viewport );
+    vkCmdSetScissor( *_commandBuffer, 0, 1, &scissor );
+    vkCmdDraw( *_commandBuffer, 3, 1, 0, 0 );
+    vkCmdEndRenderPass( *_commandBuffer );
+    
+    auto result = vkEndCommandBuffer( *_commandBuffer );
+    AE_ERROR_IF( result != VK_SUCCESS, "Failed to record command buffer: %s", ResultMessage( result ) );
+
+    _imageAvailableSemaphore = Semaphore::create( _device.get() );
+    _renderFinishedSemaphore = Semaphore::create( _device.get() );
+    _inFlightFence           = Fence::create( _device.get() );
 }
 
 VulkanViewport::~VulkanViewport()

@@ -28,6 +28,7 @@ set( VULKAN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src )
 set( VULKAN_HEADER    
     ${VULKAN_INC_DIR}/Graphics/VulkanViewport.h
     ${VULKAN_INC_DIR}/Graphics/VulkanRenderer.h
+    ${VULKAN_INC_DIR}/Graphics/RenderGraph.h
     
     ${VULKAN_INC_DIR}/vk/vk.h
     ${VULKAN_INC_DIR}/vk/Instance.h
@@ -42,6 +43,8 @@ set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/Context.h
     ${VULKAN_INC_DIR}/vk/CommandPool.h
     ${VULKAN_INC_DIR}/vk/CommandBuffer.h
+    ${VULKAN_INC_DIR}/vk/Fence.h
+    ${VULKAN_INC_DIR}/vk/Semaphore.h
 
     ${VULKAN_INC_DIR}/vk/state/Image.h
     ${VULKAN_INC_DIR}/vk/state/ImageView.h
@@ -62,6 +65,7 @@ set( VULKAN_HEADER
 set( VULKAN_SRC    
     ${VULKAN_SRC_DIR}/VulkanViewport.cpp
     ${VULKAN_SRC_DIR}/VulkanRenderer.cpp
+    ${VULKAN_SRC_DIR}/RenderGraph.cpp
     
     ${VULKAN_SRC_DIR}/vk/Instance.cpp 
     ${VULKAN_SRC_DIR}/vk/PhysicalDevice.cpp
@@ -75,6 +79,8 @@ set( VULKAN_SRC
     ${VULKAN_SRC_DIR}/vk/Context.cpp
     ${VULKAN_SRC_DIR}/vk/CommandPool.cpp
     ${VULKAN_SRC_DIR}/vk/CommandBuffer.cpp
+    ${VULKAN_SRC_DIR}/vk/Fence.cpp
+    ${VULKAN_SRC_DIR}/vk/Semaphore.cpp
 
     ${VULKAN_SRC_DIR}/vk/state/Image.cpp
     ${VULKAN_SRC_DIR}/vk/state/ImageView.cpp

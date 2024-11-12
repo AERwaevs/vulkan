@@ -7,7 +7,7 @@
 namespace aer::gfx::vk
 {
 
-class ShaderStage : public virtual Object, public Interfaces< ShaderStage, ICreate >
+class ShaderStage : public inherit< ShaderStage, Object >
 {
 public:
     ShaderStage

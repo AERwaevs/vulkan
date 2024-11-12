@@ -7,19 +7,19 @@
 namespace aer::gfx::vk
 {
 
-class CommandBuffer : public Object, public Interfaces< CommandBuffer, ICreate >
+class CommandBuffer : public inherit< CommandBuffer, Object >
 {
 public:
     CommandBuffer( CommandPool*, VkCommandBuffer, VkCommandBufferLevel = VK_COMMAND_BUFFER_LEVEL_PRIMARY );
+    virtual ~CommandBuffer();
 
     operator VkCommandBuffer() const { return _commandBuffer; }
 
-    void begin( VkCommandBufferUsageFlags );
+    void begin( VkCommandBufferUsageFlags = VkCommandBufferUsageFlags{ 0 } );
 
 protected:
-    void reset( VkCommandBufferResetFlags = VK_COMMAND_BUFFER_RESET_RELEASE_RESOURCES_BIT );
+    void reset( VkCommandBufferResetFlags = VkCommandBufferUsageFlags{ 0 } );
 
-    virtual ~CommandBuffer();
     friend CommandPool;
 private:
     ref_ptr<CommandPool>    _commandPool;

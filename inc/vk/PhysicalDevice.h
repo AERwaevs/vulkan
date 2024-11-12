@@ -7,11 +7,11 @@
 namespace aer::gfx::vk
 {
 
-struct PhysicalDevice : public Object
+struct PhysicalDevice : public inherit< PhysicalDevice, Object >
 {
                 PhysicalDevice( Instance* instance, VkPhysicalDevice device );
     operator    VkPhysicalDevice() const { return _device; }
-
+    virtual ~PhysicalDevice() noexcept = default;
 
     bool        Supported() const;
 
@@ -22,10 +22,6 @@ struct PhysicalDevice : public Object
           spy_ptr<Instance>            instance()   const { return _instance; }
     const VkPhysicalDeviceFeatures&     features()   const { return _features; }
     const VkPhysicalDeviceProperties&   properties() const { return _properties; }
-
-protected:
-    virtual ~PhysicalDevice(){};
-
 
 private:
     VkPhysicalDevice            _device;

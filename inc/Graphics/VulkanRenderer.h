@@ -6,12 +6,11 @@
 
 namespace aer::gfx
 {
-    class VulkanRenderer : public Renderer, public Interfaces< VulkanRenderer, ICreateIf >
+    class VulkanRenderer : public Renderer
     {
     public:
         VulkanRenderer();
-    protected:
-        virtual         ~VulkanRenderer() = default;
+        virtual         ~VulkanRenderer() noexcept = default;
     };
 
 }

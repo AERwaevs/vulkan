@@ -10,7 +10,7 @@
 namespace aer::gfx::vk
 {
     
-class Context : public Object, public Interfaces< Context, ICreate >
+class Context : public inherit< Context, Object >
 {
 public:
     explicit Context( Device* in_device );

@@ -8,7 +8,7 @@
 namespace aer::gfx::vk
 {
 
-class ImageView : public virtual Object, public Interfaces< ImageView, ICreate >
+class ImageView : public inherit< ImageView, Object >
 {
 public:
     VkImageViewCreateFlags  flags        = 0;
@@ -25,13 +25,12 @@ public:
     ref_ptr<Image> image;
 public:
     ImageView( ref_ptr<Image> in_image = {}, VkImageAspectFlags = VK_IMAGE_ASPECT_NONE_KHR );
+    virtual ~ImageView();
 
     operator VkImageView()  const { return _imageView; }
     auto vk()               const { return _imageView; }
 public:
     void Compile( Device* device );
-protected:
-    virtual ~ImageView();
 protected:
     ref_ptr<Device>         _device;
     VkImageView             _imageView = VK_NULL_HANDLE;

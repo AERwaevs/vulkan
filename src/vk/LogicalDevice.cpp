@@ -64,9 +64,9 @@ Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surfac
     vkGetDeviceQueue( _device, queue_infos[0].queueFamilyIndex, 0, &_queue_graphics  );
 }
 
-Device::~Device()
+Device::~Device() noexcept
 {
-    vkDestroyDevice( _device, VK_ALLOCATOR );
+    if( _device ) vkDestroyDevice( _device, VK_ALLOCATOR );
 }
 
 } // namespace aer::gfx::vk

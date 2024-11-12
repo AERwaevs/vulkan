@@ -14,13 +14,13 @@ struct QueueSetting
 };
 using QueueSettings = Vector<QueueSetting>;
 
-class Device : public virtual Object, public Interfaces< Device, ICreate >
+class Device : public inherit< Device, Object >
 {
 public:
     Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surface,
             const QueueSettings& queue_settings );
     operator    VkDevice() const { return _device; }
-
+    ~Device() noexcept;
     
     template< typename F >
     VkResult GetProcAddr( F& proc_addr, const char* name ) const
@@ -49,8 +49,6 @@ public:
         VK_KHR_SWAPCHAIN_EXTENSION_NAME
     };
 
-protected:
-    virtual ~Device();
 
 private:
     VkDevice                _device;

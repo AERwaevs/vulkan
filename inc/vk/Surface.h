@@ -6,30 +6,29 @@
 namespace aer::gfx::vk
 {
 
-struct Surface : public Object
+struct Surface : public inherit< Surface, Object >
 {
     template< typename... Args > static ref_ptr<Surface> create( Args... );
     Surface( ref_ptr<Instance> instance ) : _instance( instance ), _surface( VK_NULL_HANDLE ) {};
+    ~Surface() noexcept;
 
     operator VkSurfaceKHR() const { return _surface; }
     auto     vk()           const { return _surface; }
-protected:
-    virtual ~Surface();
     VkSurfaceKHR        _surface;
     ref_ptr<Instance>   _instance;
 };
 
-#if defined( AEON_PLATFORM_WINDOWS )
+#if defined( AER_PLATFORM_WINDOWS )
 
 using Window_t = HWND;
-struct Win32Surface : public Surface    { Win32Surface( ref_ptr<Instance>, Window_t ); };
+struct Win32Surface : public inherit< Win32Surface, Surface >{ Win32Surface( ref_ptr<Instance>, Window_t ); };
 
-#elif defined( AEON_PLATFORM_ANDROID )
+#elif defined( AER_PLATFORM_ANDROID )
 
 using Window_t = ANativeWindow*;
-struct AndroidSurface : public Surface  { AndroidSurface( ref_ptr<Instance>, Window_t ); };
+struct AndroidSurface : public derive< AndroidSurface, Surface > { AndroidSurface( ref_ptr<Instance>, Window_t ); };
 
-#elif defined( AEON_PLATFORM_LINUX )
+#elif defined( AER_PLATFORM_LINUX )
 #include <xcb/xcb.h>
 #include <vulkan/vulkan_xcb.h>
 
