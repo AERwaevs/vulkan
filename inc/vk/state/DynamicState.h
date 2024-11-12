@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-struct DynamicState : public inherit< DynamicState, GraphicsPipelineState >
+struct DynamicState : public GraphicsPipelineState
 {
     using DynamicStates = std::vector<VkDynamicState>;
 

@@ -4,7 +4,7 @@
 
 namespace aer::gfx::vk
 {
-    struct DepthStencilState : public inherit< DepthStencilState, GraphicsPipelineState >
+    struct DepthStencilState : public GraphicsPipelineState
     {
         DepthStencilState();
         

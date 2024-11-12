@@ -141,7 +141,7 @@ RenderPass::~RenderPass()
     if( _renderPass )     vkDestroyRenderPass( *device, _renderPass, VK_ALLOCATOR );
 }
 
-ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat )
+ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat )
 {
     AttachmentDescription colorAttachment
     {
@@ -169,11 +169,11 @@ ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat )
     return ref_ptr( new RenderPass( device, { colorAttachment }, { subpass }, { colorDependency } ) );
 }
 
-ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkSampleCountFlagBits samples )
+ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkSampleCountFlagBits samples )
 {
     if( samples == VK_SAMPLE_COUNT_1_BIT )
     {
-        return create( device, imageFormat );
+        return createRenderPass( device, imageFormat );
     }
 
     AttachmentDescription colorAttachment
@@ -228,7 +228,7 @@ ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, Vk
     return ref_ptr( new RenderPass( device, { colorAttachment, resolveAttachment }, { subpass }, { colorDependency, resolveDependency } ) );
 }
 
-ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead )
+ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead )
 {
     AttachmentDescription colorAttachment
     {
@@ -276,11 +276,11 @@ ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, Vk
     return ref_ptr( new RenderPass( device, { colorAttachment, depthAttachment }, { subpass }, { colorDependency, depthDependency } ) );
 }
 
-ref_ptr<RenderPass> RenderPass::create( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead )
+ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead )
 {
     if( samples == VK_SAMPLE_COUNT_1_BIT )
     {
-        return create( device, imageFormat, depthFormat, requiresDepthRead );
+        return createRenderPass( device, imageFormat, depthFormat, requiresDepthRead );
     }
 
     RenderPass::Attachments attachments

@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-struct VertexInputState : public inherit< VertexInputState, GraphicsPipelineState >
+struct VertexInputState : public GraphicsPipelineState
 {
     using Bindings   = std::vector<VkVertexInputBindingDescription>;
     using Attributes = std::vector<VkVertexInputAttributeDescription>;

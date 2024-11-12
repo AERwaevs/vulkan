@@ -110,7 +110,7 @@ Instance::~Instance() noexcept
 
 ref_ptr<Instance> Instance::get_or_create( Names extensions, Names layers ) noexcept
 {
-    static ref_ptr<Instance> _singleton( Instance::create( extensions, layers ) );
+    static ref_ptr<Instance> _singleton( create<Instance>( extensions, layers ) );
     return _singleton;
 }
 

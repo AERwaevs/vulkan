@@ -1,9 +1,10 @@
 # cmake -------------------------------------------------------------------------------------------
 cmake_minimum_required( VERSION 3.20 )
 
-set( CMAKE_CXX_STANDARD          23  )
-set( CMAKE_CXX_STANDARD_REQUIRED ON  )
-set( CMAKE_CXX_EXTENSIONS        OFF )
+set( CMAKE_CXX_STANDARD              23  )
+set( CMAKE_CXX_STANDARD_REQUIRED     ON  )
+set( CMAKE_CXX_EXTENSIONS            OFF )
+set( CMAKE_POSITION_INDEPENDENT_CODE ON )
 
 # dependencies ------------------------------------------------------------------------------------
 find_package( Vulkan REQUIRED )
@@ -25,11 +26,7 @@ set( VULKAN_LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( VULKAN_INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
 set( VULKAN_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src )
 
-set( VULKAN_HEADER    
-    ${VULKAN_INC_DIR}/Graphics/VulkanViewport.h
-    ${VULKAN_INC_DIR}/Graphics/VulkanRenderer.h
-    ${VULKAN_INC_DIR}/Graphics/RenderGraph.h
-    
+set( VULKAN_HEADER
     ${VULKAN_INC_DIR}/vk/vk.h
     ${VULKAN_INC_DIR}/vk/Instance.h
     ${VULKAN_INC_DIR}/vk/PhysicalDevice.h
@@ -63,10 +60,6 @@ set( VULKAN_HEADER
 )
 
 set( VULKAN_SRC    
-    ${VULKAN_SRC_DIR}/VulkanViewport.cpp
-    ${VULKAN_SRC_DIR}/VulkanRenderer.cpp
-    ${VULKAN_SRC_DIR}/RenderGraph.cpp
-    
     ${VULKAN_SRC_DIR}/vk/Instance.cpp 
     ${VULKAN_SRC_DIR}/vk/PhysicalDevice.cpp
     ${VULKAN_SRC_DIR}/vk/LogicalDevice.cpp
@@ -117,7 +110,6 @@ target_include_directories( vulkan
 target_link_libraries( vulkan 
     PRIVATE
         base
-        graphics_interface
         Vulkan::Vulkan
     $<$<BOOL:${AER_LINUX}>:xcb>
 )

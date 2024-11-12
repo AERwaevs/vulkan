@@ -12,7 +12,7 @@
 namespace aer::gfx::vk
 {
 
-class GraphicsPipeline : public inherit< GraphicsPipeline, Object >
+class GraphicsPipeline : public Object
 {
     using Subpass = uint32_t;
 public:

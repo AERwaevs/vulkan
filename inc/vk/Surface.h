@@ -3,13 +3,33 @@
 #include "vk.h"
 #include "Instance.h"
 
+#if defined( AER_PLATFORM_WINDOWS )
+
+#elif defined( AER_PLATFORM_ANDROID )
+
+#elif defined( AER_PLATFORM_LINUX )
+#include <xcb/xcb.h>
+#include <vulkan/vulkan_xcb.h>
+#endif
+
 namespace aer::gfx::vk
 {
 
-struct Surface : public inherit< Surface, Object >
+struct Surface : public Object
 {
-    template< typename... Args > static ref_ptr<Surface> create( Args... );
-    Surface( ref_ptr<Instance> instance ) : _instance( instance ), _surface( VK_NULL_HANDLE ) {};
+    //template< typename... Args > static ref_ptr<Surface> create( Args... );
+    //Surface( ref_ptr<Instance> instance ) : _instance( instance ), _surface( VK_NULL_HANDLE ) {};
+    
+    template< typename... Args > Surface( ref_ptr<Instance>, Args... );
+
+#if defined( AER_PLATFORM_WINDOWS )
+
+#elif defined( AER_PLATFORM_ANDROID )
+
+#elif defined( AER_PLATFORM_LINUX )
+    Surface( ref_ptr<Instance>, xcb_connection_t* connection, xcb_window_t window );
+#endif
+
     ~Surface() noexcept;
 
     operator VkSurfaceKHR() const { return _surface; }
@@ -17,29 +37,5 @@ struct Surface : public inherit< Surface, Object >
     VkSurfaceKHR        _surface;
     ref_ptr<Instance>   _instance;
 };
-
-#if defined( AER_PLATFORM_WINDOWS )
-
-using Window_t = HWND;
-struct Win32Surface : public inherit< Win32Surface, Surface >{ Win32Surface( ref_ptr<Instance>, Window_t ); };
-
-#elif defined( AER_PLATFORM_ANDROID )
-
-using Window_t = ANativeWindow*;
-struct AndroidSurface : public derive< AndroidSurface, Surface > { AndroidSurface( ref_ptr<Instance>, Window_t ); };
-
-#elif defined( AER_PLATFORM_LINUX )
-#include <xcb/xcb.h>
-#include <vulkan/vulkan_xcb.h>
-
-struct Window_t : private std::pair<xcb_connection_t*, xcb_window_t>
-{
-    auto connection(){ return first; };
-    auto window()    { return second; };
-};
-
-struct XCBSurface : public Surface { XCBSurface( ref_ptr<Instance>, Window_t ); };
-
-#endif
 
 }

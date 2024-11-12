@@ -8,7 +8,7 @@ namespace aer::gfx::vk
 using Viewports = std::vector<VkViewport>;
 using Scissors  = std::vector<VkRect2D>;
     
-class ViewportState : public inherit< ViewportState, GraphicsPipelineState >
+class ViewportState : public GraphicsPipelineState
 {
 public:
     Viewports viewports

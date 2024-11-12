@@ -14,7 +14,7 @@ struct QueueSetting
 };
 using QueueSettings = Vector<QueueSetting>;
 
-class Device : public inherit< Device, Object >
+class Device : public Object
 {
 public:
     Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surface,

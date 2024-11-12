@@ -6,7 +6,7 @@
 namespace aer::gfx::vk
 {
     
-struct ByteCode : public inherit< ByteCode, Object >, public std::vector<char>
+struct ByteCode : public Object, public std::vector<char>
 {
     ByteCode( std::vector<char> bytes ) : std::vector<char>( bytes ) {};
 };

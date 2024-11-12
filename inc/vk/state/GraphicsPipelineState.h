@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-class GraphicsPipelineState : public inherit< GraphicsPipelineState, Object >
+class GraphicsPipelineState : public Object
 {
 public:
     virtual void    apply( VkGraphicsPipelineCreateInfo& ) const {};

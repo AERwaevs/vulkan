@@ -21,7 +21,7 @@ namespace aer::gfx::vk
     struct PhysicalDevice;
     struct Surface;
 
-    struct Instance : public inherit< Instance, Object >
+    struct Instance : public Object
     {
     public:
         Instance( Names extensions, Names layers );

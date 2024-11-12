@@ -50,20 +50,20 @@ AndroidSurface::AndroidSurface( ref_ptr<Instance> instance, Window_t window )
     auto result = vkCreateAndroidSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 
 #elif defined( AER_PLATFORM_LINUX )
-template<> ref_ptr<Surface>
-Surface::create( ref_ptr<Instance> instance, Window_t window )
-{
-    return ref_ptr<XCBSurface>( new XCBSurface( instance, window ) );
-}
+//template<> ref_ptr<Surface>
+//Surface::create( ref_ptr<Instance> instance, xcb_connection_t* connection, xcb_window_t window )
+//{
+//    return ref_ptr<XCBSurface>( new XCBSurface( instance, connection, window ) );
+//}
 
-XCBSurface::XCBSurface( ref_ptr<Instance> instance, Window_t arg )
-: inherit( instance )
+Surface::Surface( ref_ptr<Instance> instance, xcb_connection_t* connection, xcb_window_t window )
+: _instance( instance ), _surface( VK_NULL_HANDLE )
 {
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo
     {
         VK_STRUCTURE_TYPE_XCB_SURFACE_CREATE_INFO_KHR, VK_NULL_HANDLE, VkXcbSurfaceCreateFlagsKHR{ 0 },
-        arg.connection(),
-        arg.window()
+        connection,
+        window
     };
     auto result = vkCreateXcbSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 

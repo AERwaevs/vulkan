@@ -4,7 +4,7 @@
 
 namespace aer::gfx::vk
 {
-    struct ColorBlendState : public inherit< ColorBlendState, GraphicsPipelineState >
+    struct ColorBlendState : public GraphicsPipelineState
     {
         using       Attachments = std::vector<VkPipelineColorBlendAttachmentState>;
 

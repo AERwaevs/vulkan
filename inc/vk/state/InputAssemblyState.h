@@ -5,7 +5,7 @@
 namespace aer::gfx::vk
 {
     
-struct InputAssemblyState : public inherit< InputAssemblyState, GraphicsPipelineState >
+struct InputAssemblyState : public GraphicsPipelineState
 {
     using Topology = VkPrimitiveTopology;
 

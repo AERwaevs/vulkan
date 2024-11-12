@@ -10,7 +10,7 @@ namespace aer::gfx::vk
 
 class CommandBuffer;
 
-class CommandPool : public inherit< CommandPool, Object >
+class CommandPool : public Object
 {
 public:
     CommandPool( Device* device, uint32_t in_queueFamilyIndex, VkCommandPoolCreateFlags in_flags = 0 );

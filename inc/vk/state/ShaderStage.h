@@ -7,7 +7,7 @@
 namespace aer::gfx::vk
 {
 
-class ShaderStage : public inherit< ShaderStage, Object >
+class ShaderStage : public Object
 {
 public:
     ShaderStage

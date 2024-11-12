@@ -47,7 +47,7 @@ ref_ptr<CommandBuffer> CommandPool::allocate( VkCommandBufferLevel level )
     auto result = vkAllocateCommandBuffers( *_device, &allocateInfo, &commandBuffer );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to allocate command buffer: %s", ResultMessage( result ) );
 
-    return CommandBuffer::create( this, commandBuffer, level );
+    return create<CommandBuffer>( this, commandBuffer, level );
 }
 
 void CommandPool::free( CommandBuffer* commandBuffer )
