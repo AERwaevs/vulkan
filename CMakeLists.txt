@@ -17,7 +17,7 @@ elseif ( APPLE )
 else()
     set( AER_LINUX 1 )
     find_package( PkgConfig REQUIRED )
-    pkg_check_modules( xcb REQUIRED IMPORTED_TARGET xcb )
+    pkg_check_modules( xcb REQUIRED xcb )
 endif()
 
 # AEON::Vulkan ------------------------------------------------------------------------------------
@@ -113,7 +113,7 @@ target_link_libraries( vulkan
         base
         graphics_interface
         Vulkan::Vulkan
-    $<$<BOOL:${AER_LINUX}>:PkgConfig::xcb>
+    $<$<BOOL:${AER_LINUX}>:xcb>
 )
 # spir-v ------------------------------------------------------------------------------------------
 set( SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders )

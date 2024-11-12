@@ -5,7 +5,7 @@ namespace aer::gfx
 
 template<> ref_ptr<Renderer> Renderer::create< API::Vulkan >()
 {
-    return VulkanRenderer::create_if( ::vk_supported() );
+    return aer::create<VulkanRenderer>();
 }
 
 VulkanRenderer::VulkanRenderer()
