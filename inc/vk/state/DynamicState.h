@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 struct DynamicState : public GraphicsPipelineState
@@ -25,4 +25,4 @@ private:
     VkPipelineDynamicStateCreateInfo dynamicState;
 };
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

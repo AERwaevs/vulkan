@@ -4,7 +4,7 @@
 #include "Instance.h"
 #include "Surface.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 struct PhysicalDevice : public inherit< PhysicalDevice, Object >

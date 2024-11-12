@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 struct TessellationState : public GraphicsPipelineState
@@ -18,4 +18,4 @@ private:
     VkPipelineTessellationStateCreateInfo tessellationInfo;
 };
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

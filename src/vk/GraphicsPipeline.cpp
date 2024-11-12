@@ -2,7 +2,7 @@
 
 #include <vk/state/ShaderModule.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 GraphicsPipeline::GraphicsPipeline( PipelineLayout* in_layout, const ShaderStages& in_shaderStages, const GraphicsPipelineStates& in_pipelineStates, Subpass in_subpass )
@@ -66,4 +66,4 @@ GraphicsPipeline::~GraphicsPipeline()
     vkDestroyPipeline( *_device, _pipeline, VK_ALLOCATOR );
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

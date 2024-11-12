@@ -2,7 +2,7 @@
 
 #include <vk/LogicalDevice.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 class Semaphore : public inherit< Semaphore, Object >
@@ -27,4 +27,4 @@ protected:
 
 using Semaphores = std::vector<ref_ptr<Semaphore>>;
 
-} // namespace aer::gfx::vk
+} // namespace aer::

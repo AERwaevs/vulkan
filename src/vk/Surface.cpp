@@ -1,6 +1,6 @@
 #include <vk/Surface.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 Surface::~Surface() noexcept

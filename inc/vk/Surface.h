@@ -12,7 +12,7 @@
 #include <vulkan/vulkan_xcb.h>
 #endif
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 struct Surface : public Object

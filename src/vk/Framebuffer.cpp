@@ -1,6 +1,6 @@
 #include <vk/Framebuffer.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 Framebuffer::Framebuffer( ref_ptr<RenderPass> renderPass, const ImageViews& attachments, uint32_t width, uint32_t height, uint32_t layers )
@@ -38,4 +38,4 @@ Framebuffer::~Framebuffer()
     }
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

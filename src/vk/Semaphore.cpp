@@ -1,6 +1,6 @@
 #include <vk/Semaphore.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 Semaphore::Semaphore( Device* device, VkPipelineStageFlags flags, void* pNextCreateInfo )
@@ -20,4 +20,4 @@ Semaphore::~Semaphore()
     if( _semaphore ) vkDestroySemaphore( *_device, _semaphore, VK_ALLOCATOR );
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

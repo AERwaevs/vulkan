@@ -1,6 +1,6 @@
 #include <vk/state/ViewportState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 ViewportState::ViewportState()
@@ -64,4 +64,4 @@ void ViewportState::apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const
     pipelineInfo.pViewportState = &viewportState;
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

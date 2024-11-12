@@ -3,7 +3,7 @@
 #include "../vk.h"
 #include "../LogicalDevice.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 struct ByteCode : public Object, public std::vector<char>

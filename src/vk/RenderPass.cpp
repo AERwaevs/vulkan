@@ -2,7 +2,7 @@
 
 #include <Base/memory/scratch_memory.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 RenderPass::RenderPass
@@ -353,4 +353,4 @@ ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFo
     return ref_ptr<RenderPass>( new RenderPass( device, attachments, { subpass }, { colorDependency, depthDependency } ) );
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

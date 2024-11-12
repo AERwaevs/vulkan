@@ -1,6 +1,6 @@
 #include <vk/state/ImageView.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 ImageView::ImageView( ref_ptr<Image> in_image, VkImageAspectFlags aspectFlags )
@@ -66,4 +66,4 @@ ImageView::~ImageView()
     }
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

@@ -7,7 +7,7 @@
 
 #include <Base/memory/scratch_memory.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 class Context : public inherit< Context, Object >
@@ -23,4 +23,4 @@ public:
     GraphicsPipelineStates  states;
 };
 
-} // namespace aer::gfx::vk
+} // namespace aer::

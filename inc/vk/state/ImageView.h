@@ -5,7 +5,7 @@
 
 #include "Image.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 class ImageView : public inherit< ImageView, Object >

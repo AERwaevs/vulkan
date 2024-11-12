@@ -1,6 +1,6 @@
 #include <vk/PipelineLayout.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 PipelineLayout::PipelineLayout( Device* device, const SetLayouts& in_setLayouts, const PushConstantRanges& in_pushConstantRanges )
@@ -39,4 +39,4 @@ PipelineLayout::~PipelineLayout()
     }
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

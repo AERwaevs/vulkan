@@ -2,7 +2,7 @@
 
 #include "../vk.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 class GraphicsPipelineState : public Object
@@ -14,4 +14,4 @@ public:
 
 using GraphicsPipelineStates = std::vector<ref_ptr<GraphicsPipelineState>>;
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

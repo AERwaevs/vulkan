@@ -1,6 +1,6 @@
 #include <vk/state/DepthStencilState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 DepthStencilState::DepthStencilState()
@@ -26,4 +26,4 @@ void DepthStencilState::apply(VkGraphicsPipelineCreateInfo& pipelineCreateInfo) 
     pipelineCreateInfo.pDepthStencilState = &depthStencilState;
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     struct DepthStencilState : public GraphicsPipelineState
     {
@@ -23,4 +23,4 @@ namespace aer::gfx::vk
         // TODO move to scratch memory allocation
         VkPipelineDepthStencilStateCreateInfo depthStencilState;
     };
-} // namespace aer::gfx::vk
+} // namespace aer::vk

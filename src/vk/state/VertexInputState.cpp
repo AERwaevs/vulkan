@@ -1,6 +1,6 @@
 #include <vk/state/VertexInputState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 VertexInputState::VertexInputState()
@@ -36,4 +36,4 @@ void VertexInputState::apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const
     pipelineInfo.pVertexInputState = &vertexInputInfo;
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

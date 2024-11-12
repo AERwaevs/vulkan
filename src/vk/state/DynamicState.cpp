@@ -1,6 +1,6 @@
 #include <vk/state/DynamicState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 DynamicState::DynamicState()
@@ -31,4 +31,4 @@ void DynamicState::apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) const
     pipelineInfo.pDynamicState = &dynamicState;
 }
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

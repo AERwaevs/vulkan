@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 struct VertexInputState : public GraphicsPipelineState
@@ -23,4 +23,4 @@ private:
     VkPipelineVertexInputStateCreateInfo vertexInputInfo;
 };
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

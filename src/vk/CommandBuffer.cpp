@@ -1,6 +1,6 @@
 #include <vk/CommandBuffer.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 CommandBuffer::CommandBuffer( CommandPool* commandPool, VkCommandBuffer commandBuffer, VkCommandBufferLevel level )
@@ -34,4 +34,4 @@ void CommandBuffer::reset( VkCommandBufferResetFlags flags )
     _commandPool->reset();
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

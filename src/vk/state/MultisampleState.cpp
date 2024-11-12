@@ -1,6 +1,6 @@
 #include <vk/state/MultisampleState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 MultisampleState::MultisampleState( VkSampleCountFlagBits samples )
@@ -24,4 +24,4 @@ void MultisampleState::apply(VkGraphicsPipelineCreateInfo& pipelineCreateInfo) c
     pipelineCreateInfo.pMultisampleState = &multisampleState;
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

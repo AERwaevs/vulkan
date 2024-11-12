@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 struct MultisampleState : public GraphicsPipelineState
@@ -24,4 +24,4 @@ private:
     VkPipelineMultisampleStateCreateInfo multisampleState;
 };
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

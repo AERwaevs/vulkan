@@ -1,6 +1,6 @@
 #include <vk/state/RasterizationState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 RasterizationState::RasterizationState()
@@ -27,4 +27,4 @@ void RasterizationState::apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) con
     pipelineInfo.pRasterizationState = &rasterizationState;
 }
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

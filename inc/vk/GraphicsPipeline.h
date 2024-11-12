@@ -9,7 +9,7 @@
 #include "vk/state/ShaderStage.h"
 #include "vk/state/GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 class GraphicsPipeline : public Object
@@ -34,4 +34,4 @@ private:
     VkPipeline              _pipeline;
 };
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

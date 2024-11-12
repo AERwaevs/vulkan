@@ -1,7 +1,7 @@
 #include <vk/CommandPool.h>
 #include <vk/CommandBuffer.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 CommandPool::CommandPool( Device* device, uint32_t in_queueFamilyIndex, VkCommandPoolCreateFlags in_flags )
@@ -59,4 +59,4 @@ void CommandPool::free( CommandBuffer* commandBuffer )
     }
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

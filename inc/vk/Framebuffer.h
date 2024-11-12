@@ -5,7 +5,7 @@
 
 #include <vk/state/ImageView.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 class Framebuffer : public Object
@@ -30,4 +30,4 @@ protected:
 };
 using Framebuffers = std::vector<ref_ptr<Framebuffer>>;
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 using Viewports = std::vector<VkViewport>;
@@ -38,4 +38,4 @@ private:
     VkPipelineViewportStateCreateInfo viewportState;
 };
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

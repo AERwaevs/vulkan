@@ -1,6 +1,6 @@
 #include <vk/state/Image.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 Image::Image( VkImage image, Device* device )
@@ -45,4 +45,4 @@ Image::~Image() noexcept
 }
 
 
-} // namespace aer::gfx::vk 
+} // namespace aer::vk 

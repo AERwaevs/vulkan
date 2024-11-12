@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 struct RasterizationState : public GraphicsPipelineState
@@ -26,4 +26,4 @@ private:
     VkPipelineRasterizationStateCreateInfo rasterizationState;
 };
     
-} // namespace aer::gfx::vk
+} // namespace aer::vk

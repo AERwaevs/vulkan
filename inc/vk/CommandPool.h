@@ -5,7 +5,7 @@
 
 #include <mutex>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 class CommandBuffer;
@@ -36,4 +36,4 @@ private:
     VkCommandPool   _commandPool;
 };
     
-} // namespace aer::gfx::
+} // namespace aer::

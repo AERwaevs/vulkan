@@ -4,7 +4,7 @@
 #include "LogicalDevice.h"
 #include "Context.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 using SetLayouts            = std::vector<VkDescriptorSetLayout>;
@@ -27,4 +27,4 @@ private:
     VkPipelineLayout    _pipelineLayout;
 };
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

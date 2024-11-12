@@ -6,7 +6,7 @@
 #include "state/Image.h"
 #include "state/ImageView.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 struct SwapchainSupportDetails
@@ -59,4 +59,4 @@ private:
     VkExtent2D              _extent;
 };
 
-}// namespace aer::gfx::vk
+}// namespace aer::

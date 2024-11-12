@@ -1,6 +1,6 @@
 #include <vk/Fence.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 Fence::Fence( Device* device, VkFenceCreateFlags flags )
@@ -20,4 +20,4 @@ Fence::~Fence()
     if( _fence ) vkDestroyFence( *_device, _fence, VK_ALLOCATOR );
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

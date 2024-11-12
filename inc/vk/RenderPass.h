@@ -4,7 +4,7 @@
 
 #include <vk/LogicalDevice.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 struct AttachmentDescription;
@@ -86,4 +86,4 @@ struct SubpassDependency
     int32_t                 viewOffset      = 0;
 };
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

@@ -2,7 +2,7 @@
 
 #include "GraphicsPipelineState.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     struct ColorBlendState : public GraphicsPipelineState
     {
@@ -32,4 +32,4 @@ namespace aer::gfx::vk
         // TODO move to scratch memory allocation
         VkPipelineColorBlendStateCreateInfo colorBlendState;
     };
-} // namespace aer::gfx::vk
+} // namespace aer::vk

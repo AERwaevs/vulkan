@@ -4,7 +4,7 @@
 
 #include <vk/CommandPool.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 class CommandBuffer : public Object
@@ -28,4 +28,4 @@ private:
 };
 
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

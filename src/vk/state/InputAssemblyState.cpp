@@ -1,6 +1,6 @@
 #include <vk/state/InputAssemblyState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 InputAssemblyState::InputAssemblyState()
@@ -32,4 +32,4 @@ void InputAssemblyState::apply( VkGraphicsPipelineCreateInfo& pipelineInfo ) con
     pipelineInfo.pInputAssemblyState = &inputAssemblyState;
 }
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

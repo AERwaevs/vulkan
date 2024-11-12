@@ -2,7 +2,7 @@
 #include <vk/Surface.h>
 #include <vk/PhysicalDevice.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
  Instance::Instance( Names extensions, Names layers )

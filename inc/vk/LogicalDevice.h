@@ -4,7 +4,7 @@
 #include "Instance.h"
 #include "PhysicalDevice.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 struct QueueSetting
@@ -60,4 +60,4 @@ private:
     VkQueue                 _queue_present;
 };
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

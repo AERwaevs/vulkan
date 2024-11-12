@@ -14,7 +14,7 @@
 //* Define to later control vulkan memory management
 #define VK_ALLOCATOR VK_NULL_HANDLE
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     template< typename T >
     using Vector                        = std::vector<T>;

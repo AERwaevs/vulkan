@@ -3,7 +3,7 @@
 #include <vk/LogicalDevice.h>
 #include <vk/Semaphore.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     
 class Fence : public inherit< Fence, Object >
@@ -32,4 +32,4 @@ protected:
     Semaphores          _dependantSemaphores;
 };
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

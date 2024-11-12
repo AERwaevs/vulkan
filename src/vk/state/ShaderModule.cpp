@@ -1,6 +1,6 @@
 #include <vk/state/ShaderModule.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     ShaderModule::ShaderModule( ref_ptr<Device> device, const ByteCode& byte_code )
     :   _device( device )
@@ -23,5 +23,5 @@ namespace aer::gfx::vk
         vkDestroyShaderModule( *_device, _module, VK_NULL_HANDLE );
     }
     
-} // namespace aer::gfx
+} // namespace aer
 

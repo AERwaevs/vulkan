@@ -3,7 +3,7 @@
 #include "../vk.h"
 #include "../LogicalDevice.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 struct Image : public inherit< Image, Object >
@@ -34,4 +34,4 @@ struct Image : public inherit< Image, Object >
 };
 using Images = std::vector<ref_ptr<Image>>;
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk

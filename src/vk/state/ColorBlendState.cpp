@@ -1,6 +1,6 @@
 #include <vk/state/ColorBlendState.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
     ColorBlendState::ColorBlendState()
     :   colorBlendState
@@ -35,4 +35,4 @@ namespace aer::gfx::vk
     {
         pipelineCreateInfo.pColorBlendState = &colorBlendState;
     }
-} // namespace aer::gfx::vk
+} // namespace aer::vk

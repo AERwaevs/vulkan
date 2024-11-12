@@ -2,7 +2,7 @@
 #include <vk/PhysicalDevice.h>
 #include <vk/Swapchain.h>
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 PhysicalDevice::PhysicalDevice( Instance* instance, VkPhysicalDevice device )

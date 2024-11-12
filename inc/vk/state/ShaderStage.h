@@ -4,7 +4,7 @@
 
 #include "ShaderModule.h"
 
-namespace aer::gfx::vk
+namespace aer::vk
 {
 
 class ShaderStage : public Object
@@ -25,4 +25,4 @@ public:
 };
 using ShaderStages = std::vector<ref_ptr<ShaderStage>>;
 
-} // namespace aer::gfx::vk
+} // namespace aer::vk
