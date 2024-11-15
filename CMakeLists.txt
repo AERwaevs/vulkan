@@ -113,6 +113,8 @@ target_link_libraries( vulkan
         Vulkan::Vulkan
     $<$<BOOL:${AER_LINUX}>:xcb>
 )
+
+add_library( aer::vulkan ALIAS vulkan )
 # spir-v ------------------------------------------------------------------------------------------
 set( SHADER_DIR ${CMAKE_CURRENT_SOURCE_DIR}/shaders )
 set( SHADER_COMPILER glslc )
