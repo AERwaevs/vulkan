@@ -6,7 +6,7 @@
 namespace aer::vk
 {
     
-class Fence : public inherit< Fence, Object >
+class Fence : public Object
 {
 public:
     explicit            Fence( Device* device, VkFenceCreateFlags flags = 0 );

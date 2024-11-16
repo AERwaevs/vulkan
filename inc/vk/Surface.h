@@ -17,9 +17,7 @@ namespace aer::vk
 
 struct Surface : public Object
 {
-    //template< typename... Args > static ref_ptr<Surface> create( Args... );
-    //Surface( ref_ptr<Instance> instance ) : _instance( instance ), _surface( VK_NULL_HANDLE ) {};
-    
+
     template< typename... Args > Surface( ref_ptr<Instance>, Args... );
 
 #if defined( AER_PLATFORM_WINDOWS )

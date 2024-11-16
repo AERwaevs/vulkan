@@ -8,7 +8,7 @@
 namespace aer::vk
 {
 
-class ImageView : public inherit< ImageView, Object >
+class ImageView : public Object
 {
 public:
     VkImageViewCreateFlags  flags        = 0;

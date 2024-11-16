@@ -10,7 +10,7 @@
 namespace aer::vk
 {
     
-class Context : public inherit< Context, Object >
+class Context : public Object
 {
 public:
     explicit Context( Device* in_device );

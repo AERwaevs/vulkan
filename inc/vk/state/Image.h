@@ -6,7 +6,7 @@
 namespace aer::vk
 {
 
-struct Image : public inherit< Image, Object >
+struct Image : public Object
 {
     VkImageCreateFlags      flags       = 0;
     VkImageType             imageType   = VK_IMAGE_TYPE_2D;

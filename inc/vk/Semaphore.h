@@ -5,7 +5,7 @@
 namespace aer::vk
 {
     
-class Semaphore : public inherit< Semaphore, Object >
+class Semaphore : public Object
 {
 public:
     explicit Semaphore( Device* device, VkPipelineStageFlags flags = 0, void* pNextCreateInfo = nullptr );

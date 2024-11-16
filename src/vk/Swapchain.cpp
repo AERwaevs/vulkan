@@ -63,7 +63,7 @@ Swapchain::Swapchain
 
     for( std::size_t i = 0; i < images.size(); i++ )
     {
-        auto image_view = ImageView::create( Image::create( images[i], device.get() ) );
+        auto image_view = create<ImageView>( create<Image>( images[i], device.get() ) );
 
         image_view->image->usage                    = preferences.imageUsage;
         image_view->image->extent                   = { _extent.width, _extent.height, 1 };
