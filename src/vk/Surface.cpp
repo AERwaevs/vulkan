@@ -50,8 +50,10 @@ AndroidSurface::AndroidSurface( ref_ptr<Instance> instance, Window_t window )
     auto result = vkCreateAndroidSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
 
 #elif defined( AER_PLATFORM_LINUX )
+#include <xcb/xcb.h>
+#include <vulkan/vulkan_xcb.h>
 
-Surface::Surface( ref_ptr<Instance> instance, xcb_connection_t* connection, xcb_window_t window )
+template<> Surface::Surface( ref_ptr<Instance> instance, xcb_connection_t* connection, xcb_window_t window )
 : _instance( instance ), _surface( VK_NULL_HANDLE )
 {
     VkXcbSurfaceCreateInfoKHR surfaceCreateInfo
@@ -61,9 +63,8 @@ Surface::Surface( ref_ptr<Instance> instance, xcb_connection_t* connection, xcb_
         window
     };
     auto result = vkCreateXcbSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
-
-#endif
     AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: %s", ResultMessage( result ) );
 }
+#endif
 
 }
