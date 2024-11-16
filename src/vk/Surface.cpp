@@ -3,11 +3,6 @@
 namespace aer::vk
 {
 
-Surface::~Surface() noexcept
-{
-    if( _surface ) vkDestroySurfaceKHR( *_instance, _surface, VK_ALLOCATOR );
-}
-
 #if defined( AER_PLATFORM_WINDOWS )
 
 template<> ref_ptr<Surface>
@@ -67,4 +62,8 @@ template<> Surface::Surface( ref_ptr<Instance> instance, xcb_connection_t* conne
 }
 #endif
 
+Surface::~Surface() noexcept
+{
+    if( _surface ) vkDestroySurfaceKHR( *_instance, _surface, VK_ALLOCATOR );
+}
 }
