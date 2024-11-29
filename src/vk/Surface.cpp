@@ -57,7 +57,7 @@ template<> Surface::Surface( ref_ptr<Instance> instance, xcb_connection_t* conne
         connection,
         window
     };
-    auto result = vkCreateXcbSurfaceKHR( *instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
+    auto result = vkCreateXcbSurfaceKHR( *_instance, &surfaceCreateInfo, VK_ALLOCATOR, &_surface );
     AE_WARN_IF( result != VK_SUCCESS, "Failed to create surface: %s", ResultMessage( result ) );
 }
 #endif
