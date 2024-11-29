@@ -7,7 +7,7 @@ namespace aer::vk
 //? maybe remove requirement for a surface? this will allow for compute-only devices
 Device::Device( ref_ptr<PhysicalDevice> physical_device, ref_ptr<Surface> surface,
                 const QueueSettings& queue_settings )
-: _instance{ physical_device->instance() }, _physical_device( physical_device )
+: _instance{ physical_device->instance().load() }, _physical_device( physical_device )
 {
     const auto& layers( Device::RequiredLayers );
     const auto& extensions( Device::RequiredExtensions );
