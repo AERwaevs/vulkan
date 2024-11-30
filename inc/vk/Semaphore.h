@@ -8,7 +8,7 @@ namespace aer::vk
 class Semaphore : public Object
 {
 public:
-    explicit Semaphore( Device* device, VkPipelineStageFlags flags = 0, void* pNextCreateInfo = nullptr );
+    explicit Semaphore( ref_ptr<Device> device, VkPipelineStageFlags flags = 0, void* pNextCreateInfo = nullptr );
     virtual ~Semaphore();
 public:
             operator VkSemaphore()         const { return _semaphore; }

@@ -22,7 +22,7 @@ struct Image : public Object
     VkImageLayout           layout      = VK_IMAGE_LAYOUT_UNDEFINED;
 
     // creates a new image wrapper for specified VkImage
-    Image( VkImage image, Device* device );
+    Image( VkImage image, ref_ptr<Device> device );
     ~Image() noexcept;
     operator VkImage() const { return _image; };
     

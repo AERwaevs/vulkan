@@ -5,7 +5,7 @@
 namespace aer::vk
 {
 
-GraphicsPipeline::GraphicsPipeline( PipelineLayout* in_layout, const ShaderStages& in_shaderStages, const GraphicsPipelineStates& in_pipelineStates, Subpass in_subpass )
+GraphicsPipeline::GraphicsPipeline( ref_ptr<PipelineLayout> in_layout, const ShaderStages& in_shaderStages, const GraphicsPipelineStates& in_pipelineStates, Subpass in_subpass )
 :   shaderStages( in_shaderStages ),
     pipelineStates( in_pipelineStates ),
     pipelineLayout( in_layout ),
@@ -16,7 +16,7 @@ GraphicsPipeline::GraphicsPipeline( PipelineLayout* in_layout, const ShaderStage
 
 void GraphicsPipeline::Compile( Context& context )
 {
-    if( !_device ) _device = context.device;
+    if( !_device.valid() ) _device = context.device;
     
     auto shaderStageCreateInfo = context.scratchMemory->allocate<VkPipelineShaderStageCreateInfo>( shaderStages.size() );
     for( size_t i = 0; i < shaderStages.size(); i++ )

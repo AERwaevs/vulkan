@@ -9,7 +9,7 @@ namespace aer::vk
 class Fence : public Object
 {
 public:
-    explicit            Fence( Device* device, VkFenceCreateFlags flags = 0 );
+    explicit            Fence( ref_ptr<Device> device, VkFenceCreateFlags flags = 0 );
     virtual             ~Fence();
     operator VkFence()                           const { return _fence; }
 public:

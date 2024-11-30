@@ -3,7 +3,7 @@
 namespace aer::vk
 {
     
-Fence::Fence( Device* device, VkFenceCreateFlags flags )
+Fence::Fence( ref_ptr<Device> device, VkFenceCreateFlags flags )
 : _device( device )
 {
     VkFenceCreateInfo createInfo

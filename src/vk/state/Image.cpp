@@ -3,7 +3,7 @@
 namespace aer::vk
 {
 
-Image::Image( VkImage image, Device* device )
+Image::Image( VkImage image, ref_ptr<Device> device )
 : _image( image ), _device( device )
 {
 
@@ -29,8 +29,6 @@ void Image::Compile( Device* device )
         queueFamilyIndices.data(),
         layout
     };
-    
-    _device = device;
     auto result = vkCreateImage( *_device, &create_info, VK_ALLOCATOR, &_image );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImage: %s", ResultMessage( result ) );
 }

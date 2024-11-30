@@ -13,7 +13,7 @@ namespace aer::vk
 class Context : public Object
 {
 public:
-    explicit Context( Device* in_device );
+    explicit Context( ref_ptr<Device> in_device );
     virtual  ~Context() = default;
 public:
     ref_ptr<Device>         device;

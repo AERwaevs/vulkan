@@ -19,7 +19,7 @@ struct RenderPass : public Object
     using Dependencies          = std::vector<SubpassDependency>;
     using CorrelatedViewMasks   = std::vector<uint32_t>;
 
-    RenderPass( Device*, const Attachments&, const Subpasses&, const Dependencies&, const CorrelatedViewMasks = {} );
+    RenderPass( ref_ptr<Device>, const Attachments&, const Subpasses&, const Dependencies&, const CorrelatedViewMasks = {} );
     ~RenderPass();
     
     operator VkRenderPass () const { return _renderPass; }
@@ -34,10 +34,10 @@ protected:
     VkRenderPass          _renderPass;
 };
 
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat );
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead = false );
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkSampleCountFlagBits samples );
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead = false );
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat );
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead = false );
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat, VkSampleCountFlagBits samples );
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead = false );
 
 struct AttachmentDescription
 {

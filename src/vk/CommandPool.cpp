@@ -4,7 +4,7 @@
 namespace aer::vk
 {
 
-CommandPool::CommandPool( Device* device, uint32_t in_queueFamilyIndex, VkCommandPoolCreateFlags in_flags )
+CommandPool::CommandPool( ref_ptr<Device> device, uint32_t in_queueFamilyIndex, VkCommandPoolCreateFlags in_flags )
 :   queueFamilyIndex( in_queueFamilyIndex ), flags( in_flags ), _device( device )
 {
     VkCommandPoolCreateInfo createInfo

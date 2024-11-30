@@ -7,7 +7,7 @@ namespace aer::vk
     
 RenderPass::RenderPass
 (
-    Device*                   in_device,
+    ref_ptr<Device>           in_device,
     const Attachments&        in_attachments,
     const Subpasses&          in_subpasses,
     const Dependencies&       in_dependencies,
@@ -19,13 +19,13 @@ RenderPass::RenderPass
     dependencies( in_dependencies ),
     correlatedViewMasks( in_correlatedViewMasks )
 {
-    auto scratch = create<scratch_memory>( 1024 );
+    auto scratch = scratch_memory( 1024 );
 
     auto copyAttachments = [&]() -> VkAttachmentDescription2*
     {
         if( attachments.empty() ) return VK_NULL_HANDLE;
 
-        auto vk_attachments = scratch->allocate<VkAttachmentDescription2>( attachments.size() );
+        auto vk_attachments = scratch.allocate<VkAttachmentDescription2>( attachments.size() );
         for( size_t i = 0; i < attachments.size(); ++i )
         {
             auto& src = attachments[i];
@@ -54,7 +54,7 @@ RenderPass::RenderPass
         {
             if( references.empty() ) return VK_NULL_HANDLE;
 
-            auto vk_references = scratch->allocate<VkAttachmentReference2>( references.size() );
+            auto vk_references = scratch.allocate<VkAttachmentReference2>( references.size() );
             for( size_t i = 0; i < references.size(); ++i )
             {
                 auto& src = references[i];
@@ -69,7 +69,7 @@ RenderPass::RenderPass
             return vk_references;
         };
 
-        auto vk_subpasses = scratch->allocate<VkSubpassDescription2>( subpasses.size() );
+        auto vk_subpasses = scratch.allocate<VkSubpassDescription2>( subpasses.size() );
         for( size_t i = 0; i < subpasses.size(); ++i )
         {
             auto& src = subpasses[i];
@@ -96,7 +96,7 @@ RenderPass::RenderPass
     {
         if( dependencies.empty() ) return VK_NULL_HANDLE;
 
-        auto vk_dependencies = scratch->allocate<VkSubpassDependency2>( dependencies.size() );
+        auto vk_dependencies = scratch.allocate<VkSubpassDependency2>( dependencies.size() );
         for( size_t i = 0; i < dependencies.size(); ++i )
         {
             auto& src = dependencies[i];
@@ -141,7 +141,7 @@ RenderPass::~RenderPass()
     if( _renderPass )     vkDestroyRenderPass( *device, _renderPass, VK_ALLOCATOR );
 }
 
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat )
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat )
 {
     AttachmentDescription colorAttachment
     {
@@ -169,7 +169,7 @@ ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat )
     return ref_ptr<RenderPass>( new RenderPass( device, { colorAttachment }, { subpass }, { colorDependency } ) );
 }
 
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkSampleCountFlagBits samples )
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat, VkSampleCountFlagBits samples )
 {
     if( samples == VK_SAMPLE_COUNT_1_BIT )
     {
@@ -228,7 +228,7 @@ ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkSa
     return ref_ptr<RenderPass>( new RenderPass( device, { colorAttachment, resolveAttachment }, { subpass }, { colorDependency, resolveDependency } ) );
 }
 
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead )
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat, VkFormat depthFormat, bool requiresDepthRead )
 {
     AttachmentDescription colorAttachment
     {
@@ -276,7 +276,7 @@ ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFo
     return ref_ptr<RenderPass>( new RenderPass( device, { colorAttachment, depthAttachment }, { subpass }, { colorDependency, depthDependency } ) );
 }
 
-ref_ptr<RenderPass> createRenderPass( Device* device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead )
+ref_ptr<RenderPass> createRenderPass( ref_ptr<Device> device, VkFormat imageFormat, VkFormat depthFormat, VkSampleCountFlagBits samples, bool requiresDepthRead )
 {
     if( samples == VK_SAMPLE_COUNT_1_BIT )
     {

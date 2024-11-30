@@ -3,7 +3,7 @@
 namespace aer::vk
 {
 
-PipelineLayout::PipelineLayout( Device* device, const SetLayouts& in_setLayouts, const PushConstantRanges& in_pushConstantRanges )
+PipelineLayout::PipelineLayout( ref_ptr<Device> device, const SetLayouts& in_setLayouts, const PushConstantRanges& in_pushConstantRanges )
 :   setLayouts{ in_setLayouts },
     pushConstantRanges{ in_pushConstantRanges },
     _device( device ),

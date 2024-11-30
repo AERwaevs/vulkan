@@ -3,7 +3,7 @@
 namespace aer::vk
 {
 
-Semaphore::Semaphore( Device* device, VkPipelineStageFlags flags, void* pNextCreateInfo )
+Semaphore::Semaphore( ref_ptr<Device> device, VkPipelineStageFlags flags, void* pNextCreateInfo )
 :  _flags( flags ), _device( device )
 {
     VkSemaphoreCreateInfo createInfo

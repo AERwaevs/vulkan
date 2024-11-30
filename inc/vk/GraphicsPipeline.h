@@ -16,7 +16,7 @@ class GraphicsPipeline : public Object
 {
     using Subpass = uint32_t;
 public:
-            GraphicsPipeline( PipelineLayout*, const ShaderStages&, const GraphicsPipelineStates&, Subpass = 0 );
+            GraphicsPipeline( ref_ptr<PipelineLayout>, const ShaderStages&, const GraphicsPipelineStates&, Subpass = 0 );
     virtual ~GraphicsPipeline();
 public:
     operator VkPipeline() const { return _pipeline; }

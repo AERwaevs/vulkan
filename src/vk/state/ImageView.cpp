@@ -6,7 +6,7 @@ namespace aer::vk
 ImageView::ImageView( ref_ptr<Image> in_image, VkImageAspectFlags aspectFlags )
 : image( in_image )
 {
-    if( image )
+    if( image.valid() )
     {
         const auto aspect = [&]() -> VkImageAspectFlags
         {
@@ -42,16 +42,14 @@ void ImageView::Compile( Device* device )
         VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO,
         VK_NULL_HANDLE,
         VkImageViewCreateFlags{ 0 },
-        image ? *image : VK_NULL_HANDLE,
+        image.valid() ? *image : VK_NULL_HANDLE,
         VK_IMAGE_VIEW_TYPE_2D,
         format,
         components,
         subresourceRange
     };
     
-    if( image ) image->Compile( device );
-
-    _device = device;
+    if( image.valid() ) image->Compile( device );
     auto result = vkCreateImageView( *_device, &create_info, VK_ALLOCATOR, &_imageView );
     AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImageView: %s", ResultMessage( result ) );
 }

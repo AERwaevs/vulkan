@@ -48,7 +48,7 @@ Swapchain::Swapchain
         VK_COMPOSITE_ALPHA_OPAQUE_BIT_KHR,
         presentMode,
         VK_TRUE,    //clipped
-        old ? *old : VK_NULL_HANDLE
+        old.valid() ? *old : VK_NULL_HANDLE
     };
 
     auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &_swapchain );
@@ -63,7 +63,7 @@ Swapchain::Swapchain
 
     for( std::size_t i = 0; i < images.size(); i++ )
     {
-        auto image_view = create<ImageView>( create<Image>( images[i], device.get() ) );
+        auto image_view = create<ImageView>( create<Image>( images[i], device ) );
 
         image_view->image->usage                    = preferences.imageUsage;
         image_view->image->extent                   = { _extent.width, _extent.height, 1 };

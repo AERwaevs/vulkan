@@ -13,7 +13,7 @@ using PushConstantRanges    = std::vector<VkPushConstantRange>;
 class PipelineLayout : public Object
 {
 public:
-    PipelineLayout( Device* device, const SetLayouts& in_setLayouts = {}, const PushConstantRanges& in_pushConstantRanges = {} );
+    PipelineLayout( ref_ptr<Device> device, const SetLayouts& in_setLayouts = {}, const PushConstantRanges& in_pushConstantRanges = {} );
     virtual ~PipelineLayout();
     
     operator VkPipelineLayout() const { return _pipelineLayout; }

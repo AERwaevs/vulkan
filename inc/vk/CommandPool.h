@@ -13,7 +13,7 @@ class CommandBuffer;
 class CommandPool : public Object
 {
 public:
-    CommandPool( Device* device, uint32_t in_queueFamilyIndex, VkCommandPoolCreateFlags in_flags = 0 );
+    CommandPool( ref_ptr<Device> device, uint32_t in_queueFamilyIndex, VkCommandPoolCreateFlags in_flags = 0 );
     CommandPool( const CommandPool& ) = delete;
     CommandPool( CommandPool&& rhs );
     virtual ~CommandPool();
