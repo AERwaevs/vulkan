@@ -19,13 +19,13 @@ RenderPass::RenderPass
     dependencies( in_dependencies ),
     correlatedViewMasks( in_correlatedViewMasks )
 {
-    auto scratch = scratch_memory( 1024 );
+    auto scratch = create<scratch_memory>( 1024 );
 
     auto copyAttachments = [&]() -> VkAttachmentDescription2*
     {
         if( attachments.empty() ) return VK_NULL_HANDLE;
 
-        auto vk_attachments = scratch.allocate<VkAttachmentDescription2>( attachments.size() );
+        auto vk_attachments = scratch->allocate<VkAttachmentDescription2>( attachments.size() );
         for( size_t i = 0; i < attachments.size(); ++i )
         {
             auto& src = attachments[i];
@@ -54,7 +54,7 @@ RenderPass::RenderPass
         {
             if( references.empty() ) return VK_NULL_HANDLE;
 
-            auto vk_references = scratch.allocate<VkAttachmentReference2>( references.size() );
+            auto vk_references = scratch->allocate<VkAttachmentReference2>( references.size() );
             for( size_t i = 0; i < references.size(); ++i )
             {
                 auto& src = references[i];
@@ -69,7 +69,7 @@ RenderPass::RenderPass
             return vk_references;
         };
 
-        auto vk_subpasses = scratch.allocate<VkSubpassDescription2>( subpasses.size() );
+        auto vk_subpasses = scratch->allocate<VkSubpassDescription2>( subpasses.size() );
         for( size_t i = 0; i < subpasses.size(); ++i )
         {
             auto& src = subpasses[i];
@@ -96,7 +96,7 @@ RenderPass::RenderPass
     {
         if( dependencies.empty() ) return VK_NULL_HANDLE;
 
-        auto vk_dependencies = scratch.allocate<VkSubpassDependency2>( dependencies.size() );
+        auto vk_dependencies = scratch->allocate<VkSubpassDependency2>( dependencies.size() );
         for( size_t i = 0; i < dependencies.size(); ++i )
         {
             auto& src = dependencies[i];
