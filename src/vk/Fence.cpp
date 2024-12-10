@@ -12,7 +12,7 @@ Fence::Fence( ref_ptr<Device> device, VkFenceCreateFlags flags )
     };
 
     auto result = vkCreateFence( *_device, &createInfo, VK_ALLOCATOR, &_fence );
-    AE_ERROR_IF( result != VK_SUCCESS, "Failed to create fence: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create fence: %s", ResultMessage( result ) );
 }
 
 Fence::~Fence()

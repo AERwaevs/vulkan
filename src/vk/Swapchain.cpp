@@ -52,7 +52,7 @@ Swapchain::Swapchain
     };
 
     auto result = vkCreateSwapchainKHR( *device, &createInfo, VK_ALLOCATOR, &_swapchain );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create swapchain: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create swapchain: %s", ResultMessage( result ) );
 
     _extent = extent;
     _format = surfaceFormat.format;
@@ -122,7 +122,7 @@ VkSurfaceFormatKHR SelectSwapSurfaceFormat( const SwapchainSupportDetails& detai
 
     if( details.formats.empty() || ( details.formats.size() == 1 && details.formats[0].format == VK_FORMAT_UNDEFINED ) )
     {
-        AE_WARN( "Swapchain format undefined, using fallback" ); return { default_format, default_colorspace };
+        LOG_F( WARNING, "Swapchain format undefined, using fallback" ); return { default_format, default_colorspace };
     }
 
     for( const auto& available : details.formats )
@@ -130,13 +130,13 @@ VkSurfaceFormatKHR SelectSwapSurfaceFormat( const SwapchainSupportDetails& detai
         if( available.format == preferred.format && available.colorSpace == preferred.colorSpace ) return available;
     }
 
-    AE_WARN( "Preferred swapchain format unavailable, trying default" );
+    LOG_F( WARNING, "Preferred swapchain format unavailable, trying default" );
     for( const auto& available : details.formats )
     {
         if( available.format == default_format && available.colorSpace == default_colorspace ) return available;
     }
 
-    AE_WARN( "Default swapchain format unavailable, using first available" );
+    LOG_F( WARNING, "Default swapchain format unavailable, using first available" );
     return details.formats[0];
 }
 
@@ -145,9 +145,9 @@ VkPresentModeKHR SelectSwapPresentMode( const SwapchainSupportDetails& details, 
     const auto default_present_mode = VK_PRESENT_MODE_FIFO_KHR;
 
     for( auto available : details.present_modes ) { if( available == preferred ) return available; }
-    AE_WARN( "Preferred present mode unavailable, trying default" );
+    LOG_F( WARNING, "Preferred present mode unavailable, trying default" );
     for( auto available : details.present_modes ) { if( available == default_present_mode ) return available; }
-    AE_WARN( "Default present mode unavailable, using fallback" );
+    LOG_F( WARNING, "Default present mode unavailable, using fallback" );
     return VK_PRESENT_MODE_FIFO_KHR;
 }
 

@@ -27,7 +27,7 @@ void PipelineLayout::Compile( Context& context )
     };
 
     auto result = vkCreatePipelineLayout( *_device, &createInfo, VK_ALLOCATOR, &_pipelineLayout );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create pipeline layout: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create pipeline layout: %s", ResultMessage( result ) );
 }
 
 PipelineLayout::~PipelineLayout()

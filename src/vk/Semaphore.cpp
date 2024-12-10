@@ -12,7 +12,7 @@ Semaphore::Semaphore( ref_ptr<Device> device, VkPipelineStageFlags flags, void* 
     };
 
     auto result = vkCreateSemaphore( *_device, &createInfo, VK_ALLOCATOR, &_semaphore );
-    AE_ERROR_IF( result != VK_SUCCESS, "Failed to create semaphore: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create semaphore: %s", ResultMessage( result ) );
 }
 
 Semaphore::~Semaphore()

@@ -30,7 +30,7 @@ Vector<VkExtensionProperties> PhysicalDevice::EnumerateExtensionProperties( Name
                                                    layer_name, 
                                                    &extension_count, 
                                                    nullptr );
-    AE_ERROR_IF( result != VK_SUCCESS, 
+    CHECK_F( result == VK_SUCCESS, 
                     "Failed to enumerate device extension count: %s", ResultMessage( result ) );
 
     Vector<VkExtensionProperties> vk_extensions(extension_count);
@@ -38,7 +38,7 @@ Vector<VkExtensionProperties> PhysicalDevice::EnumerateExtensionProperties( Name
                                                    layer_name, 
                                                    &extension_count, 
                                                    vk_extensions.data() );
-    AE_ERROR_IF( result != VK_SUCCESS, 
+    CHECK_F( result == VK_SUCCESS, 
                     "Failed to enumerate device extension properties: %s", ResultMessage( result ) );
 
     return vk_extensions;

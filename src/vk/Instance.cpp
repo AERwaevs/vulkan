@@ -51,7 +51,7 @@ namespace aer::vk
     };
 
     auto result = vkCreateInstance( &instanceInfo, VK_ALLOCATOR, &_instance );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create instance: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create instance: %s", ResultMessage( result ) );
     
 #ifndef NDEBUG
     GetProcAddr( CreateDebugUtilsMessenger,  "vkCreateDebugUtilsMessengerEXT"  );
@@ -66,13 +66,13 @@ namespace aer::vk
             VK_ALLOCATOR, 
             &_debug_messenger
         );
-        AE_WARN_IF( result != VK_SUCCESS, "Failed to create debug messenger: %s", ResultMessage( result ) );
+        CHECK_F( result == VK_SUCCESS, "Failed to create debug messenger: %s", ResultMessage( result ) );
     }
 #endif
 
     uint32_t device_count = 0;
     vkEnumeratePhysicalDevices( _instance, &device_count, VK_NULL_HANDLE );
-    AE_FATAL_IF( device_count == 0, "Failed to find a GPU with Vulkan support" );
+    CHECK_F( device_count != 0, "Failed to find a GPU with Vulkan support" );
 
     Vector<VkPhysicalDevice> devices( device_count );
     vkEnumeratePhysicalDevices( _instance, &device_count, devices.data() );
@@ -119,11 +119,11 @@ InstanceLayerProperties EnumerateInstanceLayerProperties()
     VkResult result{ VK_SUCCESS };
     uint32_t vk_layer_count{ 0 };
     result = vkEnumerateInstanceLayerProperties( &vk_layer_count, nullptr );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance layer count: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Could not get instance layer count: %s", ResultMessage( result ) );
 
     Vector<VkLayerProperties> vk_layers(vk_layer_count);
     result = vkEnumerateInstanceLayerProperties( &vk_layer_count, vk_layers.data() );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance layer properties: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Could not get instance layer properties: %s", ResultMessage( result ) );
 
     return vk_layers;
 }
@@ -133,11 +133,11 @@ InstanceExtensionProperties EnumerateInstanceExtensionProperties( Name layer_nam
     VkResult result{ VK_SUCCESS };
     uint32_t count{ 0 };
     result = vkEnumerateInstanceExtensionProperties( layer_name, &count, nullptr );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance extension count: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Could not get instance extension count: %s", ResultMessage( result ) );
 
     Vector<VkExtensionProperties> vk_extensions(count);
     result = vkEnumerateInstanceExtensionProperties( layer_name, &count, vk_extensions.data() );
-    AE_ERROR_IF( result != VK_SUCCESS, "Could not get instance extension properties: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Could not get instance extension properties: %s", ResultMessage( result ) );
 
     return vk_extensions;
 }
@@ -155,7 +155,7 @@ Names ValidateInstanceLayerNames( Names& names )
     for( const auto& requested : names )
     {
         if( available_layers.contains( requested ) ) validated_names.push_back( requested );
-        else AE_WARN( "Invalid layer requested : %s", requested );
+        else LOG_F( WARNING, "Invalid layer requested : %s", requested );
     }
     
     return validated_names;

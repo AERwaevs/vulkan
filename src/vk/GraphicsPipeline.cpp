@@ -58,7 +58,7 @@ void GraphicsPipeline::Compile( Context& context )
     }
 
     auto result = vkCreateGraphicsPipelines( *_device, VK_NULL_HANDLE, 1, &createInfo, VK_ALLOCATOR, &_pipeline );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create graphics pipeline: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create graphics pipeline: %s", ResultMessage( result ) );
 }
 
 GraphicsPipeline::~GraphicsPipeline()

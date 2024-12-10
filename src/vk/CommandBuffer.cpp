@@ -23,13 +23,13 @@ void CommandBuffer::begin( VkCommandBufferUsageFlags flags )
     };
 
     auto result = vkBeginCommandBuffer( _commandBuffer, &beginInfo );
-    AE_ERROR_IF( result != VK_SUCCESS, "Failed to begin command buffer: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to begin command buffer: %s", ResultMessage( result ) );
 }
 
 void CommandBuffer::reset( VkCommandBufferResetFlags flags )
 {
     auto result = vkResetCommandBuffer( _commandBuffer, flags );
-    AE_ERROR_IF( result != VK_SUCCESS, "Failed to reset command buffer: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to reset command buffer: %s", ResultMessage( result ) );
 
     _commandPool->reset();
 }

@@ -133,7 +133,7 @@ RenderPass::RenderPass
     };
 
     auto result = vkCreateRenderPass2( *device, &createInfo, VK_ALLOCATOR, &_renderPass );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create renderpass: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create renderpass: %s", ResultMessage( result ) );
 }
 
 RenderPass::~RenderPass()

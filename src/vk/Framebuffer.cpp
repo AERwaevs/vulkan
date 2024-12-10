@@ -27,7 +27,7 @@ Framebuffer::Framebuffer( ref_ptr<RenderPass> renderPass, const ImageViews& atta
     };
 
     auto result = vkCreateFramebuffer( _device, &createInfo, VK_ALLOCATOR, &_framebuffer );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create framebuffer: vk%d", result );
+    CHECK_F( result == VK_SUCCESS, "Failed to create framebuffer: vk%d", result );
 }
 
 Framebuffer::~Framebuffer()

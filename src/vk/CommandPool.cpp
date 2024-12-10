@@ -14,7 +14,7 @@ CommandPool::CommandPool( ref_ptr<Device> device, uint32_t in_queueFamilyIndex, 
     };
 
     auto result = vkCreateCommandPool( *_device, &createInfo, VK_ALLOCATOR, &_commandPool );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create command pool: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create command pool: %s", ResultMessage( result ) );
 }
 
 CommandPool::CommandPool( CommandPool&& rhs )
@@ -31,7 +31,7 @@ CommandPool::~CommandPool()
 void CommandPool::reset( VkCommandPoolResetFlags flags )
 {
     auto result = vkResetCommandPool( *_device, _commandPool, flags );
-    AE_ERROR_IF( result != VK_SUCCESS, "Failed to reset command pool: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to reset command pool: %s", ResultMessage( result ) );
 }
 
 ref_ptr<CommandBuffer> CommandPool::allocate( VkCommandBufferLevel level )
@@ -45,7 +45,7 @@ ref_ptr<CommandBuffer> CommandPool::allocate( VkCommandBufferLevel level )
     VkCommandBuffer  commandBuffer;
 
     auto result = vkAllocateCommandBuffers( *_device, &allocateInfo, &commandBuffer );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to allocate command buffer: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to allocate command buffer: %s", ResultMessage( result ) );
 
     return create<CommandBuffer>( this, commandBuffer, level );
 }

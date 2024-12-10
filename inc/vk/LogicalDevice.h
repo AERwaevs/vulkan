@@ -28,9 +28,7 @@ public:
         proc_addr = reinterpret_cast<F>( vkGetDeviceProcAddr( _device, name ) );
         if( proc_addr == nullptr )
         {
-            AE_WARN( "Failed to get procedural address for %s: vk%d", 
-                        name,
-                        VK_ERROR_EXTENSION_NOT_PRESENT );
+            LOG_F( WARNING, "Failed to get procedural address for %s: vk%d", name, VK_ERROR_EXTENSION_NOT_PRESENT );
             return VK_ERROR_EXTENSION_NOT_PRESENT;
         }
         else return VK_SUCCESS;

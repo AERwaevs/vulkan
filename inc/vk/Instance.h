@@ -41,9 +41,7 @@ namespace aer::vk
             proc_addr = reinterpret_cast<F>( vkGetInstanceProcAddr( _instance, name ) );
             if( proc_addr == VK_NULL_HANDLE )
             {
-                AE_WARN( "Failed to get procedural address for %s: vk%d", 
-                         name,
-                         VK_ERROR_EXTENSION_NOT_PRESENT );
+                LOG_F( WARNING, "Failed to get procedural address for %s: vk%d", name, VK_ERROR_EXTENSION_NOT_PRESENT );
                 return VK_ERROR_EXTENSION_NOT_PRESENT;
             }
             else return VK_SUCCESS;

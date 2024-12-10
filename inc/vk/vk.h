@@ -70,17 +70,17 @@ namespace aer::vk
         {
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_INFO_BIT_EXT:
             {
-                AE_INFO_RAW( "%s", pCallbackData->pMessage );
+                RAW_LOG_F( INFO, "%s", pCallbackData->pMessage );
                 break;
             }
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_WARNING_BIT_EXT:
             {
-                AE_WARN_RAW( "%s", pCallbackData->pMessage );
+                RAW_LOG_F( WARNING, "%s", pCallbackData->pMessage );
                 break;
             }
             case VK_DEBUG_UTILS_MESSAGE_SEVERITY_ERROR_BIT_EXT:
             {
-                AE_ERROR_RAW( "%s", pCallbackData->pMessage );
+                RAW_LOG_F( ERROR, "%s", pCallbackData->pMessage );
                 break;
             }        
             default:
@@ -88,8 +88,7 @@ namespace aer::vk
         }
 
         
-        AE_INFO_IF( type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT,
-                    "VK_PERFORMANCE %s", pCallbackData->pMessage );
+        DLOG_IF_F( INFO, type == VK_DEBUG_UTILS_MESSAGE_TYPE_PERFORMANCE_BIT_EXT, "VK_PERFORMANCE %s", pCallbackData->pMessage );
         return VK_FALSE; // only used if testing validation layers
     };
     #endif

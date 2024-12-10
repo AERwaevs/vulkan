@@ -51,7 +51,7 @@ void ImageView::Compile( Device* device )
     
     if( image.valid() ) image->Compile( device );
     auto result = vkCreateImageView( *_device, &create_info, VK_ALLOCATOR, &_imageView );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImageView: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create vkImageView: %s", ResultMessage( result ) );
 }
 
 ImageView::~ImageView()

@@ -15,7 +15,7 @@ namespace aer::vk
         };
 
         auto result = vkCreateShaderModule( *device, &createInfo, VK_NULL_HANDLE, &_module );
-        AE_FATAL_IF( result != VK_SUCCESS, "Failed to create shader module: %s", ResultMessage( result ) );
+        CHECK_F( result == VK_SUCCESS, "Failed to create shader module: %s", ResultMessage( result ) );
     }
 
     ShaderModule::~ShaderModule()

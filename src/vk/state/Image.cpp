@@ -30,7 +30,7 @@ void Image::Compile( Device* device )
         layout
     };
     auto result = vkCreateImage( *_device, &create_info, VK_ALLOCATOR, &_image );
-    AE_FATAL_IF( result != VK_SUCCESS, "Failed to create vkImage: %s", ResultMessage( result ) );
+    CHECK_F( result == VK_SUCCESS, "Failed to create vkImage: %s", ResultMessage( result ) );
 }
 
 Image::~Image() noexcept
