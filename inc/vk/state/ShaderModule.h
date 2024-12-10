@@ -18,7 +18,7 @@ public:
     operator VkShaderModule() const { return _module; };
     virtual ~ShaderModule();
 public:
-    void compile();
+    void compile(){};
 
 protected:
     ref_ptr<Device> _device;
