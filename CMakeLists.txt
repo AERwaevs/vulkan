@@ -13,7 +13,7 @@ find_package( Vulkan REQUIRED )
 if( ANDROID )
 elseif( WIN32 )
 elseif ( APPLE )
-else()
+elseif( UNIX AND NOT APPLE )
     set( LINUX 1 )
 endif()
 
@@ -89,8 +89,12 @@ set( SOURCES
 add_library( vulkan ${HEADERS} ${SOURCES} )
 add_library( aer::vulkan ALIAS vulkan )
 
-set_property( TARGET vulkan PROPERTY CXX_STANDARD 17 )
-set_property( TARGET vulkan PROPERTY POSITION_INDEPENDENT_CODE ON )
+set_target_properties( vulkan PROPERTIES
+    CXX_STANDARD                    23
+    CXX_STANDARD_REQUIRED           ON
+    CXX_EXTENSIONS                  OFF
+    CMAKE_POSITION_INDEPENDENT_CODE ON
+)
 
 target_include_directories( vulkan 
     PUBLIC
