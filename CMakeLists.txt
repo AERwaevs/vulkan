@@ -17,6 +17,15 @@ elseif( UNIX AND NOT APPLE )
     set( LINUX 1 )
 endif()
 
+if( NOT TARGET aer::base )
+include(FetchContent)
+    FetchContent_Declare( aer_base
+        GIT_REPOSITORY  https://github.com/AERwaevs/base.git
+        GIT_TAG         log
+        GIT_PROGRESS    TRUE
+    )
+    FetchContent_MakeAvailable( aer_base )
+endif()
 # AEON::Vulkan ------------------------------------------------------------------------------------
 set( LIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/lib )
 set( INC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/inc )
@@ -113,5 +122,4 @@ target_link_libraries( vulkan
     PRIVATE
         base
         Vulkan::Vulkan
-    $<$<BOOL:${LINUX}>:xcb>
 )
