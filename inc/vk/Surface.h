@@ -8,8 +8,11 @@ namespace aer::vk
 
 struct Surface : public Object
 {
-    template< typename... Args > Surface( ref_ptr<Instance>, Args... );
-    ~Surface() noexcept;
+    template< typename... Args > Surface( Instance*, Args... );
+    ~Surface() noexcept
+    {
+        if( _surface ) vkDestroySurfaceKHR( *_instance, _surface, VK_ALLOCATOR );
+    };
 
     operator VkSurfaceKHR() const { return _surface; }
     auto     vk()           const { return _surface; }
