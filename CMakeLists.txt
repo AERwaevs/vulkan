@@ -119,7 +119,8 @@ target_compile_definitions( vulkan PUBLIC
 )
 
 target_link_libraries( vulkan 
+    PUBLIC
+        Vulkan::Vulkan
     PRIVATE
         base
-        Vulkan::Vulkan
 )
